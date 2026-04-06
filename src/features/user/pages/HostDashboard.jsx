@@ -4,9 +4,9 @@ import Cookies from "js-cookie";
 import API from "../../../services/api";
 import HomeCard from "../../listings/components/ListingCard";
 import { toast } from "react-hot-toast";
-import { PlusCircle, Loader2, LayoutDashboard, Home as HomeIcon, CalendarCheck, CalendarDays, Star, Trash2, AlertTriangle, MapPin, Eye } from "lucide-react";
+import { PlusCircle, Loader2, LayoutDashboard, Home as HomeIcon, CalendarCheck, CalendarDays, Star, Trash2, AlertTriangle, MapPin, Eye, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import BookingDetailsModal from '../components/BookingDetailsModal';
+import BookingDetailsModal from "../../host/components/BookingDetailsModal";
 
 const STATUS_BADGES = {
     pending: "bg-yellow-50 text-yellow-700 border-yellow-100 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800",
