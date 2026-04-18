@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { 
   BiSend, BiTrash, BiCheck, BiX, BiCheckCircle, 
-  BiDotsVerticalRounded, BiSmile, BiMenu, BiUser, BiArrowBack, BiReply 
+  BiDotsVerticalRounded, BiSmile, BiMenu, BiUser, BiArrowBack, BiReply, BiGlobe 
 } from 'react-icons/bi';
 import API from "../../../services/api";
 import { toast } from "react-hot-toast";
@@ -12,11 +12,26 @@ import EmojiPicker from "emoji-picker-react";
 
 const QUICK_EMOJIS = ['❤️', '😂', '👍', '🙏', '🔥', '✅'];
 
+const SARVAM_LANGUAGES = [
+    { code: 'en-IN', label: 'English', flag: '🇬🇧' },
+    { code: 'hi-IN', label: 'हिन्दी', flag: '🇮🇳' },
+    { code: 'ta-IN', label: 'தமிழ்', flag: '🇮🇳' },
+    { code: 'te-IN', label: 'తెలుగు', flag: '🇮🇳' },
+    { code: 'kn-IN', label: 'ಕನ್ನಡ', flag: '🇮🇳' },
+    { code: 'ml-IN', label: 'മലയാളം', flag: '🇮🇳' },
+    { code: 'mr-IN', label: 'मराठी', flag: '🇮🇳' },
+    { code: 'bn-IN', label: 'বাংলা', flag: '🇮🇳' },
+    { code: 'gu-IN', label: 'ગુજરાતી', flag: '🇮🇳' },
+    { code: 'pa-IN', label: 'ਪੰਜਾਬੀ', flag: '🇮🇳' },
+    { code: 'od-IN', label: 'ଓଡ଼ିଆ', flag: '🇮🇳' },
+];
+
 function ChatWindow({ conv: conversation, currentUserId: propUserId, onToggleSidebar, onClose: onSelectClose }) {
     // Get correct currentUserId and isHost status
-    const currentUserId = propUserId || Cookies.get('userId') 
+    const rawCurrentUserId = propUserId || Cookies.get('userId') 
         || JSON.parse(localStorage.getItem('user') || '{}')?.id 
         || JSON.parse(localStorage.getItem('user') || '{}')?._id;
+    const currentUserId = rawCurrentUserId ? String(rawCurrentUserId).replace(/\s/g, "") : null;
 
     const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
     const isHost = storedUser?.is_host === true 
@@ -32,6 +47,82 @@ function ChatWindow({ conv: conversation, currentUserId: propUserId, onToggleSid
     const [showEmojiPicker, setShowEmojiPicker] = React.useState(false);
     const [showGuestProfile, setShowGuestProfile] = React.useState(null);
     const [replyTo, setReplyTo] = React.useState(null);
+
+    const [targetLanguage, setTargetLanguage] = React.useState(() => {
+        return localStorage.getItem(`chatLang_${conversation?.other_user_id}`) || 'en-IN';
+    });
+    const [showLangDropdown, setShowLangDropdown] = React.useState(false);
+    const [translatingIds, setTranslatingIds] = React.useState(new Set());
+    const [showTranslated, setShowTranslated] = React.useState(new Set()); // message IDs with translation visible
+
+    React.useEffect(() => {
+        if (conversation?.other_user_id) {
+            localStorage.setItem(`chatLang_${conversation.other_user_id}`, targetLanguage);
+        }
+    }, [targetLanguage, conversation?.other_user_id]);
+
+    React.useEffect(() => {
+        if (!showLangDropdown) return;
+        const handleClickOutside = (e) => {
+            if (!e.target.closest('[data-lang-dropdown]')) {
+                // Will need to wrap dropdown root with data attribute
+            }
+        };
+        // Simpler: close on any document click
+        const t = setTimeout(() => {
+            document.addEventListener('click', () => setShowLangDropdown(false), { once: true });
+        }, 0);
+        return () => clearTimeout(t);
+    }, [showLangDropdown]);
+
+    const handleTranslateMessage = async (messageId) => {
+        // If already translated to current target language, just toggle visibility
+        const msg = messages.find(m => (m.id || m._id) === messageId);
+        if (msg?.translations?.[targetLanguage]) {
+            setShowTranslated(prev => {
+                const next = new Set(prev);
+                if (next.has(messageId)) next.delete(messageId);
+                else next.add(messageId);
+                return next;
+            });
+            return;
+        }
+
+        // Otherwise hit the API
+        setTranslatingIds(prev => new Set(prev).add(messageId));
+        try {
+            const res = await API.post(`/messages/${messageId}/translate`, {
+                targetLanguage: targetLanguage,
+            });
+            const translatedText = res.data.translated;
+
+            // Update message in local state with new translation
+            setMessages(prev => prev.map(m => {
+                if ((m.id || m._id) === messageId) {
+                    return {
+                        ...m,
+                        translations: {
+                            ...(m.translations || {}),
+                            [targetLanguage]: translatedText,
+                        },
+                    };
+                }
+                return m;
+            }));
+
+            // Show it
+            setShowTranslated(prev => new Set(prev).add(messageId));
+        } catch (err) {
+            console.error('Translation failed:', err);
+            toast.error('Translation failed');
+        } finally {
+            setTranslatingIds(prev => {
+                const next = new Set(prev);
+                next.delete(messageId);
+                return next;
+            });
+        }
+    };
     
     const messagesEndRef = React.useRef(null);
     const pollRef = React.useRef(null);
@@ -60,9 +151,16 @@ function ChatWindow({ conv: conversation, currentUserId: propUserId, onToggleSid
 
     // ── Fetch messages ──────────────────────────────────────────────
     const fetchMessages = async () => {
-        if (!conversation || !conversation.other_user_id) return;
+        if (!conversation || !(conversation.otherUser?._id || conversation.other_user_id)) return;
         try {
-            const res = await API.get(`/messages/${currentUserId}/${conversation.other_user_id}`);
+            const rawOtherId = conversation.otherUser?._id || conversation.other_user_id;
+            const otherId = rawOtherId ? String(rawOtherId).replace(/\s/g, "") : null;
+            
+            if (!otherId || !currentUserId) {
+                setLoading(false);
+                return;
+            }
+            const res = await API.get(`/messages/${currentUserId}/${otherId}`);
             setMessages(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
             console.error("Failed to fetch messages:", err);
@@ -72,12 +170,13 @@ function ChatWindow({ conv: conversation, currentUserId: propUserId, onToggleSid
     };
 
     React.useEffect(() => {
-        if (!conversation || !conversation.other_user_id) return;
+        const otherId = conversation?.otherUser?._id || conversation?.other_user_id;
+        if (!conversation || !otherId) return;
         setLoading(true);
         fetchMessages();
         pollRef.current = setInterval(fetchMessages, 5000);
         return () => clearInterval(pollRef.current);
-    }, [conversation?.other_user_id]);
+    }, [conversation?.otherUser?._id || conversation?.other_user_id]);
 
     React.useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -92,13 +191,16 @@ function ChatWindow({ conv: conversation, currentUserId: propUserId, onToggleSid
         setNewMessage("");
         
         try {
+            const rawOtherId = conversation.otherUser?._id || conversation.other_user_id;
+            const otherId = rawOtherId ? String(rawOtherId).replace(/\s/g, "") : null;
+
             await API.post("/messages/send", {
                 sender_id: currentUserId,
-                recipient_id: conversation.other_user_id,
+                recipient_id: otherId,
                 property_id: conversation.property_id,
                 message: msgText,
                 booking_request_id: conversation.booking_request_id,
-                property_name: conversation.property_name,
+                property_name: conversation.property_name || conversation.propertyName,
                 reply_to: replyTo?._id || replyTo?.id || null,
             });
             setReplyTo(null);
@@ -345,22 +447,22 @@ function ChatWindow({ conv: conversation, currentUserId: propUserId, onToggleSid
                         color: 'white', fontWeight: '800', fontSize: '16px',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
-                        {conversation?.other_user_avatar
-                            ? <img src={conversation.other_user_avatar}
+                        {(conversation?.otherUser?.profile_image || conversation?.otherUser?.avatar || conversation?.other_user_avatar)
+                            ? <img src={conversation?.otherUser?.profile_image || conversation?.otherUser?.avatar || conversation?.other_user_avatar}
                                 style={{ width: '100%', height: '100%', borderRadius: '50%',
                                   objectFit: 'cover' }} />
-                            : (conversation?.other_user_name || 'U')[0]?.toUpperCase()
+                            : (conversation?.otherUser?.name || conversation?.other_user_name || 'U')[0]?.toUpperCase()
                         }
                     </div>
                     <div>
                         <p style={{ fontWeight: '700', fontSize: '15px',
                             color: '#111827', margin: 0 }}>
-                            {conversation?.other_user_name || 'User'}
+                            {conversation?.otherUser?.name || conversation?.other_user_name || 'Unknown User'}
                         </p>
-                        {conversation?.property_name && (
+                        {(conversation?.propertyName || conversation?.property_name) && (
                             <p style={{ fontSize: '12px', color: '#EA580C',
                                 fontWeight: '600', margin: 0 }}>
-                                {conversation.property_name}
+                                {conversation.propertyName || conversation.property_name}
                             </p>
                         )}
                     </div>
@@ -368,6 +470,52 @@ function ChatWindow({ conv: conversation, currentUserId: propUserId, onToggleSid
 
                 {/* Header actions */}
                 <div style={{ display: 'flex', gap: '8px' }}>
+                    {/* Language dropdown */}
+                    <div style={{ position: 'relative' }} data-lang-dropdown>
+                        <button
+                            onClick={() => setShowLangDropdown(!showLangDropdown)}
+                            title="Translate messages"
+                            style={{
+                                height: '36px', padding: '0 12px', borderRadius: '10px',
+                                border: '1px solid #E5E7EB', backgroundColor: 'white',
+                                color: '#374151', cursor: 'pointer', fontWeight: '600', fontSize: '12px',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                            }}
+                        >
+                            <BiGlobe size={16} color="#EA580C" />
+                            {SARVAM_LANGUAGES.find(l => l.code === targetLanguage)?.label || 'English'}
+                        </button>
+                        {showLangDropdown && (
+                            <div style={{
+                                position: 'absolute', top: 'calc(100% + 6px)', right: 0,
+                                backgroundColor: 'white', borderRadius: '12px',
+                                border: '1px solid #E5E7EB', boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                                zIndex: 100, minWidth: '180px', overflow: 'hidden', padding: '6px',
+                                maxHeight: '320px', overflowY: 'auto',
+                            }}>
+                                {SARVAM_LANGUAGES.map(lang => (
+                                    <button
+                                        key={lang.code}
+                                        onClick={() => {
+                                            setTargetLanguage(lang.code);
+                                            setShowLangDropdown(false);
+                                        }}
+                                        style={{
+                                            width: '100%', padding: '9px 12px',
+                                            borderRadius: '8px', border: 'none',
+                                            backgroundColor: targetLanguage === lang.code ? '#FFF7ED' : 'transparent',
+                                            color: targetLanguage === lang.code ? '#EA580C' : '#374151',
+                                            fontWeight: targetLanguage === lang.code ? '700' : '500',
+                                            fontSize: '13px', cursor: 'pointer',
+                                            textAlign: 'left', display: 'flex', alignItems: 'center', gap: '8px',
+                                        }}
+                                    >
+                                        <span>{lang.flag}</span> {lang.label}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                     <button
                         onClick={handleDeleteConversation}
                         title="Delete conversation"
@@ -445,6 +593,27 @@ function ChatWindow({ conv: conversation, currentUserId: propUserId, onToggleSid
                                                         className="reply-btn"
                                                     >
                                                         <BiReply size={18} />
+                                                    </button>
+
+                                                    {/* Translate button */}
+                                                    <button
+                                                        onClick={() => handleTranslateMessage(msgId)}
+                                                        disabled={translatingIds.has(msgId)}
+                                                        style={{
+                                                            width: '28px', height: '28px', borderRadius: '50%',
+                                                            border: '1px solid #E5E7EB', backgroundColor: 'white',
+                                                            cursor: translatingIds.has(msgId) ? 'wait' : 'pointer',
+                                                            color: '#EA580C',
+                                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                            boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
+                                                        }}
+                                                        title={`Translate to ${SARVAM_LANGUAGES.find(l => l.code === targetLanguage)?.label}`}
+                                                    >
+                                                        {translatingIds.has(msgId) ? (
+                                                            <div className="w-3 h-3 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+                                                        ) : (
+                                                            <BiGlobe size={16} />
+                                                        )}
                                                     </button>
 
                                                     {/* Emoji reaction button */}
@@ -543,7 +712,38 @@ function ChatWindow({ conv: conversation, currentUserId: propUserId, onToggleSid
                                                         {msg.reply_to_text}
                                                     </div>
                                                 )}
-                                                {msg.message || msg.messageOriginal || ""}
+                                                {/* Original message */}
+                                                <div>{msg.message || msg.messageOriginal || ""}</div>
+
+                                                {/* Translated message — shown if translation exists for current target language AND user has toggled it on */}
+                                                {showTranslated.has(msgId) && msg.translations?.[targetLanguage] && (
+                                                    <div style={{
+                                                        marginTop: '8px',
+                                                        paddingTop: '8px',
+                                                        borderTop: `1px dashed ${isSentByMe ? 'rgba(255,255,255,0.3)' : '#E5E7EB'}`,
+                                                        fontSize: '13px',
+                                                        opacity: 0.95,
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        gap: '4px',
+                                                    }}>
+                                                        <div style={{
+                                                            fontSize: '9px',
+                                                            fontWeight: '700',
+                                                            textTransform: 'uppercase',
+                                                            letterSpacing: '0.05em',
+                                                            opacity: 0.7,
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            gap: '4px',
+                                                        }}>
+                                                            <BiGlobe size={10} /> {SARVAM_LANGUAGES.find(l => l.code === targetLanguage)?.label}
+                                                        </div>
+                                                        <div style={{ fontStyle: 'italic' }}>
+                                                            {msg.translations[targetLanguage]}
+                                                        </div>
+                                                    </div>
+                                                )}
                                                 
                                                 {/* Time + read receipt */}
                                                 <div style={{
@@ -628,9 +828,9 @@ function ChatWindow({ conv: conversation, currentUserId: propUserId, onToggleSid
                                                     )}
 
                                                     {/* RECIPIENT (Host) sees VIEW GUEST INFO on the requested message */}
-                                                    {!isSentByMe && msg.booking_status === 'pending' && (
+                                                    {!isSentByMe && msg.booking_status === 'pending' && (conversation?.isHost || conversation?.is_host) && (
                                                         <button
-                                                            onClick={() => setShowGuestProfile(conversation.other_user_id)}
+                                                            onClick={() => setShowGuestProfile(conversation?.otherUser?._id || conversation?.other_user_id)}
                                                             style={{
                                                                 width: '100%', padding: '10px 16px',
                                                                 borderRadius: '10px',

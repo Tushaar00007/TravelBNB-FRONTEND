@@ -27,6 +27,10 @@ const Home = lazy(() => import("../features/listings/pages/Home"));
 const Search = lazy(() => import("../features/listings/pages/Search"));
 const HomeDetails = lazy(() => import("../features/listings/pages/HomeDetails"));
 const CreateListing = lazy(() => import("../features/listings/pages/CreateListing"));
+// New Host Onboarding (Route-based)
+const HostAddressPage = lazy(() => import("../features/host/pages/HostAddressPage"));
+const HostLocationPage = lazy(() => import("../features/host/pages/HostLocationPage"));
+const HostDetailsPage = lazy(() => import("../features/host/pages/HostDetailsPage"));
 const EditProperty = lazy(() => import("../features/listings/pages/EditProperty"));
 
 // Travel Feature
@@ -36,11 +40,14 @@ const Trips = lazy(() => import("../features/travel/pages/Trips"));
 const TripDetails = lazy(() => import("../features/travel/pages/TripDetails"));
 const CreateTravelBuddy = lazy(() => import("../features/travel/pages/CreateTravelBuddy"));
 const TravelBuddy = lazy(() => import("../features/travel/pages/TravelBuddy"));
+const BuddySearch = lazy(() => import("../features/travel/pages/BuddySearch"));
 
 // Host Feature
 const HostDashboard = lazy(() => import("../features/host/pages/HostDashboard"));
 const CrashpadAnalytics = lazy(() => import("../features/host/pages/CrashpadStats"));
 const EditListingPage = lazy(() => import("../features/host/pages/EditListingPage"));
+const EditCrashpad = lazy(() => import("../features/host/pages/EditCrashpad"));
+const EditTravelBuddy = lazy(() => import("../features/travel/pages/EditTravelBuddy"));
 
 // Crashpads Feature
 const Crashpads = lazy(() => import("../features/crashpads/pages/Crashpads"));
@@ -54,6 +61,7 @@ const BecomeAHost = lazy(() => import("../features/user/pages/BecomeAHost"));
 const MyBookings = lazy(() => import("../features/user/pages/MyBookings"));
 const OldHostDashboard = lazy(() => import("../features/user/pages/HostDashboard"));
 const Messages = lazy(() => import("../features/user/pages/Messages"));
+const TravelBuddyDetail = lazy(() => import("../pages/TravelBuddyDetail"));
 const PaymentPage = lazy(() => import("../pages/PaymentPage"));
 
 // Admin Feature
@@ -94,20 +102,27 @@ export const routes = [
             { path: "become-a-host", element: <RequireAuth><BecomeAHost /></RequireAuth> },
             { path: "homes/:id", element: <HomeDetails /> },
             { path: "bookings", element: <MyBookings /> },
-            { path: "host-dashboard", element: <OldHostDashboard /> },
-            { path: "host/dashboard", element: <HostDashboard /> },
+            { path: "host-dashboard", element: <RequireAuth><HostDashboard /></RequireAuth> },
+            { path: "host/dashboard", element: <RequireAuth><HostDashboard /></RequireAuth> },
             { path: "host/listings/:listingId/edit", element: <RequireAuth><EditListingPage /></RequireAuth> },
             { path: "messages", element: <Messages /> },
             { path: "checkout", element: <PaymentPage /> },
             { path: "trips", element: <Trips /> },
             { path: "trips/:id", element: <TripDetails /> },
             { path: "crashpads", element: <Crashpads /> },
-            { path: "crashpad/:id", element: <CrashpadDetails /> },
+            { path: "crashpads/:id", element: <CrashpadDetails /> },
             { path: "host/crashpad/:id/stats", element: <CrashpadAnalytics /> },
+            { path: "host/crashpads/:id/edit", element: <RequireAuth><EditCrashpad /></RequireAuth> },
+            { path: "host/travel-buddy/:id/edit", element: <RequireAuth><EditTravelBuddy /></RequireAuth> },
             { path: "travel-buddy", element: <TravelBuddy /> },
+            { path: "travel-buddy/:id", element: <TravelBuddyDetail /> },
+            { path: "travel-buddy/search", element: <BuddySearch /> },
         ]
     },
     { path: "/create-listing", element: <RequireAuth><CreateListing /></RequireAuth> },
+    { path: "/host/address", element: <RequireAuth><HostAddressPage /></RequireAuth> },
+    { path: "/host/location", element: <RequireAuth><HostLocationPage /></RequireAuth> },
+    { path: "/host/details", element: <RequireAuth><HostDetailsPage /></RequireAuth> },
     { path: "/create-crashpad", element: <RequireAuth><CreateCrashpad /></RequireAuth> },
     { path: "/create-travel-buddy", element: <RequireAuth><CreateTravelBuddy /></RequireAuth> },
     { path: "/edit-property/:id", element: <RequireAuth><EditProperty /></RequireAuth> },

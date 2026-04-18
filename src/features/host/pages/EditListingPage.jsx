@@ -45,14 +45,14 @@ const NumberInput = ({ label, value, onChange, min = 1 }) => (
   <div className="flex flex-col gap-3">
     <label className="text-[11px] font-black uppercase tracking-widest text-gray-400">{label}</label>
     <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-2xl border border-gray-100">
-      <button 
+      <button
         onClick={() => onChange(Math.max(min, value - 1))}
         className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-gray-900 hover:bg-orange-600 hover:text-white transition-all shadow-sm active:scale-95"
       >
         <Minus size={16} strokeWidth={3} />
       </button>
       <span className="font-black text-lg min-w-[32px] text-center text-gray-900">{value}</span>
-      <button 
+      <button
         onClick={() => onChange(value + 1)}
         className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-gray-900 hover:bg-orange-600 hover:text-white transition-all shadow-sm active:scale-95"
       >
@@ -69,7 +69,7 @@ function EditListingPage() {
   const [saving, setSaving] = useState(false);
   const [uploadingImages, setUploadingImages] = useState(false);
   const [listing, setListing] = useState(null);
-  
+
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -100,14 +100,20 @@ function EditListingPage() {
       try {
         setLoading(true);
         let data = null;
-        try {
-          const res = await API.get(`/homes/${listingId}`);
-          data = res.data;
-        } catch {
-          const res = await API.get(`/properties/${listingId}`);
-          data = res.data;
+        const endpoints = [
+          `/homes/${listingId}`,
+          `/properties/${listingId}`,
+          `/crashpads/${listingId}`,
+          `/travel-buddies/${listingId}`,
+        ];
+        for (const endpoint of endpoints) {
+          try {
+            const res = await API.get(endpoint);
+            if (res.data) { data = res.data; break; }
+          } catch {}
         }
-        
+        if (!data) throw new Error("Listing not found");
+
         setListing(data);
         setForm({
           title: data.title || '',
@@ -168,7 +174,7 @@ function EditListingPage() {
     if (typeof url !== 'string') return '';
     if (url.startsWith('http://') || url.startsWith('https://')) return url;
     if (url.startsWith('data:')) return url;
-    
+
     // Relative path
     const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
     const cleanPath = url.startsWith('/') ? url : `/uploads/${url}`;
@@ -179,40 +185,40 @@ function EditListingPage() {
   const handleImageUpload = async (e) => {
     const selectedFiles = Array.from(e.target.files);
     if (!selectedFiles.length) return;
-    
+
     setUploadingImages(true);
     const toastId = toast.loading('Uploading photos...');
-    
+
     try {
       const formData = new FormData();
-      
+
       // Key MUST be 'files' to match backend List[UploadFile] = File(...)
       selectedFiles.forEach(file => {
         formData.append('files', file);
       });
-      
+
       console.log('Uploading', selectedFiles.length, 'files');
-      
+
       const res = await API.post('/upload/images', formData, {
         headers: {
-          'Content-Type': undefined,  // Let browser set it with boundary
+          'Content-Type': undefined,
         },
-        transformRequest: (data) => data,  // Don't transform FormData
+        transformRequest: (data) => data,
       });
-      
+
       console.log('Upload response:', res.data);
-      
+
       const newUrls = res.data.images.map(img => img.url);
       setForm(prev => ({
         ...prev,
         images: [...(prev.images || []), ...newUrls],
       }));
-      
+
       toast.success(`${newUrls.length} photo(s) uploaded!`, { id: toastId });
     } catch (err) {
       console.error('Upload failed:', err.response?.data || err.message);
       toast.error(
-        err.response?.data?.detail || 'Upload failed', 
+        err.response?.data?.detail || 'Upload failed',
         { id: toastId }
       );
     } finally {
@@ -274,11 +280,11 @@ function EditListingPage() {
   return (
     <div className="min-h-screen bg-[#F9FAFB] pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-6">
-        
+
         {/* Header */}
         <header className="flex items-center justify-between mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
           <div className="flex items-center gap-6">
-            <button 
+            <button
               onClick={() => navigate(-1)}
               className="w-12 h-12 flex items-center justify-center bg-white border border-gray-100 rounded-2xl text-gray-500 hover:text-orange-600 hover:border-orange-100 transition-all shadow-sm active:scale-90"
             >
@@ -291,9 +297,9 @@ function EditListingPage() {
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4">
-            <button 
+            <button
               onClick={handleSave}
               disabled={saving}
               className="flex items-center gap-3 bg-orange-600 text-white px-8 py-4 rounded-[1.5rem] font-black text-xs uppercase tracking-widest shadow-xl shadow-orange-500/20 hover:scale-[1.02] transition-all disabled:opacity-50"
@@ -305,15 +311,15 @@ function EditListingPage() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
-          
+
           {/* Left Column: Form */}
           <div className="animate-in fade-in slide-in-from-left-4 duration-700 delay-100">
-            
+
             <SectionCard title="Basic Information" icon={Home}>
               <div className="space-y-6">
                 <div>
                   <label className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Listing Title</label>
-                  <input 
+                  <input
                     value={form.title}
                     onChange={e => handleChange('title', e.target.value)}
                     className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 font-bold text-gray-900 focus:ring-2 focus:ring-orange-500 outline-none transition-all"
@@ -322,7 +328,7 @@ function EditListingPage() {
                 </div>
                 <div>
                   <label className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Description</label>
-                  <textarea 
+                  <textarea
                     value={form.description}
                     onChange={e => handleChange('description', e.target.value)}
                     rows={6}
@@ -334,14 +340,13 @@ function EditListingPage() {
                   <label className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Property Type</label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {PROPERTY_TYPES.map(type => (
-                      <button 
+                      <button
                         key={type}
                         onClick={() => handleChange('property_type', type)}
-                        className={`py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all ${
-                          form.property_type === type 
-                          ? 'bg-orange-600 text-white shadow-lg shadow-orange-500/20 scale-95' 
-                          : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50'
-                        }`}
+                        className={`py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all ${form.property_type === type
+                            ? 'bg-orange-600 text-white shadow-lg shadow-orange-500/20 scale-95'
+                            : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50'
+                          }`}
                       >
                         {type}
                       </button>
@@ -355,7 +360,7 @@ function EditListingPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
                   <label className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Address</label>
-                  <input 
+                  <input
                     value={form.address}
                     onChange={e => handleChange('address', e.target.value)}
                     className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 font-bold text-gray-900"
@@ -363,7 +368,7 @@ function EditListingPage() {
                 </div>
                 <div>
                   <label className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2 block">City</label>
-                  <input 
+                  <input
                     value={form.city}
                     onChange={e => handleChange('city', e.target.value)}
                     className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 font-bold text-gray-900"
@@ -371,7 +376,7 @@ function EditListingPage() {
                 </div>
                 <div>
                   <label className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Province / State</label>
-                  <input 
+                  <input
                     value={form.state}
                     onChange={e => handleChange('state', e.target.value)}
                     className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 font-bold text-gray-900"
@@ -387,7 +392,7 @@ function EditListingPage() {
                 </div>
                 <div className="flex-1">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-600 block mb-1">Price Per Night</label>
-                  <input 
+                  <input
                     type="number"
                     value={form.price_per_night}
                     onChange={e => handleChange('price_per_night', Number(e.target.value))}
@@ -414,11 +419,10 @@ function EditListingPage() {
                     <button
                       key={key}
                       onClick={() => toggleAmenity(key)}
-                      className={`flex items-center gap-3 p-4 rounded-2xl border transition-all ${
-                        selected 
-                        ? 'bg-orange-50 border-orange-100 text-orange-600 shadow-sm' 
-                        : 'bg-white border-gray-100 text-gray-500 hover:bg-gray-50'
-                      }`}
+                      className={`flex items-center gap-3 p-4 rounded-2xl border transition-all ${selected
+                          ? 'bg-orange-50 border-orange-100 text-orange-600 shadow-sm'
+                          : 'bg-white border-gray-100 text-gray-500 hover:bg-gray-50'
+                        }`}
                     >
                       <Icon size={16} />
                       <span className="font-bold text-xs uppercase tracking-tight">{label}</span>
@@ -439,7 +443,7 @@ function EditListingPage() {
                   ].map(({ key, label }) => (
                     <div key={key} className="flex items-center justify-between">
                       <span className="font-bold text-gray-900">{label}</span>
-                      <button 
+                      <button
                         onClick={() => handleRuleChange(key, !form.house_rules[key])}
                         className={`text-3xl transition-colors ${form.house_rules[key] ? 'text-orange-600' : 'text-gray-200'}`}
                       >
@@ -451,7 +455,7 @@ function EditListingPage() {
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-gray-900">Check-in After</span>
-                    <input 
+                    <input
                       type="time"
                       value={form.house_rules.check_in}
                       onChange={e => handleRuleChange('check_in', e.target.value)}
@@ -460,7 +464,7 @@ function EditListingPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-gray-900">Check-out Before</span>
-                    <input 
+                    <input
                       type="time"
                       value={form.house_rules.check_out}
                       onChange={e => handleRuleChange('check_out', e.target.value)}
@@ -475,7 +479,7 @@ function EditListingPage() {
 
           {/* Right Column: Photos & Status */}
           <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-700 delay-200">
-            
+
             <div className="sticky top-24">
               <SectionCard title="Photos" icon={ImageIcon}>
                 <p className="text-gray-400 font-bold text-[10px] uppercase tracking-widest mb-6">
@@ -486,7 +490,7 @@ function EditListingPage() {
                     <div key={i} className="group relative aspect-square rounded-2xl overflow-hidden shadow-sm border border-gray-100">
                       <img src={getImageUrl(img)} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500" />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                        <button 
+                        <button
                           onClick={() => removeImage(i)}
                           className="w-10 h-10 bg-white/20 backdrop-blur-md text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
                         >
@@ -526,7 +530,7 @@ function EditListingPage() {
                   <button className="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-gray-900/10">
                     Switch to Inactive
                   </button>
-                  <button 
+                  <button
                     onClick={handleDelete}
                     className="w-full py-4 bg-red-50 text-red-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-100 active:scale-95 transition-all"
                   >

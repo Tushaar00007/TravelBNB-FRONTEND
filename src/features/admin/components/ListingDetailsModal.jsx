@@ -213,7 +213,7 @@ export default function ListingDetailsModal({ listingId, onClose, onUpdate }) {
                                     </div>
                                     <div>
                                         <h4 className="text-2xl font-black text-gray-900 dark:text-white">{host_details?.name || "Premium Host"}</h4>
-                                        <p className="text-gray-500 font-bold">Fast response & Verified ID</p>
+                                        <p className="text-gray-500 font-bold">Safe & Community Focused</p>
                                     </div>
                                 </div>
                             </div>
@@ -287,20 +287,6 @@ export default function ListingDetailsModal({ listingId, onClose, onUpdate }) {
                                     <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-wider border ${STATUS_COLORS[status]}`}>
                                         {status}
                                     </span>
-                                </div>
-
-                                <div className="space-y-4 mb-10">
-                                    <div className="flex justify-between items-end mb-2">
-                                        <p className="text-xs font-black text-gray-500 uppercase tracking-widest">Verification Progress</p>
-                                        <p className="text-sm font-black text-orange-500">{approved_by.length} / 1</p>
-                                    </div>
-                                    <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-gradient-to-r from-orange-500 to-rose-500 transition-all duration-700"
-                                            style={{ width: `${(Math.min(approved_by.length, 1) / 1) * 100}%` }}
-                                        />
-                                    </div>
-                                    <p className="text-[10px] text-gray-400 font-bold italic leading-tight">1 admin approval is required to make this property live for users.</p>
                                 </div>
 
                                 <div className="space-y-3">

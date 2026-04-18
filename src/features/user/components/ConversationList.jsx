@@ -1,3 +1,4 @@
+//Conversationlist.jsx
 import { useState, useEffect, useRef } from "react";
 import { BiSearch, BiX } from "react-icons/bi";
 import Cookies from "js-cookie";
@@ -12,7 +13,8 @@ function ConversationList({ userId, activeConv, conversations = [], setConversat
         const fetchConversations = async () => {
             try {
                 // Explicitly use userId from cookie to ensure ID format consistency
-                const currentUserId = Cookies.get("userId");
+                const rawUserId = Cookies.get("userId");
+                const currentUserId = rawUserId ? String(rawUserId).replace(/\s/g, "") : null;
                 if (!currentUserId) {
                     console.warn("No userId in cookie, stopping conversation fetch");
                     setLoading(false);
@@ -21,7 +23,7 @@ function ConversationList({ userId, activeConv, conversations = [], setConversat
 
                 console.log("DEBUG: Fetching conversations for userId:", currentUserId);
                 const res = await API.get(`/messages/conversations/${currentUserId}`);
-                
+
                 const apiConvs = Array.isArray(res.data) ? res.data : [];
                 setConversations(apiConvs);
             } catch (err) {
@@ -43,8 +45,8 @@ function ConversationList({ userId, activeConv, conversations = [], setConversat
 
     const filtered = conversations.filter(
         (c) =>
-            c.other_user_name?.toLowerCase().includes(search.toLowerCase()) ||
-            c.property_name?.toLowerCase().includes(search.toLowerCase())
+            (c.otherUser?.name || c.other_user_name)?.toLowerCase().includes(search.toLowerCase()) ||
+            (c.property_name || c.propertyName)?.toLowerCase().includes(search.toLowerCase())
     );
 
     const getInitials = (name) =>
@@ -150,15 +152,15 @@ function ConversationList({ userId, activeConv, conversations = [], setConversat
                                     color: 'white', fontWeight: '800', fontSize: '18px',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                                 }}>
-                                    {conv.other_user_avatar
-                                        ? <img src={conv.other_user_avatar}
+                                    {(conv.otherUser?.profile_image || conv.otherUser?.avatar || conv.other_user_avatar)
+                                        ? <img src={conv.otherUser?.profile_image || conv.otherUser?.avatar || conv.other_user_avatar}
                                             style={{
                                                 width: '100%', height: '100%',
                                                 borderRadius: '50%', objectFit: 'cover'
                                             }}
                                             onError={e => e.target.style.display = 'none'}
                                         />
-                                        : (conv.other_user_name || 'U')[0]?.toUpperCase()
+                                        : (conv.otherUser?.name || conv.other_user_name || 'U')[0]?.toUpperCase()
                                     }
                                 </div>
                                 {/* Online dot */}
@@ -180,7 +182,7 @@ function ConversationList({ userId, activeConv, conversations = [], setConversat
                                         fontWeight: '700', fontSize: '14px',
                                         color: '#111827', margin: 0
                                     }}>
-                                        {conv.other_user_name || 'User'}
+                                        {conv.otherUser?.name || conv.other_user_name || 'Unknown User'}
                                     </p>
                                     <span style={{ fontSize: '11px', color: '#9CA3AF' }}>
                                         {formatTime(conv.last_message_time)}
@@ -198,7 +200,7 @@ function ConversationList({ userId, activeConv, conversations = [], setConversat
                                     fontSize: '12px', color: '#9CA3AF', margin: 0,
                                     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                                 }}>
-                                    {conv.last_message || 'No messages yet'}
+                                    {conv.lastMessage || conv.last_message || 'No messages yet'}
                                 </p>
                             </div>
 

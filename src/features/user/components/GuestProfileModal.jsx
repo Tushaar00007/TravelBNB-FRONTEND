@@ -37,13 +37,6 @@ function GuestProfileModal({ userId, onClose }) {
 
   if (!userId) return null;
 
-  const trustScore = guest?.trust_score || 0;
-  const trustLevel = 
-    trustScore >= 80 ? { label: 'Highly Trusted', color: '#16A34A', bg: '#F0FDF4', icon: '🏆' } :
-    trustScore >= 60 ? { label: 'Trusted', color: '#2563EB', bg: '#EFF6FF', icon: '✅' } :
-    trustScore >= 40 ? { label: 'Moderate', color: '#D97706', bg: '#FFFBEB', icon: '⚠️' } :
-    { label: 'New Guest', color: '#6B7280', bg: '#F9FAFB', icon: '🆕' };
-
   return createPortal(
     <div
       onClick={onClose}
@@ -127,59 +120,11 @@ function GuestProfileModal({ userId, onClose }) {
                 </p>
               </div>
 
-              {/* Trust Score - big display */}
-              <div style={{
-                backgroundColor: 'rgba(255,255,255,0.1)',
-                borderRadius: '16px', padding: '16px',
-                textAlign: 'center', border: '1px solid rgba(255,255,255,0.15)',
-              }}>
-                <p style={{ color: 'rgba(255,255,255,0.7)',
-                  fontSize: '11px', fontWeight: '700',
-                  textTransform: 'uppercase', letterSpacing: '0.08em',
-                  margin: '0 0 8px' }}>
-                  Trust Score
-                </p>
-                
-                {/* Score circle */}
-                <div style={{ position: 'relative',
-                  display: 'inline-block', marginBottom: '8px' }}>
-                  <svg width="80" height="80" viewBox="0 0 80 80">
-                    <circle cx="40" cy="40" r="34"
-                      fill="none" stroke="rgba(255,255,255,0.15)"
-                      strokeWidth="8" />
-                    <circle cx="40" cy="40" r="34"
-                      fill="none"
-                      stroke={trustScore >= 60 ? '#22C55E' : 
-                              trustScore >= 40 ? '#F59E0B' : '#EA580C'}
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      strokeDasharray={`${(trustScore / 100) * 213.6} 213.6`}
-                      transform="rotate(-90 40 40)"
-                    />
-                  </svg>
-                  <div style={{
-                    position: 'absolute', inset: 0,
-                    display: 'flex', flexDirection: 'column',
-                    alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <span style={{ color: 'white', fontWeight: '900',
-                      fontSize: '20px', lineHeight: 1 }}>
-                      {trustScore}
-                    </span>
-                    <span style={{ color: 'rgba(255,255,255,0.6)',
-                      fontSize: '9px' }}>/ 100</span>
-                  </div>
-                </div>
-
-                <div style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '6px',
-                  backgroundColor: trustLevel.bg,
-                  color: trustLevel.color,
-                  padding: '4px 12px', borderRadius: '999px',
-                  fontSize: '12px', fontWeight: '700',
-                }}>
-                  {trustLevel.icon} {trustLevel.label}
-                </div>
+              {/* Global Member Badge */}
+              <div className="flex-1 p-5 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 flex flex-col items-center justify-center text-center">
+                  <Globe size={24} className="text-blue-500 mb-2" />
+                  <p className="text-[10px] font-black uppercase text-gray-400 tracking-widest mb-1">Status</p>
+                  <p className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tighter">Verified Member</p>
               </div>
             </div>
 
@@ -232,61 +177,6 @@ function GuestProfileModal({ userId, onClose }) {
                           color: color || '#374151', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {value || 'Not provided'}
                         </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Trust Breakdown */}
-              <div style={{ marginBottom: '20px' }}>
-                <h3 style={{ fontSize: '13px', fontWeight: '800',
-                  color: '#9CA3AF', textTransform: 'uppercase',
-                  letterSpacing: '0.08em', margin: '0 0 12px' }}>
-                  Trust Breakdown
-                </h3>
-                <div style={{
-                  backgroundColor: '#F9FAFB', borderRadius: '14px',
-                  padding: '16px', border: '1px solid #F3F4F6',
-                }}>
-                  {[
-                    { label: 'Payment History', 
-                      score: Math.min(trustScore + 10, 100),
-                      icon: '💳' },
-                    { label: 'Communication', 
-                      score: Math.min(trustScore + 5, 100),
-                      icon: '💬' },
-                    { label: 'Property Care', 
-                      score: trustScore,
-                      icon: '🏠' },
-                    { label: 'Rule Compliance', 
-                      score: Math.max(trustScore - 5, 0),
-                      icon: '📋' },
-                  ].map(({ label, score, icon }) => (
-                    <div key={label} style={{ marginBottom: '12px' }}>
-                      <div style={{ display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center', marginBottom: '4px' }}>
-                        <span style={{ fontSize: '13px',
-                          color: '#374151', fontWeight: '500' }}>
-                          {icon} {label}
-                        </span>
-                        <span style={{ fontSize: '12px',
-                          fontWeight: '700', color: '#EA580C' }}>
-                          {score}/100
-                        </span>
-                      </div>
-                      <div style={{
-                        height: '6px', backgroundColor: '#E5E7EB',
-                        borderRadius: '999px', overflow: 'hidden',
-                      }}>
-                        <div style={{
-                          height: '100%', borderRadius: '999px',
-                          backgroundColor: score >= 60 ? '#22C55E' :
-                            score >= 40 ? '#F59E0B' : '#EF4444',
-                          width: `${score}%`,
-                          transition: 'width 0.8s ease',
-                        }} />
                       </div>
                     </div>
                   ))}
@@ -401,38 +291,6 @@ function GuestProfileModal({ userId, onClose }) {
                     ))}
                   </div>
                 )}
-              </div>
-
-              {/* Host Decision Helper */}
-              <div style={{
-                backgroundColor: trustScore >= 60 ? '#F0FDF4' : '#FFFBEB',
-                borderRadius: '14px', padding: '16px',
-                border: `1px solid ${trustScore >= 60 ? '#BBF7D0' : '#FDE68A'}`,
-              }}>
-                <div style={{ display: 'flex', gap: '10px',
-                  alignItems: 'flex-start' }}>
-                  <span style={{ fontSize: '24px' }}>
-                    {trustScore >= 80 ? '🏆' : 
-                     trustScore >= 60 ? '✅' : 
-                     trustScore >= 40 ? '⚠️' : '🆕'}
-                  </span>
-                  <div>
-                    <p style={{ fontWeight: '800', fontSize: '14px',
-                      color: '#111827', margin: '0 0 4px' }}>
-                      Host Recommendation
-                    </p>
-                    <p style={{ fontSize: '13px', color: '#6B7280',
-                      margin: 0, lineHeight: '1.5' }}>
-                      {trustScore >= 80 
-                        ? 'Highly recommended guest. Excellent track record with past hosts.'
-                        : trustScore >= 60
-                        ? 'Good guest with positive history. Safe to approve.'
-                        : trustScore >= 40
-                        ? 'Moderate trust level. Consider asking for more details before approving.'
-                        : 'New guest with no review history. Proceed with your discretion.'}
-                    </p>
-                  </div>
-                </div>
               </div>
 
             </div>

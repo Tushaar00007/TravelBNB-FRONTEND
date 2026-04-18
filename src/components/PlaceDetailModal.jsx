@@ -8,19 +8,26 @@ function PlaceDetailModal({ place, onClose }) {
     if (!place) return [];
 
     const fallbackSeed = encodeURIComponent(
-      [place.place_name, place.city, place.state].filter(Boolean).join('-') || 'india-travel'
+      [place.place_name, place.city, place.state]
+        .filter(Boolean).join('-') || 'india-travel'
     );
 
     return [
       place.photo_url,
+      place.place_image_url,
+      place.google_photo_url,
       place.image_url,
       place.google_image_url,
-      place.google_photo_url,
+      // Picsum with place name as seed for consistent image
       `https://picsum.photos/seed/${fallbackSeed}/1200/800`,
+      // Ultimate fallback
+      `https://picsum.photos/seed/india-travel/1200/800`,
     ].filter((url) => (
       typeof url === 'string' &&
       url.trim() !== '' &&
-      !url.includes('tourist-attraction')
+      !url.includes('tourist-attraction') &&
+      url !== 'undefined' &&
+      url !== 'null'
     ));
   }, [place]);
 
@@ -47,10 +54,7 @@ function PlaceDetailModal({ place, onClose }) {
     return () => window.removeEventListener('keydown', handler);
   }, [onClose]);
 
-  if (!place) {
-    console.log("PlaceDetailModal: place is null, not rendering");
-    return null;
-  }
+  if (!place) return null;
   const imageUrl = imageCandidates[imageIndex] || imageCandidates[0];
 
   const isUnavailable = (val) =>
@@ -149,9 +153,12 @@ function PlaceDetailModal({ place, onClose }) {
                 </div>
 
                 {/* Short Description */}
-                {place.short_description && (
-                  <p style={{ margin: 0, color: '#6B7280', fontSize: '14px', lineHeight: '1.6' }}>
-                    {place.short_description}
+                {(place.short_description || place.place_description_ai) && (
+                  <p style={{
+                    margin: 0, color: '#6B7280',
+                    fontSize: '14px', lineHeight: '1.6'
+                  }}>
+                    {place.short_description || place.place_description_ai}
                   </p>
                 )}
 
@@ -166,6 +173,86 @@ function PlaceDetailModal({ place, onClose }) {
                 {place.travel_tip && (
                   <div style={tipBoxStyle}>
                     💡 {place.travel_tip}
+                  </div>
+                )}
+
+                {/* Food Specialty */}
+                {place.food_specialty &&
+                  place.food_specialty !== 'Unknown' && (
+                    <div>
+                      <p style={labelStyle}>🍜 FOOD SPECIALTY</p>
+                      <p style={{ margin: 0, color: '#374151', fontSize: '14px' }}>
+                        {place.food_specialty}
+                      </p>
+                    </div>
+                  )}
+
+                {/* Famous Restaurants */}
+                {place.famous_restaurant &&
+                  place.famous_restaurant !== 'Unknown' && (
+                    <div>
+                      <p style={labelStyle}>🍽️ FAMOUS RESTAURANTS</p>
+                      <p style={{ margin: 0, color: '#374151', fontSize: '14px' }}>
+                        {place.famous_restaurant}
+                      </p>
+                    </div>
+                  )}
+
+                {/* ML Score breakdown */}
+                {place.ml_scores && (
+                  <div style={{
+                    backgroundColor: '#F9FAFB',
+                    borderRadius: '12px',
+                    padding: '12px 16px',
+                    border: '1px solid #E5E7EB'
+                  }}>
+                    <p style={labelStyle}>🤖 AI RECOMMENDATION SCORES</p>
+                    <div style={{
+                      display: 'flex', gap: '8px', flexWrap: 'wrap',
+                      marginTop: '6px'
+                    }}>
+                      <span style={{
+                        padding: '4px 10px', borderRadius: '999px',
+                        fontSize: '11px', fontWeight: '700',
+                        backgroundColor: '#EFF6FF', color: '#1D4ED8',
+                        border: '1px solid #BFDBFE'
+                      }}>
+                        ⚡ Quality {(place.ml_scores.xgb * 10).toFixed(1)}/10
+                      </span>
+                      <span style={{
+                        padding: '4px 10px', borderRadius: '999px',
+                        fontSize: '11px', fontWeight: '700',
+                        backgroundColor: '#F5F3FF', color: '#7C3AED',
+                        border: '1px solid #DDD6FE'
+                      }}>
+                        🎯 Preference Match {Math.round(place.ml_scores.cosine * 100)}%
+                      </span>
+                      <span style={{
+                        padding: '4px 10px', borderRadius: '999px',
+                        fontSize: '11px', fontWeight: '700',
+                        backgroundColor: '#ECFDF5', color: '#065F46',
+                        border: '1px solid #A7F3D0'
+                      }}>
+                        ★ Final Score {(place.ml_scores.final * 10).toFixed(1)}/10
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Airport & Railway */}
+                {(place.airport || place.railway) && (
+                  <div>
+                    <p style={labelStyle}>✈️ GETTING THERE</p>
+                    {place.airport && place.airport !== 'Not Available' && (
+                      <p style={{ margin: '0 0 4px 0', color: '#374151', fontSize: '13px' }}>
+                        ✈️ {place.airport}
+                      </p>
+                    )}
+                    {place.railway && place.railway !== 'Not Available' && (
+                      <p style={{ margin: 0, color: '#374151', fontSize: '13px' }}>
+                        🚂 {place.railway}
+                      </p>
+                    )}
                   </div>
                 )}
 

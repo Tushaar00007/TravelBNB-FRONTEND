@@ -35,6 +35,37 @@ export default function HostDashboard() {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('overview');
   const [loading, setLoading] = useState(true);
+  const [reviewsData, setReviewsData] = useState(null);
+
+  const KIND_COLORS = {
+    booking: {           // Homes
+      bg: '#FEF3C7',      // amber-100
+      border: '#F59E0B',  // amber-500
+      text: '#92400E',    // amber-800
+      confirmedBg: '#DCFCE7',
+      confirmedBorder: '#16A34A',
+      confirmedText: '#15803D',
+      label: 'Home Booking',
+    },
+    crashpad_request: {  // Crashpads
+      bg: '#DBEAFE',      // blue-100
+      border: '#3B82F6',  // blue-500
+      text: '#1E40AF',    // blue-800
+      confirmedBg: '#DBEAFE',
+      confirmedBorder: '#2563EB',
+      confirmedText: '#1E3A8A',
+      label: 'Crashpad Request',
+    },
+    buddy_request: {     // Travel Buddy
+      bg: '#F3E8FF',      // purple-100
+      border: '#A855F7',  // purple-500
+      text: '#6B21A8',    // purple-800
+      confirmedBg: '#F3E8FF',
+      confirmedBorder: '#9333EA',
+      confirmedText: '#581C87',
+      label: 'Travel Buddy Request',
+    },
+  };
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
   
   // Data States
@@ -84,9 +115,84 @@ export default function HostDashboard() {
         setNotifications(res.data.notifications || []);
         setUnreadCount(res.data.unread_count || 0);
       } else if (section === 'calendar') {
-        const res = await API.get('/host/bookings');
-        setBookings(res.data.bookings || []);
-        setBlockedDates(res.data.blocked_dates || []);
+        // Fetch home/buddy bookings AND crashpad requests in parallel
+        const [bookingsRes, crashpadReqsRes, buddyAppsRes] = await Promise.all([
+          API.get('/bookings/host/me').catch(() => ({ data: [] })),
+          API.get('/crashpads/host-requests').catch(() => ({ data: [] })),
+          API.get('/travel-buddies/host/applications').catch(() => ({ data: [] })),
+        ]);
+
+        const rawBookings = Array.isArray(bookingsRes.data) ? bookingsRes.data : (bookingsRes.data.bookings || []);
+        const normalizedBookings = rawBookings.map(b => ({
+          id: b._id || b.id,
+          property_id: b.propertyId || b.property_id,
+          check_in: (b.checkIn || b.check_in || '').split('T')[0],
+          check_out: (b.checkOut || b.check_out || '').split('T')[0],
+          guests: b.guests || 1,
+          total_price: b.totalPrice || b.total_price || 0,
+          status: (b.bookingStatus || b.status || 'pending').toLowerCase(),
+          guest_name: b.guest_name || b.guestName || 'Guest',
+          guest_id: b.guest_id || b.guestId || b.userId || '',
+          message: '',
+          kind: 'booking',
+          created_at: b.createdAt || b.created_at,
+        }));
+
+        const rawCrashReqs = Array.isArray(crashpadReqsRes.data) ? crashpadReqsRes.data : [];
+        const normalizedCrashReqs = rawCrashReqs.map(r => ({
+          id: r._id || r.id,
+          request_id: r._id || r.id,
+          property_id: r.crashpad_id || r.property_id,
+          property_title: r.property_title,
+          property_image: r.property_image,
+          check_in: (r.check_in || '').split('T')[0],
+          check_out: (r.check_out || '').split('T')[0],
+          guests: r.guests || 1,
+          total_price: r.total_price || 0,
+          status: (r.status || 'pending').toLowerCase(),
+          guest_name: r.guest_name || 'Guest',
+          guest_id: r.guest_id || '',
+          message: r.message || '',
+          kind: 'crashpad_request',
+          created_at: r.created_at,
+        }));
+
+        const rawBuddyApps = Array.isArray(buddyAppsRes.data) ? buddyAppsRes.data : [];
+        const normalizedBuddyApps = rawBuddyApps.map(a => ({
+          id: a._id || a.id,
+          application_id: a._id || a.id,
+          property_id: a.trip_id || a.property_id,
+          property_title: a.property_title,
+          property_image: a.property_image,
+          check_in: (a.check_in || '').split('T')[0],
+          check_out: (a.check_out || '').split('T')[0],
+          guests: 1,
+          total_price: 0,
+          status: (a.status || 'pending').toLowerCase(),
+          guest_name: a.guest_name || 'Traveler',
+          guest_id: a.guest_id || '',
+          phone: a.phone || '',
+          message: a.message || '',
+          kind: 'buddy_request',
+          created_at: a.created_at,
+        }));
+
+        const merged = [...normalizedBookings, ...normalizedCrashReqs, ...normalizedBuddyApps];
+        const seen = new Set();
+        const deduped = merged.filter(b => {
+          const key = `${b.kind || 'booking'}-${b.id}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        setBookings(deduped);
+
+        try {
+          const blockedRes = await API.get('/host/calendar/blocked');
+          setBlockedDates(blockedRes.data.blocked_dates || []);
+        } catch {
+          setBlockedDates([]);
+        }
       }
     } catch (err) {
       console.error(`Error fetching ${section}:`, err);
@@ -111,6 +217,21 @@ export default function HostDashboard() {
   }, [activeSection, fetchData]);
 
   useEffect(() => {
+    const fetchReviewsSummary = async () => {
+      try {
+        setLoading(true);
+        const res = await API.get('/host/reviews-summary');
+        setReviewsData(res.data);
+      } catch (err) {
+        console.error('Failed to fetch reviews summary:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReviewsSummary();
+  }, []);
+
+  useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
@@ -120,6 +241,22 @@ export default function HostDashboard() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleCardClick = (listing) => {
+    const id = listing.id || listing._id;
+    if (!id) {
+      toast.error("Listing ID missing");
+      return;
+    }
+
+    if (listing.type === 'buddy') {
+      navigate(`/travel-buddy/${id}`, { state: { trip: listing, fromDashboard: true } });
+    } else if (listing.type === 'crashpad') {
+      navigate(`/crashpads/${id}`, { state: { listing, fromDashboard: true } });
+    } else {
+      navigate(`/homes/${id}`, { state: { listing, fromDashboard: true } });
+    }
+  };
+
   const handleToggleListing = async (id) => {
     try {
        await API.patch(`/host/listings/${id}/toggle`);
@@ -128,6 +265,20 @@ export default function HostDashboard() {
     } catch (err) {
        toast.error("Failed to toggle listing");
     }
+  };
+
+  const handleDeleteListing = async (id, type) => {
+    if (!window.confirm("Delete this listing?")) return;
+    try {
+        const endpoint = type === 'buddy'
+            ? `/admin/travel-buddy/${id}`
+            : type === 'crashpad'
+            ? `/host/crashpads/${id}`
+            : `/host/listings/${id}`;
+        await API.delete(endpoint);
+        setListings(prev => prev.filter(l => (l.id || l._id) !== id));
+        toast.success("Listing deleted");
+    } catch { toast.error("Failed to delete"); }
   };
 
   const handleBookingAction = async (id, action) => {
@@ -165,24 +316,67 @@ export default function HostDashboard() {
     }
   };
 
-  const handleApproveBooking = async (bookingId) => {
+  const handleApproveBooking = async (booking) => {
     try {
-      await API.patch(`/host/bookings/${bookingId}/approve`);
-      setBookings(prev => prev.map(b => b.id === bookingId ? {...b, status: 'confirmed'} : b));
-      toast.success('Booking approved!');
+      const id = booking.id || booking.request_id || booking.application_id;
+      let endpoint;
+      if (booking.kind === 'crashpad_request') {
+        endpoint = `/crashpads/requests/${id}/approve`;
+      } else if (booking.kind === 'buddy_request') {
+        endpoint = `/travel-buddies/applications/${id}/approve`;
+      } else {
+        endpoint = `/host/bookings/${id}/approve`;
+      }
+      await API.patch(endpoint);
+      setBookings(prev => prev.map(b =>
+        (b.id === id) ? { ...b, status: booking.kind === 'home' || !booking.kind ? 'confirmed' : 'approved' } : b
+      ));
+      toast.success('Approved!');
     } catch (err) {
-      toast.error('Failed to approve booking');
+      console.error(err);
+      toast.error('Failed to approve');
     }
   };
 
-  const handleDeclineBooking = async (bookingId) => {
+  const handleDeclineBooking = async (booking) => {
     try {
-      await API.patch(`/host/bookings/${bookingId}/decline`);
-      setBookings(prev => prev.map(b => b.id === bookingId ? {...b, status: 'rejected'} : b));
-      toast.success('Booking declined');
+      const id = booking.id || booking.request_id || booking.application_id;
+      let endpoint;
+      if (booking.kind === 'crashpad_request') {
+        endpoint = `/crashpads/requests/${id}/decline`;
+      } else if (booking.kind === 'buddy_request') {
+        endpoint = `/travel-buddies/applications/${id}/decline`;
+      } else {
+        endpoint = `/host/bookings/${id}/decline`;
+      }
+      await API.patch(endpoint);
+      setBookings(prev => prev.map(b =>
+        (b.id === id) ? { ...b, status: 'rejected' } : b
+      ));
+      toast.success('Declined');
     } catch (err) {
-      toast.error('Failed to decline booking');
+      console.error(err);
+      toast.error('Failed to decline');
     }
+  };
+
+  const handleReplyToGuest = (booking) => {
+    // Build a minimal conversation object that ChatWindow can consume
+    const conv = {
+      other_user_id: booking.guest_id,
+      other_user_name: booking.guest_name,
+      otherUser: {
+        _id: booking.guest_id,
+        name: booking.guest_name,
+      },
+      property_id: booking.property_id,
+      property_name: booking.property_title || 'Crashpad Request',
+      propertyName: booking.property_title || 'Crashpad Request',
+      is_host: true,
+      isHost: true,
+    };
+    setSelectedConv(conv);
+    setActiveSection('messages');
   };
 
   const exportCSV = () => {
@@ -585,17 +779,29 @@ export default function HostDashboard() {
 
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {(listings || []).filter(l => filter === 'All' || l.status === filter.toLowerCase()).map((listing, i) => (
-          <div key={listing.id || listing._id} style={{
-            backgroundColor: 'white',
-            borderRadius: '20px',
-            border: '1px solid #F3F4F6',
-            overflow: 'hidden',
-            display: 'flex',
-            marginBottom: '16px',
-            boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
-            transition: 'box-shadow 0.2s, transform 0.2s',
-            cursor: 'pointer',
-          }}>
+          <div 
+            key={listing.id || listing._id} 
+            onClick={() => handleCardClick(listing)}
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '20px',
+              border: '1px solid #F3F4F6',
+              overflow: 'hidden',
+              display: 'flex',
+              marginBottom: '16px',
+              boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'scale(1.01)';
+              e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 1px 6px rgba(0,0,0,0.06)';
+            }}
+          >
             {/* Image */}
             <div style={{ width: '220px', flexShrink: 0, position: 'relative', height: '160px' }}>
               <img 
@@ -651,7 +857,6 @@ export default function HostDashboard() {
                   <p style={{ fontSize: '12px', color: '#9CA3AF', margin: 0 }}>per {listing.type === 'buddy' ? 'day' : 'night'}</p>
                 </div>
               </div>
-
               <div style={{ display: 'flex', gap: '24px', marginBottom: '16px' }}>
                 {[
                   { icon: Eye, value: listing.views || 0, label: 'Views' },
@@ -663,13 +868,24 @@ export default function HostDashboard() {
                     <span style={{ fontSize: '12px', color: '#9CA3AF' }}>{label}</span>
                   </div>
                 ))}
+                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                   <span style={{ fontSize: '11px', fontWeight: '800', color: '#EA580C', textTransform: 'uppercase', letterSpacing: '0.05em' }}>View Details</span>
+                   <ChevronRight size={14} color="#EA580C" strokeWidth={3} />
+                </div>
               </div>
 
               <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
                 <button
                   onClick={(e) => { 
-                    e.stopPropagation(); 
-                    navigate(`/host/listings/${listing.id || listing._id}/edit`); 
+                    e.stopPropagation();
+                    const id = listing.id || listing._id;
+                    if (listing.type === 'buddy') {
+                        navigate(`/host/travel-buddy/${id}/edit`);
+                    } else if (listing.type === 'crashpad') {
+                        navigate(`/host/crashpads/${id}/edit`);
+                    } else {
+                        navigate(`/host/listings/${id}/edit`);
+                    }
                   }}
                   style={{
                     display: 'flex', alignItems: 'center', gap: '6px',
@@ -701,7 +917,7 @@ export default function HostDashboard() {
                 <button
                   onClick={(e) => { 
                     e.stopPropagation(); 
-                    // handleDelete(listing.id || listing._id); 
+                    handleDeleteListing(listing.id || listing._id, listing.type); 
                   }}
                   style={{
                     display: 'flex', alignItems: 'center', gap: '6px',
@@ -835,10 +1051,14 @@ export default function HostDashboard() {
           </div>
 
           {/* Legend */}
-          <div style={{ display: 'flex', gap: '16px', marginBottom: '16px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '16px', marginBottom: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <span style={{ fontSize: '11px', fontWeight: '700', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Listing types:
+            </span>
             {[
-              { color: '#16A34A', bg: '#DCFCE7', label: 'Confirmed' },
-              { color: '#CA8A04', bg: '#FEF9C3', label: 'Pending' },
+              { color: KIND_COLORS.booking.border, bg: KIND_COLORS.booking.bg, label: 'Home' },
+              { color: KIND_COLORS.crashpad_request.border, bg: KIND_COLORS.crashpad_request.bg, label: 'Crashpad' },
+              { color: KIND_COLORS.buddy_request.border, bg: KIND_COLORS.buddy_request.bg, label: 'Travel Buddy' },
               { color: '#9CA3AF', bg: '#F3F4F6', label: 'Blocked' },
             ].map(({ color, bg, label }) => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -891,17 +1111,22 @@ export default function HostDashboard() {
                           {item.day}
                         </div>
                         <div style={{ overflow: 'hidden' }}>
-                          {dateBookings.map((b, i) => (
-                            <div key={i} style={{
-                              backgroundColor: b.status === 'confirmed' ? '#DCFCE7' : '#FEF9C3',
-                              color: b.status === 'confirmed' ? '#15803D' : '#854D0E',
-                              padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: '600',
-                              marginBottom: '2px', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap', borderLeft: `3px solid ${b.status === 'confirmed' ? '#16A34A' : '#CA8A04'}`,
-                            }}>
-                              {b.guest_name}
-                            </div>
-                          ))}
+                          {dateBookings.map((b, i) => {
+                            const palette = KIND_COLORS[b.kind] || KIND_COLORS.booking;
+                            const isConfirmed = b.status === 'confirmed' || b.status === 'approved';
+                            return (
+                              <div key={`${b.kind || 'booking'}-${b.id || i}`} style={{
+                                backgroundColor: isConfirmed ? palette.confirmedBg : palette.bg,
+                                color: isConfirmed ? palette.confirmedText : palette.text,
+                                padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: '600',
+                                marginBottom: '2px', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                borderLeft: `3px solid ${isConfirmed ? palette.confirmedBorder : palette.border}`,
+                              }}>
+                                {b.guest_name}
+                              </div>
+                            );
+                          })}
                           {blocked && (
                             <div style={{
                               backgroundColor: '#F3F4F6', color: '#6B7280', borderLeft: '3px solid #9CA3AF',
@@ -955,52 +1180,99 @@ export default function HostDashboard() {
                  return (
                    <>
                      {/* Case 1: Has confirmed bookings */}
-                     {dateBookings.filter(b => b.status === 'confirmed').map(b => (
-                       <div key={b.id} style={{
-                         backgroundColor: '#F0FDF4', borderRadius: '12px',
-                         padding: '14px', border: '1px solid #BBF7D0',
-                       }}>
-                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                           <CheckCircle size={16} color="#16A34A" />
-                           <span style={{ fontWeight: '700', color: '#16A34A', fontSize: '13px' }}>Confirmed Booking</span>
-                         </div>
-                         <p style={{ fontWeight: '600', fontSize: '14px', margin: '0 0 4px', color: '#111827' }}>{b.guest_name}</p>
-                         <p style={{ fontSize: '12px', color: '#6B7280', margin: '0 0 4px' }}>📅 {b.check_in} → {b.check_out}</p>
-                         <p style={{ fontSize: '12px', color: '#6B7280', margin: 0 }}>💰 ₹{b.total_price?.toLocaleString()}</p>
-                       </div>
-                     ))}
+                     {dateBookings.filter(b => b.status === 'confirmed' || b.status === 'approved').map((b, i) => {
+                        const palette = KIND_COLORS[b.kind] || KIND_COLORS.booking;
+                        return (
+                          <div key={`${b.kind || 'booking'}-${b.id || i}`} style={{
+                            backgroundColor: palette.confirmedBg, borderRadius: '12px',
+                            padding: '14px', border: `1px solid ${palette.confirmedBorder}`,
+                            borderLeft: `4px solid ${palette.confirmedBorder}`,
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                              <CheckCircle size={16} color={palette.confirmedBorder} />
+                              <span style={{ fontWeight: '700', color: palette.confirmedText, fontSize: '13px' }}>
+                                Confirmed {palette.label}
+                              </span>
+                            </div>
+                            <p style={{ fontWeight: '600', fontSize: '14px', margin: '0 0 4px', color: '#111827' }}>{b.guest_name}</p>
+                            <p style={{ fontSize: '12px', color: '#6B7280', margin: '0 0 4px' }}>📅 {b.check_in} → {b.check_out}</p>
+                            <p style={{ fontSize: '12px', color: '#6B7280', margin: 0 }}>💰 ₹{b.total_price?.toLocaleString()}</p>
+                          </div>
+                        );
+                      })}
 
                      {/* Case 2: Has pending bookings */}
-                     {dateBookings.filter(b => b.status === 'pending').map(b => (
-                       <div key={b.id} style={{
-                         backgroundColor: '#FFFBEB', borderRadius: '12px',
-                         padding: '14px', border: '1px solid #FDE68A',
-                       }}>
-                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                           <Clock size={16} color="#D97706" />
-                           <span style={{ fontWeight: '700', color: '#D97706', fontSize: '13px' }}>Pending Approval</span>
-                         </div>
-                         <p style={{ fontWeight: '600', fontSize: '14px', margin: '0 0 8px', color: '#111827' }}>{b.guest_name}</p>
-                         <div style={{ display: 'flex', gap: '8px' }}>
-                           <button onClick={() => handleApproveBooking(b.id)}
-                             style={{
-                               flex: 1, padding: '8px', borderRadius: '8px', border: 'none',
-                               backgroundColor: '#22C55E', color: 'white', fontWeight: '700', fontSize: '12px',
-                               cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
-                             }}>
-                             <Check size={13} /> Approve
-                           </button>
-                           <button onClick={() => handleDeclineBooking(b.id)}
-                             style={{
-                               flex: 1, padding: '8px', borderRadius: '8px', border: 'none',
-                               backgroundColor: '#EF4444', color: 'white', fontWeight: '700', fontSize: '12px',
-                               cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
-                             }}>
-                             <X size={13} /> Decline
-                           </button>
-                         </div>
-                       </div>
-                     ))}
+                     {dateBookings.filter(b => b.status === 'pending').map(b => {
+                        const palette = KIND_COLORS[b.kind] || KIND_COLORS.booking;
+                        return (
+                          <div key={`${b.kind || 'booking'}-${b.id}`} style={{
+                            backgroundColor: palette.bg,
+                            borderRadius: '12px',
+                            padding: '14px',
+                            border: `1px solid ${palette.border}`,
+                            borderLeft: `4px solid ${palette.border}`,
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                              <Clock size={16} color={palette.text} />
+                              <span style={{ fontWeight: '700', color: palette.text, fontSize: '13px' }}>
+                                {palette.label}
+                              </span>
+                            </div>
+                            <p style={{ fontWeight: '600', fontSize: '14px', margin: '0 0 4px', color: '#111827' }}>{b.guest_name}</p>
+                            <p style={{ fontSize: '12px', color: '#6B7280', margin: '0 0 8px' }}>
+                              📅 {b.check_in} → {b.check_out} · 👥 {b.guests}
+                            </p>
+
+                            {b.message && (
+                              <div style={{
+                                backgroundColor: 'white', borderRadius: '8px',
+                                padding: '10px', marginBottom: '10px',
+                                border: `1px solid ${palette.border}`,
+                                borderLeft: `3px solid ${palette.border}`,
+                              }}>
+                                <p style={{ fontSize: '10px', fontWeight: '700', color: '#9CA3AF', textTransform: 'uppercase', margin: '0 0 4px', letterSpacing: '0.05em' }}>
+                                  Message from guest
+                                </p>
+                                <p style={{ fontSize: '13px', color: '#374151', margin: 0, lineHeight: '1.4', fontStyle: 'italic' }}>
+                                  "{b.message}"
+                                </p>
+                              </div>
+                            )}
+
+                            <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                              <button onClick={() => handleApproveBooking(b)}
+                                style={{
+                                  flex: 1, padding: '8px', borderRadius: '8px', border: 'none',
+                                  backgroundColor: '#22C55E', color: 'white', fontWeight: '700', fontSize: '12px',
+                                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
+                                }}>
+                                <Check size={13} /> Approve
+                              </button>
+                              <button onClick={() => handleDeclineBooking(b)}
+                                style={{
+                                  flex: 1, padding: '8px', borderRadius: '8px', border: 'none',
+                                  backgroundColor: '#EF4444', color: 'white', fontWeight: '700', fontSize: '12px',
+                                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
+                                }}>
+                                <X size={13} /> Decline
+                              </button>
+                            </div>
+
+                            {b.guest_id && (
+                              <button onClick={() => handleReplyToGuest(b)}
+                                style={{
+                                  width: '100%', padding: '9px', borderRadius: '8px',
+                                  border: '1.5px solid #E5E7EB', backgroundColor: 'white',
+                                  color: '#374151', fontWeight: '700', fontSize: '12px',
+                                  cursor: 'pointer', display: 'flex', alignItems: 'center',
+                                  justifyContent: 'center', gap: '6px',
+                                }}>
+                                <MessageCircle size={13} /> Reply to Guest
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
 
                      {/* Case 3: Blocked date */}
                      {isBlocked && dateBookings.length === 0 && (
@@ -1202,9 +1474,9 @@ export default function HostDashboard() {
   };
 
   const renderReviews = () => {
-    const avg = ratingStats?.avg_rating || '0.0';
-    const total = ratingStats?.total_reviews || 0;
-    const distribution = ratingStats?.distribution || {5:0, 4:0, 3:0, 2:0, 1:0};
+    const avg = reviewsData?.overall_rating?.toFixed(1) || '0.0';
+    const total = reviewsData?.total_reviews || 0;
+    const distribution = reviewsData?.distribution || {"5": 0, "4": 0, "3": 0, "2": 0, "1": 0};
 
     return (
       <div className="space-y-8 animate-in fade-in duration-500">
@@ -1213,12 +1485,19 @@ export default function HostDashboard() {
           <p className="text-gray-500 font-medium">Monitoring your reputation and guest experiences.</p>
         </header>
 
+        {loading && !reviewsData && (
+          <div className="flex items-center gap-2 text-orange-600 p-4">
+             <Loader2 className="animate-spin" size={20} />
+             <span className="font-bold text-sm tracking-widest uppercase">Loading feedback...</span>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
            <div className="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm flex items-center gap-12">
               <div className="text-center">
                  <div className="text-7xl font-black text-orange-600 mb-2 italic">{avg}</div>
                  <div className="flex justify-center text-orange-400 mb-2">
-                    {[1,2,3,4,5].map(s => <Star key={s} size={20} fill={s <= Math.floor(avg) ? "currentColor" : "none"} strokeWidth={3} />)}
+                    {[1,2,3,4,5].map(s => <Star key={s} size={20} fill={s <= Math.floor(parseFloat(avg)) ? "currentColor" : "none"} strokeWidth={3} />)}
                  </div>
                  <div className="text-[10px] font-black uppercase tracking-widest text-gray-400">{total} Verified Reviews</div>
               </div>
@@ -1227,9 +1506,9 @@ export default function HostDashboard() {
                    <div key={s} className="flex items-center gap-4">
                       <span className="text-xs font-black text-gray-400 w-6 italic">{s}★</span>
                       <div className="flex-1 h-2 bg-gray-50 rounded-full overflow-hidden">
-                         <div className="h-full bg-orange-600 rounded-full" style={{ width: `${distribution[s]}%` }} />
+                         <div className="h-full bg-orange-600 rounded-full transition-all duration-1000" style={{ width: `${distribution[String(s)] || 0}%` }} />
                       </div>
-                      <span className="text-[10px] font-black text-gray-400 w-8">{distribution[s]}%</span>
+                      <span className="text-[10px] font-black text-gray-400 w-8">{distribution[String(s)] || 0}%</span>
                    </div>
                  ))}
               </div>
@@ -1237,16 +1516,18 @@ export default function HostDashboard() {
 
            <div className="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm grid grid-cols-2 gap-8">
               {[
-                { label: 'Cleanliness', val: ratingStats.cleanliness || 4.8 }, { label: 'Location', val: ratingStats.location || 4.8 },
-                { label: 'Communication', val: ratingStats.communication || 4.8 }, { label: 'Value', val: ratingStats.value || 4.8 }
+                { label: 'Cleanliness', val: reviewsData?.category_ratings?.cleanliness || 0 }, 
+                { label: 'Location', val: reviewsData?.category_ratings?.location || 0 },
+                { label: 'Communication', val: reviewsData?.category_ratings?.communication || 0 }, 
+                { label: 'Value', val: reviewsData?.category_ratings?.value || 0 }
               ].map((c, i) => (
                 <div key={i}>
                    <div className="flex items-center justify-between mb-3">
                       <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{c.label}</span>
-                      <span className="text-sm font-black text-gray-900">{c.val}</span>
+                      <span className="text-sm font-black text-gray-900">{c.val.toFixed(1)}</span>
                    </div>
                    <div className="h-1.5 bg-gray-50 rounded-full overflow-hidden">
-                      <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${(c.val/5)*100}%` }} />
+                      <div className="h-full bg-emerald-500 rounded-full transition-all duration-1000" style={{ width: `${(c.val/5)*100}%` }} />
                    </div>
                 </div>
               ))}
@@ -1254,57 +1535,28 @@ export default function HostDashboard() {
         </div>
 
         <div className="space-y-6">
-           {reviews.map((review, i) => (
-             <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:translate-y-[-4px] transition-all">
-                <div className="flex items-center justify-between mb-6">
-                   <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center font-black text-gray-600 text-lg uppercase">
-                         {review.reviewer_name?.[0] || 'G'}
-                      </div>
-                      <div>
-                         <h4 className="font-black text-gray-900">{review.reviewer_name || 'Anonymous Guest'}</h4>
-                         <div className="flex text-orange-400">
-                             {[1,2,3,4,5].map(s => <Star key={s} size={12} fill={s <= review.rating ? "currentColor" : "none"} strokeWidth={3} />)}
-                         </div>
-                      </div>
-                   </div>
-                   <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 italic font-bold">{review.created_at}</div>
-                </div>
-                <p className="text-gray-600 font-medium leading-relaxed mb-6 italic text-lg pr-12">"{review.comment}"</p>
-                
-                {review.host_reply ? (
-                   <div className="p-6 bg-orange-50 rounded-3xl border border-orange-100 shadow-inner">
-                      <div className="text-[10px] font-black uppercase tracking-widest text-orange-600 mb-2 font-bold">Your Response:</div>
-                      <p className="text-orange-900 font-bold leading-relaxed">{review.host_reply}</p>
-                   </div>
-                ) : (
-                   <div className="flex items-center gap-4">
-                      <input 
-                        id={`reply-${review.id}`}
-                        placeholder="Type your official response..." 
-                        className="flex-1 bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm font-medium focus:ring-2 focus:ring-orange-500/20 shadow-inner outline-none"
-                      />
-                      <button 
-                        onClick={async () => {
-                          const reply = document.getElementById(`reply-${review.id}`).value;
-                          if (!reply) return toast.error("Please enter a reply");
-                          try {
-                            await API.post(`/host/reviews/${review.id}/reply`, { reply });
-                            toast.success("Reply submitted");
-                            fetchData('reviews');
-                          } catch (err) {
-                            toast.error("Failed to submit reply");
-                          }
-                        }}
-                        className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-orange-500/20 active:scale-95"
-                      >
-                         Publish
-                      </button>
-                   </div>
-                )}
-             </div>
-           ))}
-           {reviews.length === 0 && (
+           {reviewsData?.recent_reviews?.length > 0 ? (
+             reviewsData.recent_reviews.map((review, i) => (
+               <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:translate-y-[-4px] transition-all">
+                  <div className="flex items-center justify-between mb-6">
+                     <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center font-black text-gray-600 text-lg uppercase">
+                           {review.guest_name?.[0] || 'G'}
+                        </div>
+                        <div>
+                           <h4 className="font-black text-gray-900">{review.guest_name || 'Guest'}</h4>
+                           <div className="flex text-orange-400">
+                               {[1,2,3,4,5].map(s => <Star key={s} size={12} fill={s <= review.rating ? "currentColor" : "none"} strokeWidth={3} />)}
+                           </div>
+                           <div className="text-[10px] font-black uppercase text-gray-400 mt-1">{review.listing_title}</div>
+                        </div>
+                     </div>
+                     <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 italic font-bold">{review.created_at?.slice(0,10)}</div>
+                  </div>
+                  <p className="text-gray-600 font-medium leading-relaxed mb-0 italic text-lg pr-12">"{review.comment}"</p>
+               </div>
+             ))
+           ) : (
              <div className="p-20 text-center bg-white rounded-[2.5rem] border border-dashed border-gray-200">
                 <Star size={48} className="mx-auto text-gray-200 mb-4" />
                 <h3 className="text-xl font-black italic text-gray-900">No feedback yet</h3>

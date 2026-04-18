@@ -50,14 +50,16 @@ const safetyOptions = [
 
 export default function CreateListing() {
     const navigate = useNavigate();
-    const token = Cookies.get("token");
-    const { refreshHostStatus } = useHost();
+    
+    useEffect(() => {
+        navigate("/host/address", { replace: true });
+    }, [navigate]);
 
-    const [step, setStep] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const [globalError, setGlobalError] = useState("");
-    const [geocoding, setGeocoding] = useState(false);
-    const [geocodeError, setGeocodeError] = useState("");
+    return null; // The logic below is legacy and replaced by route-based flow
+}
+
+/* Legacy CreateListing logic kept for reference or gradual deletion */
+function LegacyCreateListing() {
     const geocodedForStep = useRef(null); // track which step we last geocoded for
     
     // State for ImageUpload component

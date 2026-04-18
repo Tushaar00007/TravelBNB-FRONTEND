@@ -450,14 +450,6 @@ function Profile() {
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div className="bg-orange-50 dark:bg-orange-900/20 p-5 rounded-2xl border border-orange-100 dark:border-orange-800 flex gap-4">
-                                        <div className="text-orange-600 dark:text-orange-400"><ShieldAlert size={20} /></div>
-                                        <div className="text-xs text-orange-800 dark:text-orange-300 leading-relaxed font-medium">
-                                            <p className="font-bold mb-1">Why verify your ID?</p>
-                                            Identity verification helps build trust in the community. Verified users get priority support, higher trust scores (+40 points), and access to exclusive safety features like Travel Buddy matches.
-                                        </div>
-                                    </div>
                                 </>
                             )}
                         </div>
@@ -708,20 +700,6 @@ function Profile() {
                                     </>
                                 )}
 
-                                {/* Trust Score Bar */}
-                                <div className="w-full mb-8">
-                                    <div className="flex justify-between items-end mb-2">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Trust Score</p>
-                                        <p className="text-xl font-black text-gray-900 dark:text-white">{userData?.trust_score || 0}<span className="text-gray-400 text-xs font-bold">/100</span></p>
-                                    </div>
-                                    <div className="h-2 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-gradient-to-r from-orange-500 to-orange-400 transition-all duration-1000"
-                                            style={{ width: `${userData?.trust_score || 0}%` }}
-                                        ></div>
-                                    </div>
-                                    <p className="text-[9px] text-gray-400 mt-2 font-bold uppercase tracking-tighter">Increase score by verifying ID or hosting guests</p>
-                                </div>
 
                                 <div className="w-full border-t border-gray-100 dark:border-gray-700 pt-6 space-y-4 transition-colors">
                                     <div className="flex items-center gap-4 text-gray-600 dark:text-gray-300">

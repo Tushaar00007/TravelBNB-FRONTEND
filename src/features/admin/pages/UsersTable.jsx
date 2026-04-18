@@ -102,15 +102,6 @@ export default function UsersTable() {
                 >
                     {ROLES.map(r => <option key={r} value={r}>{r || "All roles"}</option>)}
                 </select>
-                <select
-                    value={verifiedFilter}
-                    onChange={e => setVerifiedFilter(e.target.value)}
-                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 outline-none"
-                >
-                    <option value="">All Verification</option>
-                    <option value="true">Verified Only</option>
-                    <option value="false">Unverified Only</option>
-                </select>
             </div>
 
             {/* Table */}

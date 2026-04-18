@@ -78,6 +78,30 @@ function DraggableItineraryItem({ event, dayKey, idx, onPlaceClick, onMapOpen, m
               <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                 <span className="text-[10px] font-bold px-2 py-0.5 bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400 rounded uppercase tracking-wider">{event.type}</span>
                 <span className="text-[12px] text-gray-500 font-medium bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded uppercase tracking-wider">🕒 {event.time || `${event.visit_time} hrs`}</span>
+                
+                {event.ml_scores && (
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    <span className="px-2 py-0.5 bg-blue-50 border border-blue-200 
+                      text-blue-700 rounded-full text-[10px] font-bold">
+                      ⚡ XGB {(event.ml_scores.xgb * 10).toFixed(1)}
+                    </span>
+                    <span className="px-2 py-0.5 bg-purple-50 border border-purple-200 
+                      text-purple-700 rounded-full text-[10px] font-bold">
+                      🎯 Match {Math.round(event.ml_scores.cosine * 100)}%
+                    </span>
+                    <span className="px-2 py-0.5 bg-green-50 border border-green-200 
+                      text-green-700 rounded-full text-[10px] font-bold">
+                      ★ Score {(event.ml_scores.final * 10).toFixed(1)}
+                    </span>
+                  </div>
+                )}
+
+                {event.slot && (
+                  <span className="px-2 py-0.5 bg-gray-100 border border-gray-300 
+                    text-gray-600 rounded-full text-[10px] font-bold uppercase">
+                    {event.icon} {event.slot}
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">

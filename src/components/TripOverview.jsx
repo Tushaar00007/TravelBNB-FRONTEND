@@ -38,7 +38,7 @@ export default function TripOverview({ trip }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-5">
                     <div>
                         <p className="text-white/80 text-sm font-medium mb-1 flex items-center gap-1">
-                            <MapPin className="w-4 h-4" /> {trip.property?.location || "Location"}
+                            <MapPin className="w-4 h-4" /> {typeof trip.property?.location === "object" ? `${trip.property.location.city}, ${trip.property.location.state}` : (trip.property?.location || "Location")}
                         </p>
                         <p className="text-white text-2xl font-extrabold">{trip.property?.title || "Property"}</p>
                     </div>

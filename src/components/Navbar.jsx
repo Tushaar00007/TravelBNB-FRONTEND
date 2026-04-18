@@ -101,39 +101,84 @@ function Navbar() {
                     : "bg-[#FAFDF9] dark:bg-gray-900"
                 }`}>
                 {/* LEFT LOGO */}
-                <Link to="/" className="text-3xl font-black text-orange-600 tracking-tighter flex items-center hover:opacity-90 transition-opacity">
-                    <span className="text-gray-900 dark:text-white">Travel</span>BNB
-                </Link>
+                <a
+                    href="/"
+                    className="flex items-center cursor-pointer hover:opacity-90 transition-opacity"
+                    onClick={(e) => { e.preventDefault(); navigate('/'); }}
+                >
+                    <span className="text-3xl font-black tracking-tighter 
+                        text-gray-900 dark:text-white leading-none">
+                        Travel<span className="text-orange-500">BNB</span>
+                    </span>
+                </a>
 
                 {/* CENTER MENU */}
-                <div className="flex gap-8 text-gray-500 font-medium transition-colors">
-                    <Link to="/" className={`flex items-center gap-1.5 transition-all duration-200 py-2 border-b-2 ${location.pathname === '/' ? 'text-gray-900 border-[#FF5A5F] font-bold' : 'border-transparent hover:text-orange-600'}`}>
+                <div className="flex gap-8 text-gray-500 font-bold transition-colors">
+                    <Link to="/" className={`flex items-center gap-1.5 transition-all duration-200 py-2 border-b-2 ${location.pathname === '/' ? 'text-gray-900 border-orange-600' : 'border-transparent hover:text-orange-600'}`}>
                         {t("home")}
                     </Link>
-                    <Link to="/ai-planner" className={`flex items-center gap-1.5 transition-all duration-200 py-2 border-b-2 ${location.pathname === '/ai-planner' ? 'text-gray-900 border-[#FF5A5F] font-bold' : 'border-transparent hover:text-orange-600'}`}>
+                    <Link to="/ai-planner" className={`flex items-center gap-1.5 transition-all duration-200 py-2 border-b-2 ${location.pathname === '/ai-planner' ? 'text-gray-900 border-orange-600' : 'border-transparent hover:text-orange-600'}`}>
                         <Sparkles size={16} /> {t("ai_planner")}
                     </Link>
-                    <Link to="/crashpads" className={`flex items-center gap-1.5 transition-all duration-200 py-2 border-b-2 ${location.pathname === '/crashpads' ? 'text-gray-900 border-[#FF5A5F] font-bold' : 'border-transparent hover:text-orange-600'}`}>
+                    <Link to="/crashpads" className={`flex items-center gap-1.5 transition-all duration-200 py-2 border-b-2 ${location.pathname === '/crashpads' ? 'text-gray-900 border-orange-600' : 'border-transparent hover:text-orange-600'}`}>
                         <Tent size={16} /> Crashpads
                     </Link>
-                    <Link to="/travel-buddy" className={`flex items-center gap-1.5 transition-all duration-200 py-2 border-b-2 ${location.pathname === '/travel-buddy' ? 'text-gray-900 border-[#FF5A5F] font-bold' : 'border-transparent hover:text-orange-600'}`}>
+                    <Link to="/travel-buddy" className={`flex items-center gap-1.5 transition-all duration-200 py-2 border-b-2 ${location.pathname === '/travel-buddy' ? 'text-gray-900 border-orange-600' : 'border-transparent hover:text-orange-600'}`}>
                         <Users size={16} /> Travel Buddy
                     </Link>
                 </div>
 
                 {/* RIGHT SIDE */}
                 <div className="flex items-center gap-6 relative">
-                    <div className="flex border border-gray-300 dark:border-gray-600 rounded-full p-1 items-center gap-2 hover:shadow-md transition-all cursor-pointer bg-white dark:bg-gray-800">
-                        {userId && isHost && (
-                            <div 
-                                onClick={(e) => { e.stopPropagation(); toggleHostingMode(); navigate(hostingMode ? "/" : "/host/dashboard"); }}
-                                className="hidden md:flex items-center gap-2 bg-gray-100 dark:bg-gray-900 p-1 rounded-full relative w-32 h-8 group overflow-hidden border border-gray-200 dark:border-gray-700"
+                    {userId && (
+                        isHost ? (
+                            <button
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "6px",
+                                    padding: "8px 16px",
+                                    borderRadius: "999px",
+                                    border: "1.5px solid #e5e7eb",
+                                    background: hostingMode ? "#1f2937" : "#fff",
+                                    color: hostingMode ? "#fff" : "#1f2937",
+                                    fontWeight: 600,
+                                    fontSize: "13px",
+                                    cursor: "pointer",
+                                    transition: "all 0.2s",
+                                    whiteSpace: "nowrap"
+                                }}
+                                onClick={() => {
+                                    toggleHostingMode();
+                                    if (hostingMode) { navigate("/"); } else { navigate("/host-dashboard"); }
+                                }}
                             >
-                                <div className={`absolute top-1 bottom-1 w-1/2 bg-orange-600 rounded-full transition-all duration-500 shadow-lg ${hostingMode ? 'left-[46%]' : 'left-1'}`} />
-                                <span className={`flex-1 text-[8px] font-black uppercase tracking-widest text-center relative z-10 transition-colors duration-500 ${!hostingMode ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}`}>Explore</span>
-                                <span className={`flex-1 text-[8px] font-black uppercase tracking-widest text-center relative z-10 transition-colors duration-500 ${hostingMode ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}`}>Host</span>
-                            </div>
-                        )}
+                                {hostingMode ? <><Globe size={14} /> Explore</> : <><LayoutDashboard size={14} /> Host Dashboard</>}
+                            </button>
+                        ) : (
+                            <Link
+                                to="/become-a-host"
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "6px",
+                                    padding: "8px 16px",
+                                    borderRadius: "999px",
+                                    border: "1.5px solid #e5e7eb",
+                                    background: "#fff",
+                                    color: "#1f2937",
+                                    fontWeight: 600,
+                                    fontSize: "13px",
+                                    textDecoration: "none",
+                                    whiteSpace: "nowrap",
+                                    transition: "all 0.2s"
+                                }}
+                            >
+                                <ConciergeBell size={14} /> Become a Host
+                            </Link>
+                        )
+                    )}
+                    <div className="flex border border-gray-300 dark:border-gray-600 rounded-full p-1 items-center gap-2 hover:shadow-md transition-all cursor-pointer bg-white dark:bg-gray-800">
 
                         <button onClick={() => setOpenMenu(!openMenu)} className="flex items-center gap-2 px-2 py-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                             <Menu size={18} className="text-gray-600 dark:text-gray-300 ml-1" />
@@ -189,17 +234,6 @@ function Navbar() {
                                         <User size={18} className="text-gray-400 shrink-0" /> {t("profile")}
                                     </Link>
                                     <hr className="my-1.5 border-gray-100 dark:border-gray-700" />
-                                    {isHost && (
-                                        <button 
-                                            onClick={() => { toggleHostingMode(); navigate(hostingMode ? "/" : "/host/dashboard"); setOpenMenu(false); }} 
-                                            className="w-full flex items-center gap-3 px-5 py-3.5 hover:bg-orange-50 dark:hover:bg-orange-900/10 transition-colors group"
-                                        >
-                                            <LayoutDashboard size={18} className="text-orange-500 shrink-0 group-hover:scale-110 transition-transform" />
-                                            <span className="font-bold text-orange-600">
-                                                {hostingMode ? "Switch to Explorer Mode" : "Switch to Hosting Mode"}
-                                            </span>
-                                        </button>
-                                    )}
                                     <Link to="/profile" onClick={() => setOpenMenu(false)} className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                                         <Settings size={18} className="text-gray-400 shrink-0" /> Account settings
                                     </Link>
@@ -207,13 +241,23 @@ function Navbar() {
                                         <Globe size={18} className="text-gray-400 shrink-0" /> Languages &amp; currency
                                     </Link>
                                     <hr className="my-1.5 border-gray-100 dark:border-gray-700" />
-                                    <Link to="/become-a-host" onClick={() => setOpenMenu(false)} className="flex items-start justify-between gap-3 px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                                        <div>
-                                            <p className="font-semibold">{t("become_host")}</p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">It's easy to start hosting and earn extra income.</p>
-                                        </div>
-                                        <ConciergeBell size={20} className="text-orange-500 shrink-0 mt-0.5" />
-                                    </Link>
+                                    {isHost ? (
+                                        <Link to="/host-dashboard" onClick={() => setOpenMenu(false)} className="flex items-start justify-between gap-3 px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                            <div>
+                                                <p className="font-semibold">Host Dashboard</p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">Manage your listings, bookings and earnings.</p>
+                                            </div>
+                                            <LayoutDashboard size={20} className="text-orange-500 shrink-0 mt-0.5" />
+                                        </Link>
+                                    ) : (
+                                        <Link to="/become-a-host" onClick={() => setOpenMenu(false)} className="flex items-start justify-between gap-3 px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                            <div>
+                                                <p className="font-semibold">{t("become_host")}</p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">It's easy to start hosting and earn extra income.</p>
+                                            </div>
+                                            <ConciergeBell size={20} className="text-orange-500 shrink-0 mt-0.5" />
+                                        </Link>
+                                    )}
                                     <hr className="my-1.5 border-gray-100 dark:border-gray-700" />
                                     <p onClick={() => { Cookies.remove("userId"); window.location.reload(); }} className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-red-600 font-bold">
                                         <LogOut size={18} /> {t("logout")}

@@ -86,6 +86,7 @@ function AiPlanner() {
     const [error, setError] = useState(null);
     const [selectedLocation, setSelectedLocation] = useState(null);
     const [isDownloading, setIsDownloading] = useState(false);
+    const [itineraryId, setItineraryId] = useState(null);
     const [step, setStep] = useState(1);
     const navigate = useNavigate();
 
@@ -158,6 +159,26 @@ function AiPlanner() {
                 const data = response.data.data;
                 setPlannerData(data);
 
+                // ✅ NEW: Save itinerary to DB to get an ID for PDF download
+                try {
+                    const saveResponse = await API.post('/itinerary/save', {
+                        location: formattedLocation,
+                        days: parseInt(days),
+                        start_date: startDate,
+                        preferences: {
+                            budget, style, group, transport,
+                            includeNightlife, includeFood, avoidCrowds
+                        },
+                        planner_data: data
+                    });
+                    if (saveResponse.data?.success) {
+                        setItineraryId(saveResponse.data.itinerary_id);
+                        console.log("!!! Itinerary saved successfully with ID:", saveResponse.data.itinerary_id);
+                    }
+                } catch (saveErr) {
+                    console.error("Failed to save itinerary:", saveErr);
+                }
+
                 // Set ranked places for map
                 const placesForMap = data.ranked_places?.length > 0
                     ? data.ranked_places
@@ -188,36 +209,30 @@ function AiPlanner() {
     };
 
     const handleDownloadPDF = async () => {
+        if (!itineraryId) {
+            toast.error("Please generate an itinerary first.");
+            return;
+        }
+
         setIsDownloading(true);
         try {
             const formattedLocation = destination.split(' ')
                 .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                 .join(' ');
 
-            const response = await API.post('/ml/download_pdf', {
-                location: formattedLocation,
-                days: parseInt(days),
-                start_date: startDate,
-                preferences: {
-                    budget,
-                    style,
-                    group,
-                    transport,
-                    includeNightlife,
-                    includeFood,
-                    avoidCrowds
-                }
-            }, {
+            const response = await API.get(`/itinerary/pdf/${itineraryId}`, {
                 responseType: 'blob'
             });
 
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', `itinerary_${formattedLocation.toLowerCase().replace(/\s+/g, '_')}.pdf`);
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url);
         } catch (err) {
             console.error("PDF Download Error:", err);
             toast.error("Failed to download PDF. Please try again.");
@@ -275,6 +290,33 @@ function AiPlanner() {
 
     const SummaryAndTransport = (
         <div className="space-y-8">
+            <div className="flex flex-wrap items-center gap-2 p-4 
+              bg-gray-900 border-[3px] border-black rounded-2xl 
+              shadow-[4px_4px_0px_#F97316] mb-2">
+                <Sparkles size={16} className="text-[#F97316] shrink-0" />
+                <span className="text-xs font-black uppercase tracking-tight text-white">
+                    Itinerary crafted for:
+                </span>
+                {[
+                    { label: budget },
+                    { label: style },
+                    { label: group },
+                    { label: transport },
+                    ...(includeNightlife ? [{ label: "Nightlife ✓" }] : []),
+                    ...(includeFood ? [{ label: "Food Spots ✓" }] : []),
+                    ...(avoidCrowds ? [{ label: "Avoid Crowds ✓" }] : []),
+                ].map(({ label }) => (
+                    <span
+                        key={label}
+                        className="px-3 py-1 rounded-full text-[11px] font-black 
+                    border-[2px] border-[#F97316] uppercase tracking-tight 
+                    bg-transparent text-[#F97316]"
+                    >
+                        {label}
+                    </span>
+                ))}
+            </div>
+
             {/* Intro Header */}
             <div className="pb-2">
                 <h2 className="text-4xl font-normal text-gray-900 dark:text-white mb-2">
@@ -304,14 +346,14 @@ function AiPlanner() {
             {/* Transport Overview */}
             <section>
                 <div className="flex items-center gap-2 mb-4">
-                    <div className="bg-blue-50 dark:bg-blue-900/30 text-blue-500 p-1.5 rounded-full">
+                    <div className="bg-gray-100 dark:bg-gray-800 text-orange-500 p-1.5 rounded-full">
                         <Plane size={16} className="-rotate-45" />
                     </div>
                     <h3 className="text-lg font-medium text-gray-900 dark:text-white">Transport Hubs</h3>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                     <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center gap-4">
-                        <div className="bg-blue-50 dark:bg-blue-900/30 text-blue-500 p-3 rounded-xl">
+                        <div className="bg-gray-100 dark:bg-gray-800 text-orange-500 p-3 rounded-xl">
                             <Plane size={24} className="-rotate-45" />
                         </div>
                         <div>
@@ -320,7 +362,7 @@ function AiPlanner() {
                         </div>
                     </div>
                     <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center gap-4">
-                        <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 p-3 rounded-xl">
+                        <div className="bg-gray-100 dark:bg-gray-800 text-orange-500 p-3 rounded-xl">
                             <Train size={24} />
                         </div>
                         <div>
@@ -355,7 +397,7 @@ function AiPlanner() {
                 <button
                     onClick={handleDownloadPDF}
                     disabled={isDownloading}
-                    className="flex-1 sm:flex-none items-center justify-center gap-2 bg-[#1C2434] dark:bg-white text-white dark:text-gray-900 px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-gray-800 dark:hover:bg-gray-100 transition-all shadow-md active:scale-95 disabled:opacity-70 disabled:pointer-events-none flex"
+                    className="flex-1 sm:flex-none items-center justify-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-black dark:hover:bg-gray-100 transition-all shadow-md active:scale-95 disabled:opacity-70 disabled:pointer-events-none flex"
                 >
                     {isDownloading ? (
                         <><Loader2 className="animate-spin" size={16} /> Downloading...</>
@@ -415,34 +457,42 @@ function AiPlanner() {
                         <ChevronLeft size={16} /> Back
                     </button>
                 )}
-                <button className="px-4 py-2 text-xs font-bold border border-gray-200 rounded-full hover:bg-gray-50 transition-all hidden md:block">
-                    Explore
-                </button>
-                <button className="px-5 py-2 bg-black text-white dark:bg-white dark:text-black rounded-full text-xs font-bold shadow-md hover:scale-105 transition-transform active:scale-95">
-                    Switch to Hosting
-                </button>
             </div>
         </div>
     );
 
-    const PreferenceCard = ({ title, options, value, onChange, icon: Icon, color }) => (
-        <div className="bg-white border-[3px] border-black p-6 rounded-3xl shadow-[8px_8px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] transition-transform">
-            <div className={`mb-4 flex items-center gap-3 ${color}`}>
-                <Icon size={24} />
-                <h3 className="text-lg font-black uppercase tracking-tight text-black">{title}</h3>
+    const PreferenceCard = ({ title, options, value, onChange, icon: Icon, accentColor }) => (
+        <div className="bg-white border-[3px] border-black rounded-3xl 
+        shadow-[6px_6px_0px_rgba(0,0,0,1)] overflow-hidden
+        hover:translate-y-[-3px] hover:shadow-[8px_8px_0px_rgba(0,0,0,1)] 
+        transition-all duration-200">
+
+            {/* Header — orange only */}
+            <div className="px-5 py-4 flex items-center gap-3 
+          border-b-[3px] border-black bg-[#F97316]">
+                <Icon size={20} className="text-white" />
+                <h3 className="text-sm font-black uppercase tracking-widest text-white">
+                    {title}
+                </h3>
             </div>
-            <div className="grid grid-cols-1 gap-2">
+
+            {/* Options */}
+            <div className="p-4 flex flex-col gap-2 bg-white">
                 {options.map((opt) => (
                     <button
                         key={opt}
                         onClick={() => onChange(opt)}
-                        className={`py-3 px-4 rounded-xl border-[2px] font-bold text-sm transition-all text-left flex justify-between items-center ${value === opt
-                            ? "bg-black text-white border-black"
-                            : "bg-gray-50 border-gray-200 text-gray-600 hover:border-black"
+                        className={`py-3 px-4 rounded-xl border-[2px] font-black text-sm 
+                transition-all text-left flex justify-between items-center
+                active:scale-95 ${value === opt
+                                ? "bg-black text-white border-black"
+                                : "bg-gray-50 border-gray-200 text-gray-700 hover:border-black hover:bg-gray-100"
                             }`}
                     >
                         {opt}
-                        {value === opt && <CheckCircle2 size={16} />}
+                        {value === opt && (
+                            <span className="text-[#F97316] text-base font-black">✓</span>
+                        )}
                     </button>
                 ))}
             </div>
@@ -452,19 +502,33 @@ function AiPlanner() {
     const TogglePref = ({ label, value, onChange, icon: Icon }) => (
         <button
             onClick={() => onChange(!value)}
-            className={`flex items-center justify-between p-6 rounded-3xl border-[3px] border-black transition-all ${value ? "bg-[#B1FF05] shadow-[6px_6px_0px_#000]" : "bg-white shadow-[4px_4px_0px_#000]"
+            className={`flex items-center justify-between p-5 rounded-3xl 
+          border-[3px] border-black transition-all duration-200 w-full
+          active:scale-95 ${value
+                    ? "bg-[#F97316] shadow-[6px_6px_0px_#000] hover:shadow-[8px_8px_0px_#000] hover:translate-y-[-2px]"
+                    : "bg-white shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] hover:translate-y-[-2px]"
                 }`}
         >
             <div className="flex items-center gap-4">
-                <div className={`p-3 rounded-2xl border-[2px] border-black ${value ? "bg-white" : "bg-gray-50"}`}>
-                    <Icon size={24} className="text-black" />
+                <div className={`p-2.5 rounded-2xl border-[2px] border-black transition-colors ${value ? "bg-black" : "bg-gray-100"
+                    }`}>
+                    <Icon size={20} className={value ? "text-[#F97316]" : "text-black"} />
                 </div>
-                <span className="font-black text-sm uppercase tracking-tight text-black">{label}</span>
+                <span className={`font-black text-sm uppercase tracking-tight ${value ? "text-white" : "text-black"
+                    }`}>
+                    {label}
+                </span>
             </div>
-            <div className={`w-12 h-6 rounded-full border-[2px] border-black relative transition-colors ${value ? "bg-black" : "bg-gray-100"}`}>
+
+            {/* Toggle pill */}
+            <div className={`w-12 h-6 rounded-full border-[2px] border-black 
+          relative transition-colors ${value ? "bg-black" : "bg-gray-200"}`}>
                 <motion.div
                     animate={{ x: value ? 24 : 2 }}
-                    className="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white"
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full 
+              transition-colors ${value ? "bg-[#F97316]" : "bg-white border border-gray-300"
+                        }`}
                 />
             </div>
         </button>
@@ -535,7 +599,7 @@ function AiPlanner() {
 
                                     {/* Days */}
                                     <div className="w-full md:w-40 text-left px-6 py-3.5 flex flex-col justify-center">
-                                        <label className="block text-[10px] font-black uppercase text-[#00D4FF] mb-1 tracking-widest">DAYS</label>
+                                        <label className="block text-[10px] font-black uppercase text-orange-500 mb-1 tracking-widest">DAYS</label>
                                         <div className="flex items-center gap-2">
                                             <Calendar className="text-gray-400 h-5 w-5" strokeWidth={2.5} />
                                             <input
@@ -553,7 +617,7 @@ function AiPlanner() {
 
                                     {/* Start Date */}
                                     <div className="w-full md:w-48 text-left px-6 py-3.5 flex flex-col justify-center">
-                                        <label className="block text-[10px] font-black uppercase text-[#B5FF3B] mb-1 tracking-widest">START DATE</label>
+                                        <label className="block text-[10px] font-black uppercase text-orange-500 mb-1 tracking-widest">START DATE</label>
                                         <div className="flex items-center gap-2">
                                             <Calendar className="text-gray-400 h-5 w-5" strokeWidth={2.5} />
                                             <input
@@ -594,7 +658,10 @@ function AiPlanner() {
                         <div className="w-full border-b-[8px] border-black pt-20 pb-12 px-6 lg:px-24 flex flex-col md:flex-row justify-between items-start md:items-end">
                             <div>
                                 <h2 className="text-5xl md:text-7xl font-black text-black tracking-tighter mb-4 uppercase">
-                                    FINE-TUNE YOUR <span className="text-orange-500 underline decoration-black underline-offset-8 decoration-[10px]">VIBE</span>
+                                    FINE-TUNE YOUR{" "}
+                                    <span className="text-orange-500 underline decoration-black underline-offset-4 decoration-[8px]">
+                                        VIBE
+                                    </span>
                                 </h2>
                                 <p className="text-xl font-bold text-gray-400 uppercase tracking-widest flex items-center gap-3">
                                     <Sparkles size={24} className="text-orange-500" /> Tell us what makes your heart race.
@@ -607,7 +674,6 @@ function AiPlanner() {
                                 <PreferenceCard
                                     title="Budget"
                                     icon={Wallet}
-                                    color="text-emerald-500"
                                     options={['Low', 'Mid-Range', 'Luxury']}
                                     value={budget}
                                     onChange={setBudget}
@@ -615,7 +681,6 @@ function AiPlanner() {
                                 <PreferenceCard
                                     title="Style"
                                     icon={Compass}
-                                    color="text-orange-500"
                                     options={['Adventure', 'Relaxation', 'Cultural', 'Nightlife']}
                                     value={style}
                                     onChange={setStyle}
@@ -623,7 +688,6 @@ function AiPlanner() {
                                 <PreferenceCard
                                     title="Group"
                                     icon={Users}
-                                    color="text-blue-500"
                                     options={['Solo', 'Couple', 'Friends', 'Family']}
                                     value={group}
                                     onChange={setGroup}
@@ -631,7 +695,6 @@ function AiPlanner() {
                                 <PreferenceCard
                                     title="Transport"
                                     icon={Car}
-                                    color="text-purple-500"
                                     options={['Public', 'Rental', 'Private Cab']}
                                     value={transport}
                                     onChange={setTransport}
@@ -662,7 +725,7 @@ function AiPlanner() {
                             {/* Error banner — shown here on step 2 so API failures are visible */}
                             {error && (
                                 <div className="flex justify-center mb-8">
-                                    <div className="flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl max-w-2xl w-full">
+                                    <div className="flex items-center gap-3 bg-gray-100 border border-gray-200 text-orange-600 px-6 py-4 rounded-2xl max-w-2xl w-full">
                                         <AlertCircle size={20} className="shrink-0" />
                                         <p className="font-bold text-sm">{error}</p>
                                     </div>
@@ -679,7 +742,7 @@ function AiPlanner() {
                                 <button
                                     onClick={handlePlanTrip}
                                     disabled={isLoading}
-                                    className="w-full md:w-auto px-16 py-5 bg-[#B1FF05] border-[4px] border-black rounded-full font-black uppercase text-lg flex items-center justify-center gap-3 shadow-[8px_8px_0px_#000] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_#000] transition-all active:translate-y-1 active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+                                    className="w-full md:w-auto px-16 py-5 bg-[#F97316] border-[4px] border-black rounded-full font-black uppercase text-lg text-white flex items-center justify-center gap-3 shadow-[8px_8px_0px_#000] hover:shadow-[12px_12px_0px_#000] hover:translate-y-[-4px] transition-all duration-200 active:translate-y-1 active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
                                 >
                                     {isLoading ? (
                                         <><Loader2 className="animate-spin h-6 w-6" /> GENERATING...</>
@@ -704,7 +767,7 @@ function AiPlanner() {
                     >
                         <div className="w-full px-6 py-6 max-w-[1600px] mx-auto">
                             {error && (
-                                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-6 py-4 rounded-2xl mb-8 flex items-center gap-3 animate-fade-in-up">
+                                <div className="bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-orange-600 dark:text-orange-400 px-6 py-4 rounded-2xl mb-8 flex items-center gap-3 animate-fade-in-up">
                                     <AlertCircle size={24} />
                                     <p className="font-medium">{error}</p>
                                 </div>
@@ -732,7 +795,28 @@ function AiPlanner() {
                                                 TitleAndDownload={TitleAndDownload}
                                                 onPlaceClick={(place) => {
                                                     console.log("onPlaceClick called with:", place);
-                                                    setSelectedPlace(place);
+                                                    // Enrichment: find the matching place in rankedPlaces to get photos & full description
+                                                    const enriched = rankedPlaces.find(
+                                                        p => p.place_name === place.place_name
+                                                    );
+                                                    const merged = {
+                                                        ...place,
+                                                        photo_url: enriched?.photo_url || enriched?.place_image_url || place.photo_url || '',
+                                                        place_image_url: enriched?.place_image_url || place.place_image_url || '',
+                                                        short_description: place.short_description || enriched?.short_description || enriched?.place_description_ai || '',
+                                                        place_description_ai: enriched?.place_description_ai || '',
+                                                        significance: place.significance || enriched?.significance || '',
+                                                        travel_tip: place.travel_tip || enriched?.travel_tip || '',
+                                                        must_try_food: place.must_try_food || enriched?.must_try_food || '',
+                                                        famous_restaurant: enriched?.famous_restaurant || '',
+                                                        food_specialty: enriched?.food_specialty || '',
+                                                        packing_suggestions: place.packing_suggestions || enriched?.packing_suggestions || '',
+                                                        common_questions: enriched?.common_questions || '',
+                                                        airport: enriched?.airport || '',
+                                                        railway: enriched?.railway || '',
+                                                    };
+                                                    console.log("Enriched place for modal:", merged);
+                                                    setSelectedPlace(merged);
                                                 }}
                                             />
                                         </DndContext>
@@ -751,7 +835,29 @@ function AiPlanner() {
                                         <MapErrorBoundary>
                                             <GoogleMapPanel
                                                 plannerData={plannerData}
-                                                onPlaceClick={(place) => setSelectedPlace(place)}
+                                                onPlaceClick={(place) => {
+                                                    console.log("onPlaceClick (map) called with:", place);
+                                                    const enriched = rankedPlaces.find(
+                                                        p => p.place_name === place.place_name
+                                                    );
+                                                    const merged = {
+                                                        ...place,
+                                                        photo_url: enriched?.photo_url || enriched?.place_image_url || place.photo_url || '',
+                                                        place_image_url: enriched?.place_image_url || place.place_image_url || '',
+                                                        short_description: place.short_description || enriched?.short_description || enriched?.place_description_ai || '',
+                                                        place_description_ai: enriched?.place_description_ai || '',
+                                                        significance: place.significance || enriched?.significance || '',
+                                                        travel_tip: place.travel_tip || enriched?.travel_tip || '',
+                                                        must_try_food: place.must_try_food || enriched?.must_try_food || '',
+                                                        famous_restaurant: enriched?.famous_restaurant || '',
+                                                        food_specialty: enriched?.food_specialty || '',
+                                                        packing_suggestions: place.packing_suggestions || enriched?.packing_suggestions || '',
+                                                        common_questions: enriched?.common_questions || '',
+                                                        airport: enriched?.airport || '',
+                                                        railway: enriched?.railway || '',
+                                                    };
+                                                    setSelectedPlace(merged);
+                                                }}
                                             />
                                         </MapErrorBoundary>
                                     </div>

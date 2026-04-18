@@ -60,7 +60,7 @@ export default function TripDetails() {
                             <Plane className="text-orange-500" /> {trip.property?.title || "Trip"}
                         </h1>
                         <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
-                            {trip.property?.location} · {trip.members?.length || 1} traveller{(trip.members?.length || 1) > 1 ? "s" : ""}
+                            {typeof trip.property?.location === "object" ? `${trip.property.location.city}, ${trip.property.location.state}` : (trip.property?.location || "Location TBD")} · {trip.members?.length || 1} traveller{(trip.members?.length || 1) > 1 ? "s" : ""}
                         </p>
                     </div>
 

@@ -5,23 +5,26 @@ import App from './app/App.jsx'
 import './i18n.js'
 import { CurrencyProvider } from './context/CurrencyContext.jsx'
 import { HostProvider } from './context/HostContext.jsx'
-import { GoogleOAuthProvider } from '@react-oauth/google'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-// Read from .env (VITE_GOOGLE_CLIENT_ID) — if missing, Google Sign-In is skipped gracefully
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ""
-
-const app = (
-  <StrictMode>
-    <CurrencyProvider>
-      <HostProvider>
-        <App />
-      </HostProvider>
-    </CurrencyProvider>
-  </StrictMode>
-)
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+})
 
 createRoot(document.getElementById('root')).render(
-  GOOGLE_CLIENT_ID
-    ? <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>{app}</GoogleOAuthProvider>
-    : app
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <CurrencyProvider>
+        <HostProvider>
+          <App />
+        </HostProvider>
+      </CurrencyProvider>
+    </QueryClientProvider>
+  </StrictMode>
 )

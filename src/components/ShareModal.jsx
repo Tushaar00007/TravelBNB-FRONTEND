@@ -80,7 +80,8 @@ const PLATFORMS = [
 ];
 
 // ─── Component ───────────────────────────────────────
-function ShareModal({ url, onClose }) {
+function ShareModal({ isOpen, url, onClose }) {
+    if (!isOpen) return null;
     const [copied, setCopied] = useState(false);
     const [visible, setVisible] = useState(false);
     const overlayRef = useRef(null);

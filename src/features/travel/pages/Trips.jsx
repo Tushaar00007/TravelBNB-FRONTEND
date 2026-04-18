@@ -39,7 +39,7 @@ function TripCard({ trip, onClick }) {
                     <p className="font-black text-2xl leading-tight uppercase tracking-tighter drop-shadow-lg">{trip.property?.title || "Property"}</p>
                     <div className="flex items-center gap-2 mt-2 opacity-90 font-bold text-xs uppercase tracking-widest">
                         <MapPin size={14} className="text-orange-400" strokeWidth={3} />
-                        {trip.property?.location || "Location TBD"}
+                        {typeof trip.property?.location === "object" ? `${trip.property.location.city}, ${trip.property.location.state}` : (trip.property?.location || "Location TBD")}
                     </div>
                 </div>
             </div>

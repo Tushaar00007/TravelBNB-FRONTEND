@@ -23,7 +23,7 @@ const HOSTING_OPTIONS = [
             "Full control over who stays",
         ],
         cta: "Get Started",
-        route: "/create-listing",
+        route: "/host/address",
         gradient: "from-orange-50 to-amber-50",
         activeBorder: "border-orange-500",
         iconColor: "text-orange-600",

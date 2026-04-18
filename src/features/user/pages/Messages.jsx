@@ -28,7 +28,8 @@ class ErrorBoundary extends Component {
 function Messages() {
     // Get userId from URL params if available, otherwise fallback to logged-in user's cookie
     const { userId: paramUserId } = useParams();
-    const userId = paramUserId || Cookies.get("userId");
+    const rawUserId = paramUserId || Cookies.get("userId");
+    const userId = rawUserId ? String(rawUserId).replace(/\s/g, "") : null;
     const navigate = useNavigate();
     const location = useLocation();
     const [activeConv, setActiveConv] = useState(null);
@@ -68,8 +69,9 @@ function Messages() {
         
         if (hostId) {
             // 1. Try to find in existing list
+            const cleanHostId = String(hostId).trim();
             const conv = conversations.find(
-                c => String(c.other_user_id) === String(hostId)
+                c => String(c.other_user_id).trim() === cleanHostId
             );
 
             if (conv) {
@@ -81,13 +83,31 @@ function Messages() {
                 const tempConv = {
                     other_user_id: hostId,
                     other_user_name: hostName,
+                    otherUser: {
+                        _id: hostId,
+                        name: hostName,
+                        avatar: "",
+                        profile_image: ""
+                    },
+                    participants: [
+                        { _id: userId, name: "You", avatar: "", profile_image: "" },
+                        { _id: hostId, name: hostName, avatar: "", profile_image: "" }
+                    ],
                     property_id: propertyId,
                     property_name: propertyName,
+                    propertyName: propertyName,
                     booking_request_id: requestId,
                     conversation_id: `temp_${hostId}`,
+                    _id: `temp_${hostId}`,
                     last_message: "Booking request sent",
+                    lastMessage: "Booking request sent",
                     last_message_time: new Date().toISOString(),
-                    isTemp: true
+                    updatedAt: new Date().toISOString(),
+                    isTemp: true,
+                    isHost: false,
+                    is_host: false,
+                    host_id: hostId,
+                    guest_id: userId
                 };
                 setActiveConv(tempConv);
 

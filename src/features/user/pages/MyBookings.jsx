@@ -21,6 +21,30 @@ import {
 import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 
+const KIND_STYLES = {
+    home: {
+        label: 'Home',
+        accent: 'bg-orange-500',
+        accentText: 'text-orange-500',
+        accentBg: 'bg-orange-50',
+        emoji: '🏠',
+    },
+    crashpad: {
+        label: 'Crashpad',
+        accent: 'bg-blue-500',
+        accentText: 'text-blue-500',
+        accentBg: 'bg-blue-50',
+        emoji: '🛏️',
+    },
+    buddy: {
+        label: 'Travel Buddy',
+        accent: 'bg-purple-500',
+        accentText: 'text-purple-500',
+        accentBg: 'bg-purple-50',
+        emoji: '🧳',
+    },
+};
+
 const MyBookings = () => {
     const { t } = useTranslation();
     const [bookings, setBookings] = useState([]);
@@ -40,7 +64,7 @@ const MyBookings = () => {
             setError(null);
             
             console.log("=== FETCHING BOOKINGS ===");
-            const res = await API.get("/bookings/user/", {
+            const res = await API.get("/bookings/user/all", {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -254,33 +278,50 @@ const MyBookings = () => {
 function BookingCard({ booking, onCancel, disabled }) {
     const home = booking.homeDetails;
     const isCancelled = booking.bookingStatus === 'cancelled' || booking.bookingStatus === 'rejected';
+    const kind = booking.kind || 'home';
+    const style = KIND_STYLES[kind] || KIND_STYLES.home;
 
     const formatDate = (dateStr) => {
         try {
             return format(new Date(dateStr), 'MMM d, yyyy');
         } catch {
-            return dateStr;
+            return dateStr || '';
         }
     };
 
     return (
         <div className={`group bg-white dark:bg-gray-900 rounded-[3rem] overflow-hidden border ${isCancelled ? 'border-red-100 dark:border-red-900/20' : 'border-gray-100 dark:border-gray-800'} shadow-sm hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.1)] hover:border-orange-500/30 transition-all duration-700 flex flex-col h-full ring-1 ring-transparent hover:ring-orange-500/10`}>
-            {/* Image Header */}
-            <div className="h-72 relative overflow-hidden bg-gray-50 dark:bg-gray-800">
-                {home?.images?.[0] ? (
-                    <img
-                        src={home.images[0]}
-                        alt="Property"
-                        className={`w-full h-full object-cover transition-transform duration-1000 ease-out ${!disabled && 'group-hover:scale-110'} ${isCancelled && 'grayscale opacity-60'}`}
-                    />
-                ) : (
-                    <div className="flex items-center justify-center h-full">
-                        <Home className="text-gray-200 dark:text-gray-700" size={64} strokeWidth={1} />
-                    </div>
-                )}
+            <div className="h-72 relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+                {(() => {
+                    const imgSrc = home?.images?.[0] || booking.image || null;
+                    return imgSrc ? (
+                        <img
+                            src={imgSrc}
+                            alt={home?.title || booking.title || "Listing"}
+                            className={`w-full h-full object-cover transition-transform duration-1000 ease-out ${!disabled && 'group-hover:scale-110'} ${isCancelled && 'grayscale opacity-60'}`}
+                            onError={(e) => {
+                                e.target.style.display = 'none';
+                                e.target.parentElement.querySelector('.fallback-emoji')?.classList.remove('hidden');
+                            }}
+                        />
+                    ) : null;
+                })()}
 
-                {/* Status Badge */}
-                <div className="absolute top-8 left-8">
+                {/* Fallback emoji (always rendered, hidden if image loads) */}
+                <div className={`fallback-emoji absolute inset-0 flex flex-col items-center justify-center gap-3 ${(home?.images?.[0] || booking.image) ? 'hidden' : ''}`}>
+                    <span className="text-7xl opacity-40">{style.emoji}</span>
+                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-400">No image</span>
+                </div>
+
+                {/* TYPE BADGE (top right) */}
+                <div className="absolute top-8 right-8 z-10">
+                    <div className={`${style.accent} text-white text-[9px] font-black px-5 py-2 rounded-full shadow-2xl uppercase tracking-[0.2em] border border-white/20 flex items-center gap-2`}>
+                        <span>{style.emoji}</span> {style.label}
+                    </div>
+                </div>
+
+                {/* STATUS BADGE (top left) */}
+                <div className="absolute top-8 left-8 z-10">
                     {booking.bookingStatus === 'pending' && (
                         <div className="bg-yellow-500/90 backdrop-blur-xl text-white text-[9px] font-black px-5 py-2 rounded-full shadow-2xl uppercase tracking-[0.2em] border border-white/20 flex items-center gap-2">
                             <Clock size={12} /> PENDING
@@ -308,50 +349,64 @@ function BookingCard({ booking, onCancel, disabled }) {
                     )}
                 </div>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
             </div>
 
             {/* Content */}
             <div className="p-10 flex-1 flex flex-col">
                 <div className="mb-6 flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-[10px] font-black text-orange-500 uppercase tracking-[0.2em] bg-orange-50 dark:bg-orange-950/30 px-3 py-1.5 rounded-lg">
+                    <div className={`flex items-center gap-3 text-[10px] font-black ${style.accentText} uppercase tracking-[0.2em] ${style.accentBg} dark:bg-opacity-20 px-3 py-1.5 rounded-lg`}>
                         <Clock size={14} strokeWidth={3} />
                         <span>{formatDate(booking.checkIn)} - {formatDate(booking.checkOut)}</span>
                     </div>
                 </div>
 
                 <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-3 line-clamp-1 uppercase tracking-tighter group-hover:text-orange-500 transition-colors duration-300">
-                    {home?.title || "Unknown Property"}
+                    {home?.title || booking.title || "Unknown"}
                 </h3>
 
                 <p className="text-gray-500 dark:text-gray-400 text-[10px] font-black flex items-center gap-2 mb-8 uppercase tracking-[0.2em] transition-colors">
-                    <MapPin size={16} className="text-orange-500" /> {home ? `${home.city}, ${home.address?.split(',').pop()}` : 'Unknown Location'}
+                    <MapPin size={16} className={style.accentText} />
+                    {home?.city || booking.city || 'Unknown Location'}
+                    {home?.address && `, ${home.address?.split(',').pop()}`}
                 </p>
 
-                {/* Premium Detail Row */}
+                {/* Show message for crashpad requests */}
+                {kind === 'crashpad' && booking.message && (
+                    <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-2xl border-l-4 border-blue-500">
+                        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-blue-500 mb-1">Your message</p>
+                        <p className="text-xs text-gray-700 dark:text-gray-300 italic line-clamp-2">"{booking.message}"</p>
+                    </div>
+                )}
+
+                {/* Detail Row */}
                 <div className="grid grid-cols-2 gap-8 py-8 border-t border-gray-50 dark:border-gray-800 mt-auto">
                     <div className="flex flex-col gap-2">
-                        <span className="text-[9px] font-black text-gray-400 uppercase tracking-[0.3em]">Guests</span>
+                        <span className="text-[9px] font-black text-gray-400 uppercase tracking-[0.3em]">
+                            {kind === 'buddy' ? 'Group' : 'Guests'}
+                        </span>
                         <div className="flex items-center gap-3 font-black text-xl text-gray-900 dark:text-white">
-                            <Users size={20} className="text-orange-500" />
+                            <Users size={20} className={style.accentText} />
                             <span>{booking.guests}</span>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 text-right">
-                        <span className="text-[9px] font-black text-gray-400 uppercase tracking-[0.3em]">Total</span>
+                        <span className="text-[9px] font-black text-gray-400 uppercase tracking-[0.3em]">
+                            {kind === 'buddy' ? 'Budget' : 'Total'}
+                        </span>
                         <div className="flex items-center justify-end gap-1 font-black text-2xl text-gray-900 dark:text-white">
-                            <IndianRupee size={20} strokeWidth={3} className="text-orange-500" />
-                            <span>{booking.totalPrice?.toLocaleString('en-IN')}</span>
+                            <IndianRupee size={20} strokeWidth={3} className={style.accentText} />
+                            <span>{(booking.totalPrice || 0).toLocaleString('en-IN')}</span>
                         </div>
                     </div>
                 </div>
 
-                {!disabled && !isCancelled && (
+                {!disabled && !isCancelled && kind === 'home' && (
                     <button
                         onClick={onCancel}
                         className="mt-8 w-full flex items-center justify-center gap-4 bg-gray-50 hover:bg-red-500 hover:text-white dark:bg-gray-800 dark:hover:bg-red-900/40 text-gray-400 dark:text-gray-500 hover:shadow-[0_20px_40px_-12px_rgba(239,68,68,0.3)] py-5 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 group/btn"
                     >
-                        <XCircle size={20} className="group-hover/btn:rotate-90 transition-transform duration-500" /> 
+                        <XCircle size={20} className="group-hover/btn:rotate-90 transition-transform duration-500" />
                         Cancel Reservation
                     </button>
                 )}

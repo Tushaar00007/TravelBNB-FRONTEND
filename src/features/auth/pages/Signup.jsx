@@ -5,7 +5,6 @@ import PasswordInput from "../components/PasswordInput";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { Loader2, User, Mail, Phone, Camera, ChevronRight, ChevronLeft, ArrowRight, ShieldCheck } from "lucide-react";
-import { GoogleLogin } from '@react-oauth/google';
 import OTPVerification from "../components/OTPVerification";
 import toast from "react-hot-toast";
 
@@ -75,6 +74,37 @@ export default function Signup() {
   const [transitioning, setTransitioning] = useState(false);
   const [initialOtp, setInitialOtp] = useState(null);
   const googleMounted = useRef(false);
+  const [passValid, setPassValid] = useState({ length: false, upper: false, special: false, noName: false });
+  const [strength, setStrength] = useState(0);
+
+  useEffect(() => {
+    const p = form.password;
+    const name = form.name.toLowerCase().trim();
+    
+    // Split name into parts and filter for real words (e.g. > 2 chars)
+    const nameParts = name.split(/\s+/).filter(part => part.length >= 3);
+    const containsAnyNamePart = nameParts.some(part => p.toLowerCase().includes(part));
+    
+    const v = {
+      length: p.length >= 8,
+      upper: /[A-Z]/.test(p),
+      special: /[!@#$%^&*]/.test(p),
+      noName: nameParts.length > 0 ? !containsAnyNamePart : true
+    };
+    
+    setPassValid(v);
+    
+    // Calculate strength (0-4)
+    let score = 0;
+    if (v.length) score++;
+    if (v.upper) score++;
+    if (v.special) score++;
+    if (v.length && score === 3 && v.noName) score = 4;
+    setStrength(score);
+    
+  }, [form.password, form.name]);
+
+  const isFormValid = Object.values(passValid).every(Boolean) && form.password === form.confirmPassword && form.email;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -128,21 +158,84 @@ export default function Signup() {
     toast.success("Phone verified! Almost done.");
   };
 
+  // Google Sign-In Initialization (GSI)
+  useEffect(() => {
+    /* global google */
+    const initializeGoogle = () => {
+      // Definitive guard to prevent duplicate initialization
+      if (window.googleInitializedSignup) return;
+      
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+      if (!clientId) return;
+
+      if (window.google && window.google.accounts) {
+        google.accounts.id.initialize({
+          client_id: clientId,
+          callback: handleGoogleCredentialResponse,
+          auto_select: false,
+          cancel_on_tap_outside: true
+        });
+
+        // Use a unique ID for the signup page button
+        const btnElement = document.getElementById("googleBtnSignup");
+        if (btnElement) {
+          google.accounts.id.renderButton(btnElement, {
+            theme: "outline",
+            size: "large",
+            shape: "pill",
+            width: 320 // Precise numeric width
+          });
+          
+          // Set flag immediately to prevent subsequent calls
+          window.googleInitializedSignup = true;
+        }
+      }
+    };
+
+    // Check availability with interval to ensure script load completes
+    const checkGoogle = setInterval(() => {
+      if (window.google && !window.googleInitializedSignup) {
+        initializeGoogle();
+        clearInterval(checkGoogle);
+      } else if (window.googleInitializedSignup) {
+        clearInterval(checkGoogle);
+      }
+    }, 100);
+
+    return () => clearInterval(checkGoogle);
+  }, []);
+
+  const handleGoogleCredentialResponse = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      const res = await API.post("/auth/google-login", { token: credentialResponse.credential });
+      
+      // If server says phone is missing, go to complete-google-signup
+      if (res.data.needs_phone) {
+        navigate("/complete-google-signup", { state: { token: credentialResponse.credential } });
+        return;
+      }
+      
+      const token = res.data.access_token;
+      const decoded = jwtDecode(token);
+      const userId = decoded.user_id || decoded.sub || decoded.id;
+      
+      Cookies.set("token", token);
+      Cookies.set("userId", userId);
+      
+      toast.success("Welcome to TravelBNB!");
+      navigate("/");
+    } catch (err) {
+      setApiError("Google registration failed. Please try the phone method.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isFormValid) return;
 
-    // Guard: if step 1 data is missing, redirect back to step 1
-    if (!form.name || !form.phone) {
-      toast.error("Missing account details. Please start from step 1.");
-      setStep(1);
-      return;
-    }
-
-    console.log("[Signup] handleSubmit — current form state:", form);
-
-    const errs = validateStep3(form);
-    if (Object.keys(errs).length) { setErrors(errs); return; }
-    
     setLoading(true);
     setApiError("");
     try {
@@ -152,7 +245,6 @@ export default function Signup() {
       fd.append("email", form.email);
       fd.append("phone", fullPhone);
       fd.append("password", form.password);
-
       await API.post("/auth/register", fd);
       toast.success("Registration complete! Please verify your email.");
       navigate("/login", { state: { message: "Account created! You can now sign in." } });
@@ -168,245 +260,79 @@ export default function Signup() {
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        .signup-root {
-          min-height: 100vh;
-          display: grid;
-          grid-template-columns: 0.85fr 1.15fr;
-          font-family: 'DM Sans', sans-serif;
-          background: #fff;
-        }
-        @media (max-width: 1024px) {
-          .signup-root { grid-template-columns: 1fr; }
-          .signup-visual { display: none !important; }
-        }
-
-        /* ── Visual ── */
-        .signup-visual {
-          position: relative;
-          overflow: hidden;
-          background: #000;
-        }
-        .slide-img {
-          position: absolute;
-          inset: 0;
-          width: 100%; height: 100%;
-          object-fit: cover;
-          transition: opacity 1.2s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          will-change: opacity, transform;
-        }
+        .signup-root { min-height: 100vh; display: grid; grid-template-columns: 0.85fr 1.15fr; font-family: 'DM Sans', sans-serif; background: #fff; }
+        @media (max-width: 1024px) { .signup-root { grid-template-columns: 1fr; } .signup-visual { display: none !important; } }
+        .signup-visual { position: relative; overflow: hidden; background: #000; }
+        .slide-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 1.2s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); will-change: opacity, transform; }
         .slide-img.active { opacity: 1; transform: scale(1.1); }
         .slide-img.exiting { opacity: 0; transform: scale(1.2); }
         .slide-img.hidden { opacity: 0; transform: scale(1.05); }
-
-        .panel-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            to bottom,
-            rgba(0,0,0,0),
-            rgba(0,0,0,0.2) 30%,
-            rgba(0,0,0,0.85) 100%
-          );
-          backdrop-filter: blur(1.5px);
-          z-index: 2;
-        }
-
-        .panel-content {
-          position: absolute;
-          inset: 0;
-          z-index: 3;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          padding: 4rem;
-        }
-
-        .brand-top {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.8rem;
-          font-weight: 900;
-          color: #fff;
-          letter-spacing: -0.01em;
-        }
-
+        .panel-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2) 30%, rgba(0,0,0,0.85) 100%); backdrop-filter: blur(1.5px); z-index: 2; }
+        .panel-content { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; justify-content: space-between; padding: 4rem; }
+        .brand-top { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: #fff; letter-spacing: -0.01em; }
         .city-block { margin-bottom: 0.5rem; }
-        .city-label {
-          display: inline-block;
-          font-size: 0.75rem;
-          font-weight: 700;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.7);
-          margin-bottom: 0.75rem;
-        }
-        .city-name {
-          font-family: 'Playfair Display', serif;
-          font-size: clamp(3rem, 5vw, 5.5rem);
-          font-weight: 900;
-          color: #fff;
-          line-height: 1;
-          letter-spacing: -0.02em;
-        }
+        .city-label { display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 0.75rem; }
+        .city-name { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5vw, 5.5rem); font-weight: 900; color: #fff; line-height: 1; letter-spacing: -0.02em; }
         .city-name.fade-out { opacity: 0; transform: translateY(15px); }
         .city-name.fade-in  { opacity: 1; transform: translateY(0); }
-
-        .city-tagline {
-          font-size: 1.15rem;
-          font-weight: 400;
-          color: rgba(255,255,255,0.8);
-          margin-top: 1rem;
-          line-height: 1.5;
-        }
-
+        .city-tagline { font-size: 1.15rem; font-weight: 400; color: rgba(255,255,255,0.8); margin-top: 1rem; line-height: 1.5; }
         .dots { display: flex; gap: 10px; margin-top: 2.5rem; }
-        .dot {
-          height: 4px; border-radius: 4px; background: rgba(255,255,255,0.3);
-          transition: all 0.4s ease; cursor: pointer;
-        }
+        .dot { height: 4px; border-radius: 4px; background: rgba(255,255,255,0.3); transition: all 0.4s ease; cursor: pointer; }
         .dot.active { width: 40px; background: #fff; }
         .dot:not(.active) { width: 12px; }
-
-        .form-panel {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: #fdfdfd;
-          padding: 3rem;
-          position: relative;
-        }
-
-        .signup-card {
-          width: 100%;
-          max-width: 448px;
-          background: #ffffff;
-          padding: 2.5rem;
-          border-radius: 1.5rem;
-          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-          border: 1px solid #e5e7eb;
-          animation: slideInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes slideInUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
+        .form-panel { display: flex; align-items: center; justify-content: center; background: #fdfdfd; padding: 3rem; position: relative; }
+        .signup-card { width: 100%; max-width: 448px; background: #ffffff; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); border: 1px solid #e5e7eb; animation: slideInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         .form-header { text-align: center; margin-bottom: 2rem; }
-
-        /* Step indicator */
-        .step-track {
-          display: flex; align-items: center; justify-content: center;
-          gap: 0.75rem; margin-bottom: 2rem;
-        }
-        .step-circle {
-          width: 32px; height: 32px; border-radius: 50%;
-          display: flex; align-items: center; justify-content: center;
-          font-size: 0.85rem; font-weight: 700;
-          transition: all 0.3s;
-        }
+        .step-track { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 2rem; }
+        .step-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; transition: all 0.3s; }
         .step-circle.done { background: #f97316; color: #fff; box-shadow: 0 4px 10px rgba(249,115,22,0.3); }
         .step-circle.active { background: #fff; color: #f97316; border: 2px solid #f97316; }
         .step-circle.pending { background: #f9fafb; color: #9ca3af; border: 1px solid #e5e7eb; }
-        .step-line {
-          width: 30px; height: 2px; border-radius: 2px;
-          transition: background 0.4s;
-        }
+        .step-line { width: 30px; height: 2px; border-radius: 2px; transition: background 0.4s; }
         .step-line.done { background: #f97316; }
         .step-line.pending { background: #e5e7eb; }
-
-        .form-title {
-          font-size: 1.875rem;
-          font-weight: 700;
-          color: #111827;
-          margin-bottom: 0.5rem;
-          letter-spacing: -0.025em;
-        }
+        .form-title { font-size: 1.875rem; font-weight: 700; color: #111827; margin-bottom: 0.5rem; letter-spacing: -0.025em; }
         .form-sub { font-size: 0.875rem; color: #6b7280; font-weight: 400; }
-
-        .divider {
-          display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0;
-        }
+        .divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; }
         .divider-line { flex: 1; height: 1px; background: #e5e7eb; }
         .divider-text { font-size: 0.75rem; color: #4b5563; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-
         .field-group { display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem; }
-        .label-text {
-          display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;
-        }
+        .label-text { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; }
         .field-wrap { position: relative; }
-        .input-icon {
-          position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
-          color: #6b7280; z-index: 10;
-        }
-
-        /* Country Code Selector */
-        .phone-group { display: flex; gap: 0.5rem; }
-        .country-select {
-          width: 100px; height: 3rem; background: #fff;
-          border: 1px solid #d1d5db; border-radius: 0.75rem;
-          padding: 0 0.5rem; font-size: 0.95rem; color: #111827;
-          outline: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-        }
-        .country-select:focus { border-color: #f97316; box-shadow: 0 0 0 4px rgba(249,115,22,0.1); }
-
-        .input-field {
-          width: 100%; height: 3rem; background: #ffffff;
-          border: 1px solid #d1d5db; border-radius: 0.75rem;
-          padding: 0 1rem 0 2.75rem; font-size: 0.95rem; color: #111827;
-          transition: all 0.2s; outline: none;
-        }
+        .input-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #6b7280; z-index: 10; }
+        .input-field { width: 100%; height: 3.2rem; background: #ffffff; border: 1.5px solid #e5e7eb; border-radius: 0.75rem; padding: 0 1rem 0 2.75rem; font-size: 0.95rem; color: #111827; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); outline: none; }
         .input-field.no-icon { padding-left: 1rem; }
-        .input-field:focus {
-          border-color: #f97316; box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(249,115,22,0.2);
-        }
+        .input-field:focus { border-color: #f97316; box-shadow: 0 0 0 4px rgba(249,115,22,0.1); transform: translateY(-1px); }
         .field-error { font-size: 0.75rem; color: #dc2626; margin-top: 0.375rem; font-weight: 500; }
-
-        .btn-primary {
-          width: 100%; height: 3rem;
-          background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
-          color: #fff; border: none; border-radius: 0.75rem;
-          font-weight: 700; font-size: 0.95rem; cursor: pointer;
-          display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-          transition: all 0.2s;
-          box-shadow: 0 4px 6px -1px rgba(249,115,22,0.2);
-        }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(249,115,22,0.3); }
-        .btn-primary:active { transform: scale(1); }
-        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
-
-        .btn-ghost {
-          height: 3.5rem; background: #fff;
-          border: 1.5px solid #f3f4f6; color: #4b5563;
-          border-radius: 1rem; padding: 0 1.5rem;
-          font-weight: 600; font-size: 1rem; cursor: pointer;
-          display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-          transition: all 0.2s;
-        }
-        .btn-ghost:hover { background: #f9fafb; border-color: #f97316; color: #f97316; }
-
-        .btn-row { display: flex; gap: 1rem; }
-        .btn-grow { flex: 1; }
-
-        .login-text { text-align: center; margin-top: 2rem; font-size: 1rem; color: #6b7280; }
-        .login-link { color: #f97316; font-weight: 700; text-decoration: none; margin-left: 4px; }
-        .login-link:hover { text-decoration: underline; }
-
-        .api-error-box {
-          background: #fff1f2; border: 1px solid #fecaca; color: #b91c1c;
-          padding: 1rem; border-radius: 1rem; font-size: 0.9rem;
-          margin-bottom: 1.5rem; text-align: center; font-weight: 500;
-        }
-
+        .btn-primary { width: 100%; height: 3.2rem; background: linear-gradient(135deg, #f97316 0%, #fb923c 100%); color: #fff; border: none; border-radius: 0.75rem; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 4px 6px -1px rgba(249,115,22,0.2); }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-3px) scale(1.01); box-shadow: 0 12px 20px -5px rgba(249,115,22,0.4); }
+        .btn-primary:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; filter: grayscale(0.5); }
+        .signup-text { text-align: center; margin-top: 2rem; font-size: 1rem; color: #6b7280; }
+        .signup-link { color: #f97316; font-weight: 700; text-decoration: none; margin-left: 4px; }
+        .signup-link:hover { text-decoration: underline; }
+        .api-error-box { background: #fff1f2; border: 1px solid #fecaca; color: #b91c1c; padding: 1rem; border-radius: 1rem; font-size: 0.9rem; margin-bottom: 1.5rem; text-align: center; font-weight: 500; }
         .spin { animation: spin 0.8s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .step-enter { animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(16px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .step-enter { animation: slideUp 0.35s cubic-bezier(0.4,0,0.2,1) both; }
+        /* Validation UI */
+        .v-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; }
+        .v-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #9ca3af; transition: all 0.3s; }
+        .v-item.active { color: #10b981; font-weight: 600; }
+        .v-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; font-size: 8px; }
+        .v-item.active .v-dot { background: #10b981; border-color: #10b981; color: white; }
+        
+        .strength-track { height: 4px; border-radius: 2px; background: #f3f4f6; margin-top: 0.75rem; overflow: hidden; display: flex; gap: 4px; }
+        .strength-bar { flex: 1; height: 100%; transition: all 0.5s ease-in-out; border-radius: 2px; }
+        .s-0 .strength-bar { background: #e5e7eb; }
+        .s-1 .b-1 { background: #ef4444; }
+        .s-2 .b-1, .s-2 .b-2 { background: #f59e0b; }
+        .s-3 .b-1, .s-3 .b-2, .s-3 .b-3 { background: #10b981; }
+        .s-4 .b-1, .s-4 .b-2, .s-4 .b-3, .s-4 .b-4 { background: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.5); }
       `}</style>
 
       <div className="signup-root">
@@ -438,13 +364,8 @@ export default function Signup() {
 
             {step === 1 && (
               <div className="step-enter">
-                <div className="google-btn-wrap" style={{ border: '1px solid #e5e7eb', borderRadius: '40px', overflow: 'hidden', marginBottom: '1.5rem' }}>
-                  {/* googleMounted ref prevents double-init warning from React StrictMode */}
-                  <GoogleLogin
-                    onSuccess={(res) => toast.success("Google login selected")}
-                    onError={() => setApiError("Google sign-in is unavailable. Please use phone signup.")}
-                    width="100%"
-                  />
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem', minHeight: '44px' }}>
+                  <div id="googleBtnSignup"></div>
                 </div>
 
                 <div className="divider">
@@ -523,21 +444,46 @@ export default function Signup() {
                   </div>
 
                   <div>
-                    <label className="label-text">Password</label>
-                    <PasswordInput name="password" value={form.password} onChange={handleChange} placeholder="Min. 8 characters" />
-                    {errors.password && <p className="field-error">{errors.password}</p>}
+                    <label className="label-text">Create Password</label>
+                    <PasswordInput name="password" value={form.password} onChange={handleChange} placeholder="Secure password" />
+                    
+                    <div className={`strength-track s-${strength}`}>
+                      <div className="strength-bar b-1" />
+                      <div className="strength-bar b-2" />
+                      <div className="strength-bar b-3" />
+                      <div className="strength-bar b-4" />
+                    </div>
+
+                    <ul className="v-list">
+                      <li className={`v-item ${passValid.length ? 'active' : ''}`}>
+                        <div className="v-dot">{passValid.length && "✓"}</div> 8+ Characters
+                      </li>
+                      <li className={`v-item ${passValid.upper ? 'active' : ''}`}>
+                        <div className="v-dot">{passValid.upper && "✓"}</div> 1 Uppercase
+                      </li>
+                      <li className={`v-item ${passValid.special ? 'active' : ''}`}>
+                        <div className="v-dot">{passValid.special && "✓"}</div> 1 Special Char
+                      </li>
+                      <li className={`v-item ${passValid.noName ? 'active' : ''}`}>
+                        <div className="v-dot">{passValid.noName && "✓"}</div> No name inclusion
+                      </li>
+                    </ul>
                   </div>
 
                   <div>
                     <label className="label-text">Confirm Password</label>
-                    <PasswordInput name="confirmPassword" value={form.confirmPassword} onChange={handleChange} placeholder="Repeat password" />
-                    {errors.confirmPassword && <p className="field-error">{errors.confirmPassword}</p>}
+                    <PasswordInput name="confirmPassword" value={form.confirmPassword} onChange={handleChange} placeholder="Verify password" />
+                    {form.confirmPassword && form.password !== form.confirmPassword && (
+                      <p className="field-error">Passwords do not match</p>
+                    )}
                   </div>
                 </div>
 
-                <button type="submit" disabled={loading} className="btn-primary">
-                  {loading ? <Loader2 size={18} className="spin" /> : <>Create Account <ArrowRight size={18} /></>}
-                </button>
+                <div style={{ marginTop: '2rem' }}>
+                  <button type="submit" disabled={loading || !isFormValid} className="btn-primary">
+                    {loading ? <Loader2 size={18} className="spin" /> : <>Create Account <ArrowRight size={18} /></>}
+                  </button>
+                </div>
               </form>
             )}
 
