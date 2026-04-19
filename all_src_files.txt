@@ -1,0 +1,222 @@
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/vercel.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/fix_shlok_role.py
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/vite.config.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/package-lock.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/package.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/eslint.config.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/context/HostContext.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/context/CurrencyContext.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/locales/mr/translation.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/locales/gu/translation.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/locales/pa/translation.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/locales/ml/translation.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/locales/kn/translation.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/locales/bn/translation.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/locales/hi/translation.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/locales/en/translation.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/locales/ta/translation.json
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/app/routes.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/app/App.css
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/app/App.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/test.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/host/components/BookingDetailsModal.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/host/pages/HostLocationPage.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/host/pages/EditCrashpad.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/host/pages/HostDashboard.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/host/pages/HostDetailsPage.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/host/pages/CrashpadStats.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/host/pages/HostAddressPage.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/host/pages/EditListingPage.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/auth/components/PasswordInput.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/auth/components/OTPVerification.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/auth/components/ReportModal.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/auth/components/VerificationBanner.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/auth/pages/Signup.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/auth/pages/ResetPassword.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/auth/pages/VerifyEmail.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/auth/pages/ForgotPassword.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/auth/pages/Login.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/auth/pages/CompleteGoogle.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/HeroSection.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/HeroContent.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/FilterSidebar.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/SearchHeader.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/ExploreIndia.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/HeroSlider.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/HeroSearchBar.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/WhySection.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/ListingGallery.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/PropertyTypes.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/CategoryRow.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/ResultsGrid.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/ListingCard.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/BookingPanel.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/SearchBar.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/components/TrendingDestinations.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/hooks/useProperties.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/pages/HomeDetails.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/pages/CreateListing.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/pages/Search.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/pages/Home.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/listings/pages/EditProperty.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/components/Header.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/components/ChartCard.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/components/Sidebar.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/components/ListingDetailsModal.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/components/CrashpadDetailsModal.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/components/StatCard.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/ActivityLogs.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/CouponsManager.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/AdminLayout.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/AdminRoute.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/Notifications.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/Payments.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/AdminSetup.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/CreateAdmin.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/DevAdmin.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/SendPromotions.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/BulkUpload.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/CrashpadsTable.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/Support.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/EmailCampaigns.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/Dashboard.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/Reports.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/TravelBuddyTable.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/BookingsTable.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/ListingsTable.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/AdminAnalytics.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/admin/pages/UsersTable.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/components/CrashpadHero.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/components/CrashpadCard.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/components/LocationStep.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/components/ExperienceBenefits.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/components/FiltersBar.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/components/CommunitySection.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/components/CustomDropdown.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/components/RequestModal.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/components/ImageUpload.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/components/HowItWorks.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/pages/CrashpadDetails.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/pages/Crashpads.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/crashpads/pages/CreateCrashpad.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/user/components/GuestProfileModal.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/user/components/ConversationList.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/user/components/ChatWindow.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/user/pages/Profile.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/user/pages/MyBookings.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/user/pages/HostDashboard.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/user/pages/Messages.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/user/pages/BecomeHost.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/user/pages/BecomeAHost.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/travel/components/AvatarCluster.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/travel/components/BuddySearchBar.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/travel/components/TravelBuddyHero.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/travel/pages/ItineraryEditorPage.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/travel/pages/EditTravelBuddy.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/travel/pages/AiPlanner.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/travel/pages/Trips.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/travel/pages/TravelBuddy.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/travel/pages/TripDetails.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/travel/pages/BuddySearch.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/features/travel/pages/CreateTravelBuddy.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/utils/constants.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/utils/auth.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/utils/cn.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/utils/convertCurrency.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/index.css
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/shared/stores/useHostOnboardingStore.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/shared/stores/useSearchStore.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/TripChat.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/ui/Dropdown.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/ui/PremiumInput.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/ui/CustomDropdown.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/ui/SectionDivider.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/TripOverview.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/PlaceDetailModal.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/TravelChatbot.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/ShareModal.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/layout/Footer.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/layout/CreationLayout.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/layout/MainLayout.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/LanguageSwitcher.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/PropertyTypeCard.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/CurrencySwitcher.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/ItineraryEditor.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/shared/GoogleMapsProvider.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/shared/PlaceAutocomplete.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/StatsModal.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/TripExpenses.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/GoogleMapPanel.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/Navbar.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/TripMembers.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/ReviewCard.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/components/EmojiPicker.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/hooks/useClickOutside.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/main.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/assets/images/index.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/pages/PaymentPage.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/pages/TravelBuddyDetail.jsx
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/i18n.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/services/maps.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/services/crashpads.js
+/Users/tushaarrohatgi/Developer/BNB NEW/travelbnb-frontend/src/services/api.js
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/fix_role.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/test_resend.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/core/config.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/core/database.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/core/__init__.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/core/dependencies.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/__init__.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/utils/security.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/utils/rate_limiter.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/utils/__init__.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/utils/email.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/utils/trip_helpers.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/utils/email_template.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/models/__init__.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/models/crashpad.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/models/schemas.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/__init__.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/auth.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/crashpads.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/maps.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/itinerary.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/reviews.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/expenses.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/homes.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/users.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/host.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/bookings.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/otp.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/travel_buddy.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/__init__.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/ml.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/admin.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/trust.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/messages.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/uploads.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/api/routes/trips.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/main.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/services/sarvam_service.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/services/ml_service.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/services/__init__.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/app/services/email_service.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/migrate_images.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/make_superadmin.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/migrate_location_schema.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/fix_coords.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/fix_password.py
+/Users/tushaarrohatgi/Developer/BNB NEW/TRAVELBNB BACKEND/main.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/tests/test_api.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/scripts/merge_datasets.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/scripts/enrich_dataset.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/scripts/train_clusters.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/main.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/verification_res.json
+/Users/tushaarrohatgi/Developer/planner/Ml_model/src/itinerary.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/src/hotels.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/src/pdf_generator.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/src/predict.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/src/cluster_engine.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/src/train.py
+/Users/tushaarrohatgi/Developer/planner/Ml_model/src/preference_matcher.py

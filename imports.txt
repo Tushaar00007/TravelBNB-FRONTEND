@@ -1,0 +1,1043 @@
+./fix_shlok_role.py:1:from pymongo import MongoClient
+./fix_shlok_role.py:2:import os
+./vite.config.js:1:import { defineConfig } from 'vite'
+./vite.config.js:2:import react from '@vitejs/plugin-react'
+./vite.config.js:3:import tailwindcss from '@tailwindcss/vite'
+./package-lock.json:5:  "requires": true,
+./package-lock.json:156:      "resolved": "https://registry.npmjs.org/@babel/helper-module-imports/-/helper-module-imports-7.28.6.tgz",
+./package-lock.json:175:        "@babel/helper-module-imports": "^7.28.6",
+./package-lock.json:909:        "import-fresh": "^3.2.1",
+./package-lock.json:1083:      "resolved": "https://registry.npmjs.org/@humanwhocodes/module-importer/-/module-importer-1.0.1.tgz",
+./package-lock.json:2141:        "proxy-from-env": "^1.1.0"
+./package-lock.json:2732:        "@humanwhocodes/module-importer": "^1.0.1",
+./package-lock.json:3335:      "resolved": "https://registry.npmjs.org/import-fresh/-/import-fresh-3.3.1.tgz",
+./package-lock.json:3341:        "resolve-from": "^4.0.0"
+./package-lock.json:4114:      "resolved": "https://registry.npmjs.org/proxy-from-env/-/proxy-from-env-1.1.0.tgz",
+./package-lock.json:4385:      "resolved": "https://registry.npmjs.org/resolve-from/-/resolve-from-4.0.0.tgz",
+./eslint.config.js:1:import js from '@eslint/js'
+./eslint.config.js:2:import globals from 'globals'
+./eslint.config.js:3:import reactHooks from 'eslint-plugin-react-hooks'
+./eslint.config.js:4:import reactRefresh from 'eslint-plugin-react-refresh'
+./eslint.config.js:5:import { defineConfig, globalIgnores } from 'eslint/config'
+./src/context/HostContext.jsx:1:import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+./src/context/HostContext.jsx:2:import API from "../services/api";
+./src/context/HostContext.jsx:3:import Cookies from "js-cookie";
+./src/context/HostContext.jsx:20:    const [loading, setLoading] = useState(false); // Default to false as we load from localStorage
+./src/context/HostContext.jsx:32:            // Fetch fresh status from the backend
+./src/context/HostContext.jsx:34:            // Use the new inclusive logic from the backend response
+./src/context/CurrencyContext.jsx:1:import { createContext, useState, useEffect } from 'react';
+./src/context/CurrencyContext.jsx:2:import { fetchExchangeRate } from '../utils/convertCurrency';
+./src/context/CurrencyContext.jsx:3:import Cookies from 'js-cookie';
+./src/app/routes.jsx:1:import { lazy } from "react";
+./src/app/routes.jsx:2:import { Navigate, useLocation } from "react-router-dom";
+./src/app/routes.jsx:3:import Cookies from "js-cookie";
+./src/app/routes.jsx:18:const Login = lazy(() => import("../features/auth/pages/Login"));
+./src/app/routes.jsx:19:const Signup = lazy(() => import("../features/auth/pages/Signup"));
+./src/app/routes.jsx:20:const ForgotPassword = lazy(() => import("../features/auth/pages/ForgotPassword"));
+./src/app/routes.jsx:21:const ResetPassword = lazy(() => import("../features/auth/pages/ResetPassword"));
+./src/app/routes.jsx:22:const VerifyEmail = lazy(() => import("../features/auth/pages/VerifyEmail"));
+./src/app/routes.jsx:23:const CompleteGoogleSignup = lazy(() => import("../features/auth/pages/CompleteGoogle"));
+./src/app/routes.jsx:26:const Home = lazy(() => import("../features/listings/pages/Home"));
+./src/app/routes.jsx:27:const Search = lazy(() => import("../features/listings/pages/Search"));
+./src/app/routes.jsx:28:const HomeDetails = lazy(() => import("../features/listings/pages/HomeDetails"));
+./src/app/routes.jsx:29:const CreateListing = lazy(() => import("../features/listings/pages/CreateListing"));
+./src/app/routes.jsx:31:const HostAddressPage = lazy(() => import("../features/host/pages/HostAddressPage"));
+./src/app/routes.jsx:32:const HostLocationPage = lazy(() => import("../features/host/pages/HostLocationPage"));
+./src/app/routes.jsx:33:const HostDetailsPage = lazy(() => import("../features/host/pages/HostDetailsPage"));
+./src/app/routes.jsx:34:const EditProperty = lazy(() => import("../features/listings/pages/EditProperty"));
+./src/app/routes.jsx:37:const AiPlanner = lazy(() => import("../features/travel/pages/AiPlanner"));
+./src/app/routes.jsx:38:const ItineraryEditorPage = lazy(() => import("../features/travel/pages/ItineraryEditorPage"));
+./src/app/routes.jsx:39:const Trips = lazy(() => import("../features/travel/pages/Trips"));
+./src/app/routes.jsx:40:const TripDetails = lazy(() => import("../features/travel/pages/TripDetails"));
+./src/app/routes.jsx:41:const CreateTravelBuddy = lazy(() => import("../features/travel/pages/CreateTravelBuddy"));
+./src/app/routes.jsx:42:const TravelBuddy = lazy(() => import("../features/travel/pages/TravelBuddy"));
+./src/app/routes.jsx:43:const BuddySearch = lazy(() => import("../features/travel/pages/BuddySearch"));
+./src/app/routes.jsx:46:const HostDashboard = lazy(() => import("../features/host/pages/HostDashboard"));
+./src/app/routes.jsx:47:const CrashpadAnalytics = lazy(() => import("../features/host/pages/CrashpadStats"));
+./src/app/routes.jsx:48:const EditListingPage = lazy(() => import("../features/host/pages/EditListingPage"));
+./src/app/routes.jsx:49:const EditCrashpad = lazy(() => import("../features/host/pages/EditCrashpad"));
+./src/app/routes.jsx:50:const EditTravelBuddy = lazy(() => import("../features/travel/pages/EditTravelBuddy"));
+./src/app/routes.jsx:53:const Crashpads = lazy(() => import("../features/crashpads/pages/Crashpads"));
+./src/app/routes.jsx:54:const CrashpadDetails = lazy(() => import("../features/crashpads/pages/CrashpadDetails"));
+./src/app/routes.jsx:55:const CreateCrashpad = lazy(() => import("../features/crashpads/pages/CreateCrashpad"));
+./src/app/routes.jsx:58:const Profile = lazy(() => import("../features/user/pages/Profile"));
+./src/app/routes.jsx:59:const BecomeHost = lazy(() => import("../features/user/pages/BecomeHost"));
+./src/app/routes.jsx:60:const BecomeAHost = lazy(() => import("../features/user/pages/BecomeAHost"));
+./src/app/routes.jsx:61:const MyBookings = lazy(() => import("../features/user/pages/MyBookings"));
+./src/app/routes.jsx:62:const OldHostDashboard = lazy(() => import("../features/user/pages/HostDashboard"));
+./src/app/routes.jsx:63:const Messages = lazy(() => import("../features/user/pages/Messages"));
+./src/app/routes.jsx:64:const TravelBuddyDetail = lazy(() => import("../pages/TravelBuddyDetail"));
+./src/app/routes.jsx:65:const PaymentPage = lazy(() => import("../pages/PaymentPage"));
+./src/app/routes.jsx:68:const AdminRoute = lazy(() => import("../features/admin/pages/AdminRoute"));
+./src/app/routes.jsx:69:const AdminLayout = lazy(() => import("../features/admin/pages/AdminLayout"));
+./src/app/routes.jsx:70:const Dashboard = lazy(() => import("../features/admin/pages/Dashboard"));
+./src/app/routes.jsx:71:const UsersTable = lazy(() => import("../features/admin/pages/UsersTable"));
+./src/app/routes.jsx:72:const ListingsTable = lazy(() => import("../features/admin/pages/ListingsTable"));
+./src/app/routes.jsx:73:const BookingsTable = lazy(() => import("../features/admin/pages/BookingsTable"));
+./src/app/routes.jsx:74:const CouponsManager = lazy(() => import("../features/admin/pages/CouponsManager"));
+./src/app/routes.jsx:75:const ActivityLogs = lazy(() => import("../features/admin/pages/ActivityLogs"));
+./src/app/routes.jsx:76:const AdminSetup = lazy(() => import("../features/admin/pages/AdminSetup"));
+./src/app/routes.jsx:77:const CreateAdmin = lazy(() => import("../features/admin/pages/CreateAdmin"));
+./src/app/routes.jsx:78:const AdminAnalytics = lazy(() => import("../features/admin/pages/AdminAnalytics"));
+./src/app/routes.jsx:79:const Reports = lazy(() => import("../features/admin/pages/Reports"));
+./src/app/routes.jsx:80:const Payments = lazy(() => import("../features/admin/pages/Payments"));
+./src/app/routes.jsx:81:const CrashpadsTable = lazy(() => import("../features/admin/pages/CrashpadsTable"));
+./src/app/routes.jsx:82:const TravelBuddyTable = lazy(() => import("../features/admin/pages/TravelBuddyTable"));
+./src/app/routes.jsx:83:const Notifications = lazy(() => import("../features/admin/pages/Notifications"));
+./src/app/routes.jsx:84:const Support = lazy(() => import("../features/admin/pages/Support"));
+./src/app/routes.jsx:85:const BulkUpload = lazy(() => import("../features/admin/pages/BulkUpload"));
+./src/app/routes.jsx:86:const EmailCampaigns = lazy(() => import("../features/admin/pages/EmailCampaigns"));
+./src/app/routes.jsx:87:const DevAdmin = lazy(() => import("../features/admin/pages/DevAdmin"));
+./src/app/routes.jsx:89:import MainLayout from "../components/layout/MainLayout";
+./src/app/App.css:22:  from {
+./src/app/App.jsx:1:import React, { useEffect, Suspense } from "react";
+./src/app/App.jsx:2:import { BrowserRouter, Routes, Route } from "react-router-dom";
+./src/app/App.jsx:3:import Cookies from "js-cookie";
+./src/app/App.jsx:4:import { Toaster } from "react-hot-toast";
+./src/app/App.jsx:5:import { routes } from "./routes";
+./src/app/App.jsx:6:import { Loader2 } from "lucide-react";
+./src/features/host/components/BookingDetailsModal.jsx:1:import { createPortal } from 'react-dom';
+./src/features/host/components/BookingDetailsModal.jsx:2:import { useState, useEffect } from 'react';
+./src/features/host/components/BookingDetailsModal.jsx:3:import {
+./src/features/host/components/BookingDetailsModal.jsx:9:} from 'lucide-react';
+./src/features/host/components/BookingDetailsModal.jsx:10:import API from '../../../services/api';
+./src/features/host/components/BookingDetailsModal.jsx:11:import { useNavigate } from 'react-router-dom';
+./src/features/host/components/BookingDetailsModal.jsx:12:import toast from 'react-hot-toast';
+./src/features/host/components/BookingDetailsModal.jsx:429:                    <AlertCircle size={15} /> Note from Guest
+./src/features/host/pages/HostLocationPage.jsx:1:import { useState, useEffect, useRef } from "react";
+./src/features/host/pages/HostLocationPage.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/host/pages/HostLocationPage.jsx:3:import { 
+./src/features/host/pages/HostLocationPage.jsx:5:} from "lucide-react";
+./src/features/host/pages/HostLocationPage.jsx:6:import CreationLayout from "../../../components/layout/CreationLayout";
+./src/features/host/pages/HostLocationPage.jsx:7:import { useHostOnboardingStore } from "../../../shared/stores/useHostOnboardingStore";
+./src/features/host/pages/HostLocationPage.jsx:8:import LocationStep from "../../crashpads/components/LocationStep";
+./src/features/host/pages/HostLocationPage.jsx:9:import { geocodeAddress } from "../../../services/maps";
+./src/features/host/pages/EditCrashpad.jsx:1:import { useState, useEffect } from "react";
+./src/features/host/pages/EditCrashpad.jsx:2:import { useNavigate, useParams } from "react-router-dom";
+./src/features/host/pages/EditCrashpad.jsx:3:import Cookies from "js-cookie";
+./src/features/host/pages/EditCrashpad.jsx:4:import API from "../../../services/api";
+./src/features/host/pages/EditCrashpad.jsx:5:import { motion, AnimatePresence } from "framer-motion";
+./src/features/host/pages/EditCrashpad.jsx:6:import { useHost } from "../../../context/HostContext";
+./src/features/host/pages/EditCrashpad.jsx:8:import {
+./src/features/host/pages/EditCrashpad.jsx:11:} from "lucide-react";
+./src/features/host/pages/EditCrashpad.jsx:12:import LocationStep from "../../crashpads/components/LocationStep";
+./src/features/host/pages/EditCrashpad.jsx:13:import ImageUpload from "../../crashpads/components/ImageUpload";
+./src/features/host/pages/EditCrashpad.jsx:14:import toast from "react-hot-toast";
+./src/features/host/pages/EditCrashpad.jsx:134:            if (!value) error = "Title is required";
+./src/features/host/pages/EditCrashpad.jsx:138:            if (!value) error = "Description is required";
+./src/features/host/pages/EditCrashpad.jsx:143:            else if (!value) error = "Host bio is required";
+./src/features/host/pages/EditCrashpad.jsx:381:                                {validationErrors.description && <p className="text-[10px] font-bold text-red-500 ml-1 mt-1">{validationErrors.description || "Min 20 characters required"}</p>}
+./src/features/host/pages/HostDashboard.jsx:1:import React, { useState, useEffect, useCallback, useMemo } from 'react';
+./src/features/host/pages/HostDashboard.jsx:2:import { useNavigate, Link } from 'react-router-dom';
+./src/features/host/pages/HostDashboard.jsx:3:import API from '../../../services/api';
+./src/features/host/pages/HostDashboard.jsx:4:import {
+./src/features/host/pages/HostDashboard.jsx:14:} from 'lucide-react';
+./src/features/host/pages/HostDashboard.jsx:15:import { 
+./src/features/host/pages/HostDashboard.jsx:18:} from 'recharts';
+./src/features/host/pages/HostDashboard.jsx:19:import { motion, AnimatePresence } from 'framer-motion';
+./src/features/host/pages/HostDashboard.jsx:20:import { toast } from 'react-hot-toast';
+./src/features/host/pages/HostDashboard.jsx:21:import ConversationList from '../../user/components/ConversationList';
+./src/features/host/pages/HostDashboard.jsx:22:import ChatWindow from '../../user/components/ChatWindow';
+./src/features/host/pages/HostDashboard.jsx:252:      navigate(`/travel-buddy/${id}`, { state: { trip: listing, fromDashboard: true } });
+./src/features/host/pages/HostDashboard.jsx:254:      navigate(`/crashpads/${id}`, { state: { listing, fromDashboard: true } });
+./src/features/host/pages/HostDashboard.jsx:256:      navigate(`/homes/${id}`, { state: { listing, fromDashboard: true } });
+./src/features/host/pages/HostDashboard.jsx:599:    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+./src/features/host/pages/HostDashboard.jsx:1234:                                  Message from guest
+./src/features/host/pages/HostDashboard.jsx:1591:                  <p className="text-gray-400 font-medium">We'll alert you here when new actions are required.</p>
+./src/features/host/pages/HostDetailsPage.jsx:1:import { useState } from "react";
+./src/features/host/pages/HostDetailsPage.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/host/pages/HostDetailsPage.jsx:3:import Cookies from "js-cookie";
+./src/features/host/pages/HostDetailsPage.jsx:4:import { motion, AnimatePresence } from "framer-motion";
+./src/features/host/pages/HostDetailsPage.jsx:5:import { 
+./src/features/host/pages/HostDetailsPage.jsx:9:} from "lucide-react";
+./src/features/host/pages/HostDetailsPage.jsx:11:import API from "../../../services/api";
+./src/features/host/pages/HostDetailsPage.jsx:12:import CreationLayout from "../../../components/layout/CreationLayout";
+./src/features/host/pages/HostDetailsPage.jsx:13:import { useHostOnboardingStore } from "../../../shared/stores/useHostOnboardingStore";
+./src/features/host/pages/HostDetailsPage.jsx:14:import { useHost } from "../../../context/HostContext";
+./src/features/host/pages/HostDetailsPage.jsx:15:import ImageUpload from "../../crashpads/components/ImageUpload";
+./src/features/host/pages/HostDetailsPage.jsx:16:import { toast } from "react-hot-toast";
+./src/features/host/pages/CrashpadStats.jsx:1:import { useState, useEffect } from "react";
+./src/features/host/pages/CrashpadStats.jsx:2:import { useParams, useNavigate } from "react-router-dom";
+./src/features/host/pages/CrashpadStats.jsx:3:import { 
+./src/features/host/pages/CrashpadStats.jsx:6:} from "lucide-react";
+./src/features/host/pages/CrashpadStats.jsx:7:import { 
+./src/features/host/pages/CrashpadStats.jsx:10:} from "recharts";
+./src/features/host/pages/CrashpadStats.jsx:11:import API from "../../../services/api";
+./src/features/host/pages/CrashpadStats.jsx:12:import { motion } from "framer-motion";
+./src/features/host/pages/HostAddressPage.jsx:1:import { useState } from "react";
+./src/features/host/pages/HostAddressPage.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/host/pages/HostAddressPage.jsx:3:import { motion } from "framer-motion";
+./src/features/host/pages/HostAddressPage.jsx:4:import { 
+./src/features/host/pages/HostAddressPage.jsx:6:} from "lucide-react";
+./src/features/host/pages/HostAddressPage.jsx:7:import CreationLayout from "../../../components/layout/CreationLayout";
+./src/features/host/pages/HostAddressPage.jsx:8:import { useHostOnboardingStore } from "../../../shared/stores/useHostOnboardingStore";
+./src/features/host/pages/HostAddressPage.jsx:9:import LocationStep from "../../crashpads/components/LocationStep";
+./src/features/host/pages/EditListingPage.jsx:1:import React, { useState, useEffect } from 'react';
+./src/features/host/pages/EditListingPage.jsx:2:import { useNavigate, useParams } from 'react-router-dom';
+./src/features/host/pages/EditListingPage.jsx:3:import {
+./src/features/host/pages/EditListingPage.jsx:10:} from 'lucide-react';
+./src/features/host/pages/EditListingPage.jsx:11:import API from '../../../services/api';
+./src/features/host/pages/EditListingPage.jsx:12:import toast from 'react-hot-toast';
+./src/features/host/pages/EditListingPage.jsx:13:import { motion } from 'framer-motion';
+./src/features/host/pages/EditListingPage.jsx:178:    // Relative path helper derived from VITE_API_BASE_URL
+./src/features/host/pages/EditListingPage.jsx:179:    const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
+./src/features/host/pages/EditListingPage.jsx:187:    const selectedFiles = Array.from(e.target.files);
+./src/features/host/pages/EditListingPage.jsx:286:        <header className="flex items-center justify-between mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
+./src/features/host/pages/EditListingPage.jsx:317:          <div className="animate-in fade-in slide-in-from-left-4 duration-700 delay-100">
+./src/features/host/pages/EditListingPage.jsx:482:          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-700 delay-200">
+./src/features/auth/components/PasswordInput.jsx:1:import { useState } from "react";
+./src/features/auth/components/PasswordInput.jsx:2:import { Eye, EyeOff, Lock } from "lucide-react";
+./src/features/auth/components/OTPVerification.jsx:1:import { useState, useEffect, useRef } from "react";
+./src/features/auth/components/OTPVerification.jsx:2:import { Loader2, ShieldCheck, Timer, RefreshCw, Smartphone, Copy, Check, Info } from "lucide-react";
+./src/features/auth/components/OTPVerification.jsx:3:import toast from "react-hot-toast";
+./src/features/auth/components/OTPVerification.jsx:4:import API from "../../../services/api";
+./src/features/auth/components/OTPVerification.jsx:128:    <div className="otp-container animate-in fade-in slide-in-from-bottom-4 duration-500">
+./src/features/auth/components/OTPVerification.jsx:276:          from { opacity: 0; transform: translateY(-10px); }
+./src/features/auth/components/ReportModal.jsx:1:import React, { useState } from "react";
+./src/features/auth/components/ReportModal.jsx:2:import { AlertTriangle, Send, X, Loader2, ShieldAlert } from "lucide-react";
+./src/features/auth/components/ReportModal.jsx:3:import API from "../../../services/api";
+./src/features/auth/components/ReportModal.jsx:4:import { toast } from "react-hot-toast";
+./src/features/auth/components/VerificationBanner.jsx:1:import React, { useState, useEffect } from "react";
+./src/features/auth/components/VerificationBanner.jsx:2:import { Mail, Send, CheckCircle, X, Loader2, Timer } from "lucide-react";
+./src/features/auth/components/VerificationBanner.jsx:3:import API from "../../../services/api";
+./src/features/auth/components/VerificationBanner.jsx:4:import { toast } from "react-hot-toast";
+./src/features/auth/pages/Signup.jsx:1:import { useState, useRef, useEffect, useCallback } from "react";
+./src/features/auth/pages/Signup.jsx:2:import { Link, useNavigate } from "react-router-dom";
+./src/features/auth/pages/Signup.jsx:3:import API from "../../../services/api";
+./src/features/auth/pages/Signup.jsx:4:import PasswordInput from "../components/PasswordInput";
+./src/features/auth/pages/Signup.jsx:5:import Cookies from "js-cookie";
+./src/features/auth/pages/Signup.jsx:6:import { jwtDecode } from "jwt-decode";
+./src/features/auth/pages/Signup.jsx:7:import { Loader2, User, Mail, Phone, Camera, ChevronRight, ChevronLeft, ArrowRight, ShieldCheck } from "lucide-react";
+./src/features/auth/pages/Signup.jsx:8:import OTPVerification from "../components/OTPVerification";
+./src/features/auth/pages/Signup.jsx:9:import toast from "react-hot-toast";
+./src/features/auth/pages/Signup.jsx:168:      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+./src/features/auth/pages/Signup.jsx:262:        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+./src/features/auth/pages/Signup.jsx:265:        @media (max-width: 1024px) { .signup-root { grid-template-columns: 1fr; } .signup-visual { display: none !important; } }
+./src/features/auth/pages/Signup.jsx:286:        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+./src/features/auth/pages/Signup.jsx:318:        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+./src/features/auth/pages/Signup.jsx:320:        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+./src/features/auth/pages/ResetPassword.jsx:1:import { useState } from "react";
+./src/features/auth/pages/ResetPassword.jsx:2:import { Link, useNavigate, useSearchParams } from "react-router-dom";
+./src/features/auth/pages/ResetPassword.jsx:3:import API from "../../../services/api";
+./src/features/auth/pages/ResetPassword.jsx:4:import PasswordInput from "../components/PasswordInput";
+./src/features/auth/pages/ResetPassword.jsx:5:import { Loader2, ArrowLeft, CheckCircle2, Lock } from "lucide-react";
+./src/features/auth/pages/ResetPassword.jsx:46:        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-amber-50 px-4">
+./src/features/auth/pages/ResetPassword.jsx:60:                                ⚠ No reset token found. Please use the link from your email.
+./src/features/auth/pages/VerifyEmail.jsx:1:import React, { useEffect, useState } from "react";
+./src/features/auth/pages/VerifyEmail.jsx:2:import { useSearchParams, useNavigate } from "react-router-dom";
+./src/features/auth/pages/VerifyEmail.jsx:3:import { ShieldCheck, ShieldAlert, Loader2, Home, LogIn } from "lucide-react";
+./src/features/auth/pages/VerifyEmail.jsx:4:import API from "../../../services/api";
+./src/features/auth/pages/VerifyEmail.jsx:5:import { toast } from "react-hot-toast";
+./src/features/auth/pages/ForgotPassword.jsx:1:import { useState } from "react";
+./src/features/auth/pages/ForgotPassword.jsx:2:import { Link } from "react-router-dom";
+./src/features/auth/pages/ForgotPassword.jsx:3:import API from "../../../services/api";
+./src/features/auth/pages/ForgotPassword.jsx:4:import { Mail, Loader2, ArrowLeft, CheckCircle2, Key, Copy, Check } from "lucide-react";
+./src/features/auth/pages/ForgotPassword.jsx:5:import { toast } from "react-hot-toast";
+./src/features/auth/pages/ForgotPassword.jsx:44:        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-amber-50 px-4">
+./src/features/auth/pages/Login.jsx:1:import { useState, useEffect } from "react";
+./src/features/auth/pages/Login.jsx:2:import { Link, useNavigate, useLocation } from "react-router-dom";
+./src/features/auth/pages/Login.jsx:3:import Cookies from "js-cookie";
+./src/features/auth/pages/Login.jsx:4:import { jwtDecode } from "jwt-decode";
+./src/features/auth/pages/Login.jsx:5:import API from "../../../services/api";
+./src/features/auth/pages/Login.jsx:6:import PasswordInput from "../components/PasswordInput";
+./src/features/auth/pages/Login.jsx:7:import { Loader2, Mail, ArrowRight, Smartphone, ShieldCheck } from "lucide-react";
+./src/features/auth/pages/Login.jsx:8:import OTPVerification from "../components/OTPVerification";
+./src/features/auth/pages/Login.jsx:9:import toast from "react-hot-toast";
+./src/features/auth/pages/Login.jsx:94:      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+./src/features/auth/pages/Login.jsx:234:        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+./src/features/auth/pages/Login.jsx:237:        @media (max-width: 1024px) { .login-root { grid-template-columns: 1fr; } .visual-panel { display: none !important; } }
+./src/features/auth/pages/Login.jsx:258:        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+./src/features/auth/pages/Login.jsx:293:        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+./src/features/auth/pages/CompleteGoogle.jsx:1:import { useState } from "react";
+./src/features/auth/pages/CompleteGoogle.jsx:2:import { useLocation, useNavigate, Link } from "react-router-dom";
+./src/features/auth/pages/CompleteGoogle.jsx:3:import API from "../../../services/api";
+./src/features/auth/pages/CompleteGoogle.jsx:4:import Cookies from "js-cookie";
+./src/features/auth/pages/CompleteGoogle.jsx:5:import { jwtDecode } from "jwt-decode";
+./src/features/auth/pages/CompleteGoogle.jsx:6:import { Phone, Loader2, ChevronRight } from "lucide-react";
+./src/features/auth/pages/CompleteGoogle.jsx:59:        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white px-6">
+./src/features/auth/pages/CompleteGoogle.jsx:97:                    We use your phone number for important booking updates only.
+./src/features/listings/components/HeroSection.jsx:1:import React from "react";
+./src/features/listings/components/HeroSection.jsx:2:import HeroSlider from "./HeroSlider";
+./src/features/listings/components/HeroSection.jsx:3:import HeroContent from "./HeroContent";
+./src/features/listings/components/HeroSection.jsx:4:import HeroSearchBar from "./HeroSearchBar";
+./src/features/listings/components/HeroSection.jsx:23:            <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#F8FAFC] dark:from-gray-950 to-transparent z-10" />
+./src/features/listings/components/HeroContent.jsx:1:import React from 'react';
+./src/features/listings/components/HeroContent.jsx:2:import { motion } from 'framer-motion';
+./src/features/listings/components/FilterSidebar.jsx:1:import React from 'react';
+./src/features/listings/components/FilterSidebar.jsx:2:import { SlidersHorizontal, X, Check, Wifi, Waves, UtensilsCrossed, Laptop, Dumbbell } from 'lucide-react';
+./src/features/listings/components/FilterSidebar.jsx:3:import { useSearchStore } from '../../../shared/stores/useSearchStore';
+./src/features/listings/components/SearchHeader.jsx:1:import React from 'react';
+./src/features/listings/components/SearchHeader.jsx:2:import { SlidersHorizontal, ChevronDown, LayoutGrid, List, X } from 'lucide-react';
+./src/features/listings/components/SearchHeader.jsx:3:import { useSearchStore } from '../../../shared/stores/useSearchStore';
+./src/features/listings/components/ExploreIndia.jsx:1:import { images } from "../../../assets/images";
+./src/features/listings/components/ExploreIndia.jsx:32:                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+./src/features/listings/components/HeroSlider.jsx:1:import React, { useState, useEffect, useCallback } from 'react';
+./src/features/listings/components/HeroSlider.jsx:2:import { motion, AnimatePresence } from 'framer-motion';
+./src/features/listings/components/HeroSlider.jsx:3:import { ChevronLeft, ChevronRight } from 'lucide-react';
+./src/features/listings/components/HeroSlider.jsx:5:import hero1 from "../../../assets/images/hero/hero1.jpg";
+./src/features/listings/components/HeroSlider.jsx:6:import hero2 from "../../../assets/images/hero/hero2.jpg";
+./src/features/listings/components/HeroSlider.jsx:7:import hero3 from "../../../assets/images/hero/hero3.jpg";
+./src/features/listings/components/HeroSlider.jsx:8:import hero4 from "../../../assets/images/hero/hero4.jpg";
+./src/features/listings/components/HeroSlider.jsx:9:import hero5 from "../../../assets/images/hero/hero5.jpg";
+./src/features/listings/components/HeroSlider.jsx:85:                    <div className="absolute inset-0 bg-black/40 bg-gradient-to-b from-black/70 via-transparent to-black/20" />
+./src/features/listings/components/HeroSearchBar.jsx:1:import { useState, useRef, useEffect, useMemo } from "react";
+./src/features/listings/components/HeroSearchBar.jsx:2:import { Search, MapPin, Navigation, Compass, Map, Building2, Plus, Minus, CalendarDays, ChevronLeft, ChevronRight, Plane, History } from "lucide-react";
+./src/features/listings/components/HeroSearchBar.jsx:3:import { useTranslation } from "react-i18next";
+./src/features/listings/components/HeroSearchBar.jsx:4:import { useNavigate } from "react-router-dom";
+./src/features/listings/components/HeroSearchBar.jsx:5:import Dropdown from "../../../components/ui/Dropdown";
+./src/features/listings/components/HeroSearchBar.jsx:6:import CrashpadService from "../../../services/crashpads";
+./src/features/listings/components/HeroSearchBar.jsx:7:import { motion } from "framer-motion";
+./src/features/listings/components/HeroSearchBar.jsx:289:    const daysArr = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+./src/features/listings/components/WhySection.jsx:1:import React from "react";
+./src/features/listings/components/WhySection.jsx:2:import { ShieldCheck, Zap, Globe, Heart } from "lucide-react";
+./src/features/listings/components/ListingGallery.jsx:1:import React from 'react';
+./src/features/listings/components/ListingGallery.jsx:2:import { Image as ImageIcon, X, ChevronLeft as ChevLeft, ChevronRight as ChevRight } from 'lucide-react';
+./src/features/listings/components/PropertyTypes.jsx:1:import { images } from "../../../assets/images";
+./src/features/listings/components/PropertyTypes.jsx:34:                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+./src/features/listings/components/ResultsGrid.jsx:1:import React from 'react';
+./src/features/listings/components/ResultsGrid.jsx:2:import HomeCard from './ListingCard';
+./src/features/listings/components/ResultsGrid.jsx:3:import { SlidersHorizontal } from 'lucide-react';
+./src/features/listings/components/ListingCard.jsx:1:import { useNavigate } from "react-router-dom";
+./src/features/listings/components/ListingCard.jsx:2:import { useState, useEffect } from "react";
+./src/features/listings/components/ListingCard.jsx:3:import {
+./src/features/listings/components/ListingCard.jsx:6:} from 'lucide-react';
+./src/features/listings/components/ListingCard.jsx:7:import toast from 'react-hot-toast';
+./src/features/listings/components/ListingCard.jsx:20:      toast.success("Removed from wishlist");
+./src/features/listings/components/ListingCard.jsx:28:    // Try different possible image fields from various listing types
+./src/features/listings/components/ListingCard.jsx:56:      const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
+./src/features/listings/components/BookingPanel.jsx:1:import { useState, useRef, useEffect } from 'react';
+./src/features/listings/components/BookingPanel.jsx:2:import {
+./src/features/listings/components/BookingPanel.jsx:5:} from 'lucide-react';
+./src/features/listings/components/BookingPanel.jsx:6:import { format } from 'date-fns';
+./src/features/listings/components/SearchBar.jsx:1:import { useState, useRef, useEffect, useMemo } from "react";
+./src/features/listings/components/SearchBar.jsx:2:import { Search, MapPin, Navigation, Compass, Map, Building2, Plus, Minus, CalendarDays, ChevronLeft, ChevronRight, Plane, History } from "lucide-react";
+./src/features/listings/components/SearchBar.jsx:3:import { useTranslation } from "react-i18next";
+./src/features/listings/components/SearchBar.jsx:4:import { useNavigate } from "react-router-dom";
+./src/features/listings/components/SearchBar.jsx:5:import Dropdown from "../../../components/ui/Dropdown";
+./src/features/listings/components/SearchBar.jsx:6:import CrashpadService from "../../../services/crashpads";
+./src/features/listings/components/SearchBar.jsx:25:    // Pre-fill dates from initialValues (URL params) if provided
+./src/features/listings/components/SearchBar.jsx:39:    // Fetch unique locations from DB on mount
+./src/features/listings/components/SearchBar.jsx:304:                                            {Array.from({ length: 6 }).map((_, i) => {
+./src/features/listings/components/SearchBar.jsx:412:        const daysArr = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+./src/features/listings/components/TrendingDestinations.jsx:1:import { images } from "../../../assets/images";
+./src/features/listings/hooks/useProperties.js:1:import { useQuery } from '@tanstack/react-query';
+./src/features/listings/hooks/useProperties.js:2:import API from '../../../services/api';
+./src/features/listings/hooks/useProperties.js:3:import CrashpadService from '../../../services/crashpads';
+./src/features/listings/pages/HomeDetails.jsx:1:import { useEffect, useState, useContext, useCallback } from "react";
+./src/features/listings/pages/HomeDetails.jsx:2:import { useParams, useNavigate } from "react-router-dom";
+./src/features/listings/pages/HomeDetails.jsx:3:import { useTranslation } from "react-i18next";
+./src/features/listings/pages/HomeDetails.jsx:4:import Cookies from "js-cookie";
+./src/features/listings/pages/HomeDetails.jsx:5:import { format, differenceInDays } from "date-fns";
+./src/features/listings/pages/HomeDetails.jsx:6:import { toast } from "react-hot-toast";
+./src/features/listings/pages/HomeDetails.jsx:7:import { 
+./src/features/listings/pages/HomeDetails.jsx:11:} from "lucide-react";
+./src/features/listings/pages/HomeDetails.jsx:12:import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
+./src/features/listings/pages/HomeDetails.jsx:13:import API from "../../../services/api";
+./src/features/listings/pages/HomeDetails.jsx:14:import { CurrencyContext } from "../../../context/CurrencyContext";
+./src/features/listings/pages/HomeDetails.jsx:15:import { convertCurrency } from "../../../utils/convertCurrency";
+./src/features/listings/pages/HomeDetails.jsx:16:import { usePropertyDetails, useReviews } from "../hooks/useProperties";
+./src/features/listings/pages/HomeDetails.jsx:19:import BookingPanel from "../components/BookingPanel";
+./src/features/listings/pages/HomeDetails.jsx:20:import ListingGallery from "../components/ListingGallery";
+./src/features/listings/pages/HomeDetails.jsx:21:import ReviewCard from "../../../components/ReviewCard";
+./src/features/listings/pages/HomeDetails.jsx:22:import ShareModal from "../../../components/ShareModal";
+./src/features/listings/pages/HomeDetails.jsx:23:import ReportModal from "../../auth/components/ReportModal";
+./src/features/listings/pages/HomeDetails.jsx:117:        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+./src/features/listings/pages/HomeDetails.jsx:204:                message: `Hi! I would like to request a booking for your property from ${format(checkIn, 'MMM d')} to ${format(checkOut, 'MMM d')} for ${guests} guest(s). Total: ₹${finalTotal.toLocaleString()}. Booking Request ID: #${bookingRequestId}`,
+./src/features/listings/pages/CreateListing.jsx:1:import { useState, useEffect, useCallback, useRef } from "react";
+./src/features/listings/pages/CreateListing.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/listings/pages/CreateListing.jsx:3:import Cookies from "js-cookie";
+./src/features/listings/pages/CreateListing.jsx:4:import { motion, AnimatePresence } from "framer-motion";
+./src/features/listings/pages/CreateListing.jsx:5:import { 
+./src/features/listings/pages/CreateListing.jsx:12:} from "lucide-react";
+./src/features/listings/pages/CreateListing.jsx:14:import API from "../../../services/api";
+./src/features/listings/pages/CreateListing.jsx:15:import CreationLayout from "../../../components/layout/CreationLayout";
+./src/features/listings/pages/CreateListing.jsx:16:import { useHost } from "../../../context/HostContext";
+./src/features/listings/pages/CreateListing.jsx:17:import LocationStep from "../../crashpads/components/LocationStep";
+./src/features/listings/pages/CreateListing.jsx:18:import ImageUpload from "../../crashpads/components/ImageUpload";
+./src/features/listings/pages/CreateListing.jsx:19:import { toast } from "react-hot-toast";
+./src/features/listings/pages/CreateListing.jsx:20:import { geocodeAddress } from "../../../services/maps";
+./src/features/listings/pages/CreateListing.jsx:113:        // Build the most precise address string possible from all Step 2 fields
+./src/features/listings/pages/CreateListing.jsx:160:                // If we already have PIN-code coordinates from Step 2 auto-fill, use them
+./src/features/listings/pages/CreateListing.jsx:164:                    // We have coords from pincode lookup — populate address field at minimum
+./src/features/listings/pages/Search.jsx:1:import { useState, useEffect } from "react";
+./src/features/listings/pages/Search.jsx:2:import { useSearchParams } from "react-router-dom";
+./src/features/listings/pages/Search.jsx:3:import SearchBar from "../components/SearchBar";
+./src/features/listings/pages/Search.jsx:4:import SearchHeader from "../components/SearchHeader";
+./src/features/listings/pages/Search.jsx:5:import FilterSidebar from "../components/FilterSidebar";
+./src/features/listings/pages/Search.jsx:6:import ResultsGrid from "../components/ResultsGrid";
+./src/features/listings/pages/Search.jsx:7:import { useProperties } from "../hooks/useProperties";
+./src/features/listings/pages/Search.jsx:8:import { useSearchStore } from "../../../shared/stores/useSearchStore";
+./src/features/listings/pages/Search.jsx:9:import { X } from "lucide-react";
+./src/features/listings/pages/Search.jsx:25:    // Initial Sync from URL to Store
+./src/features/listings/pages/Home.jsx:1:import HeroSection from "../components/HeroSection";
+./src/features/listings/pages/Home.jsx:2:import WhySection from "../components/WhySection";
+./src/features/listings/pages/Home.jsx:3:import PropertyTypes from "../components/PropertyTypes";
+./src/features/listings/pages/Home.jsx:4:import TrendingDestinations from "../components/TrendingDestinations";
+./src/features/listings/pages/Home.jsx:5:import ExploreIndia from "../components/ExploreIndia";
+./src/features/listings/pages/EditProperty.jsx:1:import { useState, useEffect } from "react";
+./src/features/listings/pages/EditProperty.jsx:2:import { useNavigate, useParams } from "react-router-dom";
+./src/features/listings/pages/EditProperty.jsx:3:import Cookies from "js-cookie";
+./src/features/listings/pages/EditProperty.jsx:4:import API from "../../../services/api";
+./src/features/listings/pages/EditProperty.jsx:5:import { Home, MapPin, Sparkles, Camera, FileText, IndianRupee, ArrowRight, ArrowLeft, CheckCircle2, Loader2 } from "lucide-react";
+./src/features/listings/pages/EditProperty.jsx:7:import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+./src/features/listings/pages/EditProperty.jsx:8:import { useTranslation } from "react-i18next";
+./src/features/listings/pages/EditProperty.jsx:95:        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+./src/features/listings/pages/EditProperty.jsx:101:        const files = Array.from(e.target.files);
+./src/features/admin/components/Header.jsx:1:import React, { useState } from 'react';
+./src/features/admin/components/Header.jsx:2:import { Bell, Search, ChevronDown, User, Settings, LogOut } from 'lucide-react';
+./src/features/admin/components/Header.jsx:47:            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-rose-500 flex items-center justify-center text-white font-bold shadow-md">
+./src/features/admin/components/Header.jsx:60:            <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+./src/features/admin/components/ChartCard.jsx:1:import React from 'react';
+./src/features/admin/components/Sidebar.jsx:1:import React from 'react';
+./src/features/admin/components/Sidebar.jsx:2:import { NavLink } from 'react-router-dom';
+./src/features/admin/components/Sidebar.jsx:3:import { 
+./src/features/admin/components/Sidebar.jsx:8:} from 'lucide-react';
+./src/features/admin/components/ListingDetailsModal.jsx:1:import React, { useState, useEffect } from "react";
+./src/features/admin/components/ListingDetailsModal.jsx:2:import { X, Check, XCircle, MapPin, Users, BedDouble, Bath, ShieldCheck, Clock, CheckCircle2, Loader2, ChevronLeft, ChevronRight, Star, User, AlertTriangle } from "lucide-react";
+./src/features/admin/components/ListingDetailsModal.jsx:3:import Cookies from "js-cookie";
+./src/features/admin/components/ListingDetailsModal.jsx:4:import API from "../../../services/api";
+./src/features/admin/components/ListingDetailsModal.jsx:5:import { toast } from "react-hot-toast";
+./src/features/admin/components/ListingDetailsModal.jsx:157:                        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-gray-950/80 to-transparent" />
+./src/features/admin/components/CrashpadDetailsModal.jsx:1:import React, { useState, useEffect } from "react";
+./src/features/admin/components/CrashpadDetailsModal.jsx:2:import { X, Check, XCircle, MapPin, Users, ShieldCheck, Clock, CheckCircle2, Loader2, User, Globe, Heart, Info, Coffee, Moon } from "lucide-react";
+./src/features/admin/components/CrashpadDetailsModal.jsx:3:import Cookies from "js-cookie";
+./src/features/admin/components/CrashpadDetailsModal.jsx:4:import API from "../../../services/api";
+./src/features/admin/components/CrashpadDetailsModal.jsx:5:import { toast } from "react-hot-toast";
+./src/features/admin/components/CrashpadDetailsModal.jsx:101:                    <div className="p-8 lg:p-12 border-b border-gray-100 dark:border-gray-900 bg-gradient-to-br from-pink-50/30 to-transparent dark:from-pink-900/5">
+./src/features/admin/components/StatCard.jsx:1:import React from 'react';
+./src/features/admin/components/StatCard.jsx:2:import { TrendingUp, TrendingDown } from 'lucide-react';
+./src/features/admin/pages/ActivityLogs.jsx:1:import { useEffect, useState, useCallback } from "react";
+./src/features/admin/pages/ActivityLogs.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/ActivityLogs.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/ActivityLogs.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/ActivityLogs.jsx:5:import { ChevronLeft, ChevronRight, ScrollText } from "lucide-react";
+./src/features/admin/pages/ActivityLogs.jsx:6:import { formatDistanceToNow } from "date-fns";
+./src/features/admin/pages/CouponsManager.jsx:1:import { useEffect, useState } from "react";
+./src/features/admin/pages/CouponsManager.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/CouponsManager.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/CouponsManager.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/CouponsManager.jsx:5:import { Plus, Trash2, Tag } from "lucide-react";
+./src/features/admin/pages/CouponsManager.jsx:26:        if (!form.code || !form.discount) { toast.error("Code and discount are required"); return; }
+./src/features/admin/pages/CouponsManager.jsx:119:                    className="bg-gradient-to-r from-orange-500 to-rose-500 text-white font-bold px-6 py-2.5 rounded-xl hover:opacity-90 disabled:opacity-50 transition-opacity text-sm active:scale-95"
+./src/features/admin/pages/AdminLayout.jsx:1:import { Outlet, useNavigate, useLocation } from "react-router-dom";
+./src/features/admin/pages/AdminLayout.jsx:2:import { useState, useEffect } from "react";
+./src/features/admin/pages/AdminLayout.jsx:3:import Cookies from "js-cookie";
+./src/features/admin/pages/AdminLayout.jsx:4:import {
+./src/features/admin/pages/AdminLayout.jsx:8:} from "lucide-react";
+./src/features/admin/pages/AdminLayout.jsx:9:import { Toaster } from "react-hot-toast";
+./src/features/admin/pages/AdminLayout.jsx:10:import Sidebar from "../components/Sidebar";
+./src/features/admin/pages/AdminLayout.jsx:11:import Header from "../components/Header";
+./src/features/admin/pages/AdminLayout.jsx:59:    // Get current page title from NAV
+./src/features/admin/pages/AdminRoute.jsx:1:import { useEffect, useState } from "react";
+./src/features/admin/pages/AdminRoute.jsx:2:import { Navigate, Outlet } from "react-router-dom";
+./src/features/admin/pages/AdminRoute.jsx:3:import Cookies from "js-cookie";
+./src/features/admin/pages/AdminRoute.jsx:4:import API from "../../../services/api";
+./src/features/admin/pages/AdminRoute.jsx:5:import AdminLayout from "./AdminLayout";
+./src/features/admin/pages/Notifications.jsx:1:import { useState } from "react";
+./src/features/admin/pages/Notifications.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/Notifications.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/Notifications.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/Notifications.jsx:5:import { Bell, Send, Users, ShieldCheck, Mail, Info } from "lucide-react";
+./src/features/admin/pages/Notifications.jsx:16:        if (!title || !message) return toast.error("Title and message are required");
+./src/features/admin/pages/Payments.jsx:1:import { useEffect, useState, useCallback } from "react";
+./src/features/admin/pages/Payments.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/Payments.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/Payments.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/Payments.jsx:5:import { CreditCard, IndianRupee, TrendingUp, Search, Calendar, Filter, ChevronLeft, ChevronRight } from "lucide-react";
+./src/features/admin/pages/AdminSetup.jsx:1:import { useState } from "react";
+./src/features/admin/pages/AdminSetup.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/AdminSetup.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/AdminSetup.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/AdminSetup.jsx:5:import { Search, ShieldCheck } from "lucide-react";
+./src/features/admin/pages/AdminSetup.jsx:87:                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-rose-500 flex items-center justify-center text-white font-black text-sm shrink-0">
+./src/features/admin/pages/AdminSetup.jsx:123:                            className="w-full bg-gradient-to-r from-purple-500 to-violet-600 text-white font-bold py-2.5 rounded-xl hover:opacity-90 disabled:opacity-40 transition text-sm"
+./src/features/admin/pages/CreateAdmin.jsx:1:import { useState } from "react";
+./src/features/admin/pages/CreateAdmin.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/CreateAdmin.jsx:3:import { useNavigate } from "react-router-dom";
+./src/features/admin/pages/CreateAdmin.jsx:4:import API from "../../../services/api";
+./src/features/admin/pages/CreateAdmin.jsx:5:import { toast } from "react-hot-toast";
+./src/features/admin/pages/CreateAdmin.jsx:6:import { UserPlus, ShieldCheck, Mail, Lock, User, Trash2, Shield, Activity } from "lucide-react";
+./src/features/admin/pages/CreateAdmin.jsx:7:import { useEffect } from "react";
+./src/features/admin/pages/CreateAdmin.jsx:104:                                required
+./src/features/admin/pages/CreateAdmin.jsx:119:                                required
+./src/features/admin/pages/CreateAdmin.jsx:134:                                required
+./src/features/admin/pages/CreateAdmin.jsx:165:                            className="w-full md:w-auto bg-gradient-to-r from-orange-500 to-rose-500 text-white font-bold px-10 py-4 rounded-2xl hover:opacity-90 disabled:opacity-50 transition-all shadow-lg shadow-orange-500/20 active:scale-[0.98] text-sm"
+./src/features/admin/pages/CreateAdmin.jsx:261:                    Newly created admins will have immediate access to their designated sections. Ensure passwords are shared securely. You can manage their status or revoke access from the list above.
+./src/features/admin/pages/DevAdmin.jsx:2:import { useState } from "react";
+./src/features/admin/pages/DevAdmin.jsx:3:import { useNavigate } from "react-router-dom";
+./src/features/admin/pages/DevAdmin.jsx:4:import Cookies from "js-cookie";
+./src/features/admin/pages/DevAdmin.jsx:5:import API from "../../../services/api";
+./src/features/admin/pages/DevAdmin.jsx:6:import { toast } from "react-hot-toast";
+./src/features/admin/pages/DevAdmin.jsx:124:                            required
+./src/features/admin/pages/DevAdmin.jsx:132:                            required
+./src/features/admin/pages/DevAdmin.jsx:140:                            required
+./src/features/admin/pages/DevAdmin.jsx:150:                            className="w-full bg-gradient-to-r from-purple-500 to-violet-600 hover:from-purple-600 hover:to-violet-700 disabled:opacity-40 text-white font-black py-4 rounded-2xl transition-all shadow-lg"
+./src/features/admin/pages/SendPromotions.jsx:1:import { useState, useEffect, useMemo } from "react";
+./src/features/admin/pages/SendPromotions.jsx:2:import {
+./src/features/admin/pages/SendPromotions.jsx:6:} from "lucide-react";
+./src/features/admin/pages/SendPromotions.jsx:7:import toast from "react-hot-toast";
+./src/features/admin/pages/SendPromotions.jsx:8:import API from "../../../services/api";
+./src/features/admin/pages/SendPromotions.jsx:96:            toast.error("Subject, Message, and at least one User are required.");
+./src/features/admin/pages/BulkUpload.jsx:1:import { useState, useMemo } from "react";
+./src/features/admin/pages/BulkUpload.jsx:2:import Papa from "papaparse";
+./src/features/admin/pages/BulkUpload.jsx:3:import { 
+./src/features/admin/pages/BulkUpload.jsx:7:} from "lucide-react";
+./src/features/admin/pages/BulkUpload.jsx:8:import toast from "react-hot-toast";
+./src/features/admin/pages/BulkUpload.jsx:9:import API from "../../../services/api";
+./src/features/admin/pages/BulkUpload.jsx:58:                if (!row.title) errors.push("Title is required");
+./src/features/admin/pages/BulkUpload.jsx:59:                if (!row.price || isNaN(parseFloat(row.price))) errors.push("Valid price is required");
+./src/features/admin/pages/BulkUpload.jsx:60:                if (!row.location) errors.push("Location is required");
+./src/features/admin/pages/BulkUpload.jsx:62:                if (!row.name) errors.push("Name is required");
+./src/features/admin/pages/BulkUpload.jsx:63:                if (!row.pricePerNight || isNaN(parseFloat(row.pricePerNight))) errors.push("Valid pricePerNight is required");
+./src/features/admin/pages/BulkUpload.jsx:64:                if (!row.location) errors.push("Location is required");
+./src/features/admin/pages/BulkUpload.jsx:66:                if (!row.destination) errors.push("Destination is required");
+./src/features/admin/pages/CrashpadsTable.jsx:1:import { useEffect, useState, useCallback } from "react";
+./src/features/admin/pages/CrashpadsTable.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/CrashpadsTable.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/CrashpadsTable.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/CrashpadsTable.jsx:5:import { CloudLightning, Check, X, Search, Filter, ChevronLeft, ChevronRight, MapPin, User, Eye, Trash2 } from "lucide-react";
+./src/features/admin/pages/CrashpadsTable.jsx:6:import CrashpadDetailsModal from "../components/CrashpadDetailsModal";
+./src/features/admin/pages/Support.jsx:1:import { useEffect, useState, useCallback } from "react";
+./src/features/admin/pages/Support.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/Support.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/Support.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/Support.jsx:5:import { LifeBuoy, MessageSquare, CheckCircle, Clock, Search, Send, User } from "lucide-react";
+./src/features/admin/pages/EmailCampaigns.jsx:1:import { useState, useEffect, useMemo, useCallback } from "react";
+./src/features/admin/pages/EmailCampaigns.jsx:2:import {
+./src/features/admin/pages/EmailCampaigns.jsx:7:} from "lucide-react";
+./src/features/admin/pages/EmailCampaigns.jsx:8:import toast from "react-hot-toast";
+./src/features/admin/pages/EmailCampaigns.jsx:9:import API from "../../../services/api";
+./src/features/admin/pages/EmailCampaigns.jsx:62:            toast.error("Missing required fields");
+./src/features/admin/pages/EmailCampaigns.jsx:412:                                    className="h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full transition-all duration-1000 shadow-xl"
+./src/features/admin/pages/Dashboard.jsx:1:import { useEffect, useState } from "react";
+./src/features/admin/pages/Dashboard.jsx:2:import { Users, Home, CalendarCheck, TrendingUp, DollarSign, Activity } from "lucide-react";
+./src/features/admin/pages/Dashboard.jsx:3:import Cookies from "js-cookie";
+./src/features/admin/pages/Dashboard.jsx:4:import API from "../../../services/api";
+./src/features/admin/pages/Dashboard.jsx:5:import {
+./src/features/admin/pages/Dashboard.jsx:8:} from "recharts";
+./src/features/admin/pages/Dashboard.jsx:9:import StatCard from "../components/StatCard";
+./src/features/admin/pages/Dashboard.jsx:10:import ChartCard from "../components/ChartCard";
+./src/features/admin/pages/Dashboard.jsx:13:    { key: "total_users", label: "Total Users", icon: Users, color: "from-purple-500 to-indigo-600", trend: "up", trendValue: 12 },
+./src/features/admin/pages/Dashboard.jsx:14:    { key: "total_homes", label: "Active Listings", icon: Home, color: "from-orange-400 to-orange-600", trend: "up", trendValue: 8 },
+./src/features/admin/pages/Dashboard.jsx:15:    { key: "total_bookings", label: "Total Bookings", icon: CalendarCheck, color: "from-blue-400 to-blue-600", trend: "down", trendValue: 3 },
+./src/features/admin/pages/Dashboard.jsx:16:    { key: "total_revenue", label: "Total Revenue", icon: DollarSign, color: "from-emerald-400 to-teal-600", trend: "up", trendValue: 24 },
+./src/features/admin/pages/Reports.jsx:1:import { useEffect, useState, useCallback } from "react";
+./src/features/admin/pages/Reports.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/Reports.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/Reports.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/Reports.jsx:5:import { AlertCircle, CheckCircle, XCircle, User, Filter } from "lucide-react";
+./src/features/admin/pages/TravelBuddyTable.jsx:1:import { useEffect, useState, useCallback } from "react";
+./src/features/admin/pages/TravelBuddyTable.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/TravelBuddyTable.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/TravelBuddyTable.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/TravelBuddyTable.jsx:5:import { Globe, UserX, Search, Filter, ChevronLeft, ChevronRight, MapPin, User, ShieldAlert, Check, X, Loader2, Globe as GlobeIcon, Users, Trash2, AlertCircle } from "lucide-react";
+./src/features/admin/pages/BookingsTable.jsx:1:import { useEffect, useState, useCallback } from "react";
+./src/features/admin/pages/BookingsTable.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/BookingsTable.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/BookingsTable.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/BookingsTable.jsx:5:import { ChevronLeft, ChevronRight } from "lucide-react";
+./src/features/admin/pages/ListingsTable.jsx:1:import { useEffect, useState, useCallback } from "react";
+./src/features/admin/pages/ListingsTable.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/ListingsTable.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/ListingsTable.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/ListingsTable.jsx:5:import { Search, ChevronLeft, ChevronRight, Eye, Trash2 } from "lucide-react";
+./src/features/admin/pages/ListingsTable.jsx:6:import ListingDetailsModal from "../components/ListingDetailsModal";
+./src/features/admin/pages/ListingsTable.jsx:52:            // Remove from local state
+./src/features/admin/pages/AdminAnalytics.jsx:1:import { useEffect, useState } from "react";
+./src/features/admin/pages/AdminAnalytics.jsx:2:import {
+./src/features/admin/pages/AdminAnalytics.jsx:5:} from "recharts";
+./src/features/admin/pages/AdminAnalytics.jsx:6:import { TrendingUp, Users, Home, CalendarCheck, DollarSign, ArrowUpRight, ArrowDownRight } from "lucide-react";
+./src/features/admin/pages/AdminAnalytics.jsx:7:import Cookies from "js-cookie";
+./src/features/admin/pages/AdminAnalytics.jsx:8:import API from "../../../services/api";
+./src/features/admin/pages/AdminAnalytics.jsx:57:                    color="from-blue-500 to-indigo-600"
+./src/features/admin/pages/AdminAnalytics.jsx:65:                    color="from-teal-400 to-emerald-500"
+./src/features/admin/pages/AdminAnalytics.jsx:73:                    color="from-orange-400 to-rose-500"
+./src/features/admin/pages/AdminAnalytics.jsx:81:                    color="from-amber-400 to-orange-600"
+./src/features/admin/pages/UsersTable.jsx:1:import { useEffect, useState, useCallback } from "react";
+./src/features/admin/pages/UsersTable.jsx:2:import Cookies from "js-cookie";
+./src/features/admin/pages/UsersTable.jsx:3:import API from "../../../services/api";
+./src/features/admin/pages/UsersTable.jsx:4:import { toast } from "react-hot-toast";
+./src/features/admin/pages/UsersTable.jsx:5:import { Search, Trash2, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
+./src/features/crashpads/components/CrashpadHero.jsx:1:import React from 'react';
+./src/features/crashpads/components/CrashpadHero.jsx:2:import { motion } from 'framer-motion';
+./src/features/crashpads/components/CrashpadHero.jsx:3:import { Users, Globe, MapPin, Sparkles } from 'lucide-react';
+./src/features/crashpads/components/CrashpadHero.jsx:4:import nomad1 from '../../../assets/images/community/nomad1.jpg';
+./src/features/crashpads/components/CrashpadHero.jsx:5:import nomad2 from '../../../assets/images/community/nomad2.jpg';
+./src/features/crashpads/components/CrashpadHero.jsx:6:import nomad3 from '../../../assets/images/community/nomad3.jpg';
+./src/features/crashpads/components/CrashpadHero.jsx:24:            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-orange-500/10 via-orange-500/5 to-transparent blur-3xl -z-10" />
+./src/features/crashpads/components/CrashpadCard.jsx:1:import React from 'react';
+./src/features/crashpads/components/CrashpadCard.jsx:2:import { motion } from 'framer-motion';
+./src/features/crashpads/components/CrashpadCard.jsx:3:import { MapPin, IndianRupee, Star, Wifi, UtensilsCrossed, Monitor } from 'lucide-react';
+./src/features/crashpads/components/CrashpadCard.jsx:31:                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+./src/features/crashpads/components/LocationStep.jsx:1:import { useState, useEffect, useCallback, useRef } from "react";
+./src/features/crashpads/components/LocationStep.jsx:2:import { MapPin, Navigation, MousePointer2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Plus, Minus, Maximize2, X as CloseIcon } from "lucide-react";
+./src/features/crashpads/components/LocationStep.jsx:3:import { motion, AnimatePresence } from "framer-motion";
+./src/features/crashpads/components/LocationStep.jsx:4:import { Map, useMap } from "@vis.gl/react-google-maps";
+./src/features/crashpads/components/LocationStep.jsx:5:import { geocodeAddress, reverseGeocode, pincodeLookup } from "../../../services/maps";
+./src/features/crashpads/components/LocationStep.jsx:6:import GoogleMapsProvider from "../../../components/shared/GoogleMapsProvider";
+./src/features/crashpads/components/LocationStep.jsx:7:import { Loader2 } from "lucide-react";
+./src/features/crashpads/components/LocationStep.jsx:22:const InputField = ({ label, name, value, onChange, placeholder, required = false, loading = false, error = false }) => (
+./src/features/crashpads/components/LocationStep.jsx:25:            {label} {required && "*"}
+./src/features/crashpads/components/LocationStep.jsx:144:    // Sync forced sub-step from parent
+./src/features/crashpads/components/LocationStep.jsx:194:            setError("Please fill in all required address fields.");
+./src/features/crashpads/components/LocationStep.jsx:234:        // Skip if essentially same position (prevents initial-load fire from triggering API)
+./src/features/crashpads/components/LocationStep.jsx:351:                            <InputField label="Country / Region" name="country"   value={value.country}    onChange={handleInputChange} placeholder="e.g. India" required />
+./src/features/crashpads/components/LocationStep.jsx:355:                                <InputField label="Street Address"       name="street"     value={value.street}     onChange={handleInputChange} placeholder="123 Main St" required />
+./src/features/crashpads/components/LocationStep.jsx:361:                                <InputField label="District / Locality" name="locality" value={value.locality} onChange={handleInputChange} placeholder="Andheri West" required />
+./src/features/crashpads/components/LocationStep.jsx:362:                                <InputField label="City"                name="city"     value={value.city}     onChange={handleInputChange} placeholder="Mumbai" required />
+./src/features/crashpads/components/LocationStep.jsx:366:                                <InputField label="State" name="state" value={value.state} onChange={handleInputChange} placeholder="MAHARASHTRA" required />
+./src/features/crashpads/components/LocationStep.jsx:374:                                        required
+./src/features/crashpads/components/ExperienceBenefits.jsx:1:import React from 'react';
+./src/features/crashpads/components/ExperienceBenefits.jsx:2:import { motion } from 'framer-motion';
+./src/features/crashpads/components/ExperienceBenefits.jsx:3:import { Users, Wifi, CreditCard, Calendar } from 'lucide-react';
+./src/features/crashpads/components/FiltersBar.jsx:1:import React, { useState } from 'react';
+./src/features/crashpads/components/FiltersBar.jsx:2:import { Search, MapPin, IndianRupee, Users, Clock } from 'lucide-react';
+./src/features/crashpads/components/FiltersBar.jsx:3:import CustomDropdown from './CustomDropdown';
+./src/features/crashpads/components/CommunitySection.jsx:1:import React from 'react';
+./src/features/crashpads/components/CommunitySection.jsx:2:import { motion } from 'framer-motion';
+./src/features/crashpads/components/CommunitySection.jsx:3:import { Quote, MapPin, Star } from 'lucide-react';
+./src/features/crashpads/components/CommunitySection.jsx:4:import nomad1 from '../../../assets/images/community/nomad1.jpg';
+./src/features/crashpads/components/CommunitySection.jsx:5:import nomad2 from '../../../assets/images/community/nomad2.jpg';
+./src/features/crashpads/components/CommunitySection.jsx:6:import nomad3 from '../../../assets/images/community/nomad3.jpg';
+./src/features/crashpads/components/CustomDropdown.jsx:1:import React, { useState } from 'react';
+./src/features/crashpads/components/CustomDropdown.jsx:2:import { motion, AnimatePresence } from 'framer-motion';
+./src/features/crashpads/components/CustomDropdown.jsx:3:import { ChevronDown } from 'lucide-react';
+./src/features/crashpads/components/CustomDropdown.jsx:4:import { useClickOutside } from '../../../hooks/useClickOutside';
+./src/features/crashpads/components/RequestModal.jsx:1:import React, { useState } from 'react';
+./src/features/crashpads/components/RequestModal.jsx:2:import { X } from 'lucide-react';
+./src/features/crashpads/components/RequestModal.jsx:3:import Cookies from 'js-cookie';
+./src/features/crashpads/components/RequestModal.jsx:4:import API from '../../../services/api';
+./src/features/crashpads/components/RequestModal.jsx:13:            setError("Dates and message are required.");
+./src/features/crashpads/components/ImageUpload.jsx:1:import React, { useState, useRef } from 'react';
+./src/features/crashpads/components/ImageUpload.jsx:2:import { Upload, X, Image as ImageIcon, Plus, AlertCircle } from 'lucide-react';
+./src/features/crashpads/components/ImageUpload.jsx:12:        const files = Array.from(e.target.files);
+./src/features/crashpads/components/ImageUpload.jsx:75:                    const files = Array.from(e.dataTransfer.files);
+./src/features/crashpads/components/HowItWorks.jsx:1:import React from 'react';
+./src/features/crashpads/components/HowItWorks.jsx:2:import { motion } from 'framer-motion';
+./src/features/crashpads/components/HowItWorks.jsx:3:import { Search, Users, Coffee } from 'lucide-react';
+./src/features/crashpads/pages/CrashpadDetails.jsx:1:import { useEffect, useState, useRef, useCallback } from "react";
+./src/features/crashpads/pages/CrashpadDetails.jsx:2:import { useParams, useNavigate, useLocation } from "react-router-dom";
+./src/features/crashpads/pages/CrashpadDetails.jsx:3:import { motion, AnimatePresence } from "framer-motion";
+./src/features/crashpads/pages/CrashpadDetails.jsx:4:import {
+./src/features/crashpads/pages/CrashpadDetails.jsx:10:} from "lucide-react";
+./src/features/crashpads/pages/CrashpadDetails.jsx:11:import { format } from "date-fns";
+./src/features/crashpads/pages/CrashpadDetails.jsx:12:import Cookies from "js-cookie";
+./src/features/crashpads/pages/CrashpadDetails.jsx:13:import { jwtDecode } from "jwt-decode";
+./src/features/crashpads/pages/CrashpadDetails.jsx:14:import { toast } from "react-hot-toast";
+./src/features/crashpads/pages/CrashpadDetails.jsx:15:import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+./src/features/crashpads/pages/CrashpadDetails.jsx:16:import API from "../../../services/api";
+./src/features/crashpads/pages/CrashpadDetails.jsx:17:import { useHost } from "../../../context/HostContext";
+./src/features/crashpads/pages/CrashpadDetails.jsx:18:import ShareModal from "../../../components/ShareModal";
+./src/features/crashpads/pages/CrashpadDetails.jsx:605:        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
+./src/features/crashpads/pages/CrashpadDetails.jsx:701:                        {routerLocation.state?.fromDashboard && (
+./src/features/crashpads/pages/Crashpads.jsx:1:import { useState, useEffect } from "react";
+./src/features/crashpads/pages/Crashpads.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/crashpads/pages/Crashpads.jsx:3:import Cookies from "js-cookie";
+./src/features/crashpads/pages/Crashpads.jsx:4:import API from "../../../services/api";
+./src/features/crashpads/pages/Crashpads.jsx:5:import { Loader2, Home, Plus } from "lucide-react";
+./src/features/crashpads/pages/Crashpads.jsx:6:import { motion, AnimatePresence } from "framer-motion";
+./src/features/crashpads/pages/Crashpads.jsx:9:import CrashpadHero from "../components/CrashpadHero";
+./src/features/crashpads/pages/Crashpads.jsx:10:import FiltersBar from "../components/FiltersBar";
+./src/features/crashpads/pages/Crashpads.jsx:11:import CrashpadCard from "../components/CrashpadCard";
+./src/features/crashpads/pages/Crashpads.jsx:12:import CommunitySection from "../components/CommunitySection";
+./src/features/crashpads/pages/Crashpads.jsx:13:import ExperienceBenefits from "../components/ExperienceBenefits";
+./src/features/crashpads/pages/Crashpads.jsx:14:import HowItWorks from "../components/HowItWorks";
+./src/features/crashpads/pages/Crashpads.jsx:15:import RequestModal from "../components/RequestModal";
+./src/features/crashpads/pages/Crashpads.jsx:162:                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+./src/features/crashpads/pages/CreateCrashpad.jsx:1:import { useState, useEffect } from "react";
+./src/features/crashpads/pages/CreateCrashpad.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/crashpads/pages/CreateCrashpad.jsx:3:import Cookies from "js-cookie";
+./src/features/crashpads/pages/CreateCrashpad.jsx:4:import API from "../../../services/api";
+./src/features/crashpads/pages/CreateCrashpad.jsx:5:import { motion, AnimatePresence } from "framer-motion";
+./src/features/crashpads/pages/CreateCrashpad.jsx:6:import { useHost } from "../../../context/HostContext";
+./src/features/crashpads/pages/CreateCrashpad.jsx:8:import {
+./src/features/crashpads/pages/CreateCrashpad.jsx:11:} from "lucide-react";
+./src/features/crashpads/pages/CreateCrashpad.jsx:12:import CreationLayout from "../../../components/layout/CreationLayout";
+./src/features/crashpads/pages/CreateCrashpad.jsx:13:import LocationStep from "../components/LocationStep";
+./src/features/crashpads/pages/CreateCrashpad.jsx:14:import ImageUpload from "../components/ImageUpload";
+./src/features/crashpads/pages/CreateCrashpad.jsx:93:            if (!value) error = "Title is required";
+./src/features/crashpads/pages/CreateCrashpad.jsx:97:            if (!value) error = "Description is required";
+./src/features/crashpads/pages/CreateCrashpad.jsx:102:            else if (!value) error = "Host bio is required";
+./src/features/crashpads/pages/CreateCrashpad.jsx:378:                                {validationErrors.description && <p className="text-[10px] font-bold text-red-500 ml-1 mt-1">{validationErrors.description || "Min 20 characters required"}</p>}
+./src/features/user/components/GuestProfileModal.jsx:1:import { createPortal } from 'react-dom';
+./src/features/user/components/GuestProfileModal.jsx:2:import { useState, useEffect } from 'react';
+./src/features/user/components/GuestProfileModal.jsx:3:import { 
+./src/features/user/components/GuestProfileModal.jsx:7:} from 'lucide-react';
+./src/features/user/components/GuestProfileModal.jsx:8:import API from '../../../services/api';
+./src/features/user/components/GuestProfileModal.jsx:193:                    Reviews from Past Hosts
+./src/features/user/components/ConversationList.jsx:2:import { useState, useEffect, useRef } from "react";
+./src/features/user/components/ConversationList.jsx:3:import { BiSearch, BiX } from "react-icons/bi";
+./src/features/user/components/ConversationList.jsx:4:import Cookies from "js-cookie";
+./src/features/user/components/ConversationList.jsx:5:import API from "../../../services/api";
+./src/features/user/components/ConversationList.jsx:15:                // Explicitly use userId from cookie to ensure ID format consistency
+./src/features/user/components/ChatWindow.jsx:1:import React, { useState, useEffect, useRef } from "react";
+./src/features/user/components/ChatWindow.jsx:2:import Cookies from "js-cookie";
+./src/features/user/components/ChatWindow.jsx:3:import { 
+./src/features/user/components/ChatWindow.jsx:6:} from 'react-icons/bi';
+./src/features/user/components/ChatWindow.jsx:7:import API from "../../../services/api";
+./src/features/user/components/ChatWindow.jsx:8:import { toast } from "react-hot-toast";
+./src/features/user/components/ChatWindow.jsx:9:import { useNavigate } from "react-router-dom";
+./src/features/user/components/ChatWindow.jsx:10:import GuestProfileModal from "./GuestProfileModal";
+./src/features/user/components/ChatWindow.jsx:11:import EmojiPicker from "emoji-picker-react";
+./src/features/user/components/ChatWindow.jsx:263:        // The original booking request contains "from ... to ... for X guest"
+./src/features/user/components/ChatWindow.jsx:270:            if (text.includes('from') && text.includes('to') && text.includes('guest')) {
+./src/features/user/components/ChatWindow.jsx:297:        // Pattern matches: "from Apr 9 to Apr 11"
+./src/features/user/components/ChatWindow.jsx:298:        const dateRegex = /from\s+([A-Za-z]+\s+\d{1,2})\s+to\s+([A-Za-z]+\s+\d{1,2})/i;
+./src/features/user/pages/Profile.jsx:1:import React, { useState, useEffect, useContext } from 'react';
+./src/features/user/pages/Profile.jsx:2:import Cookies from 'js-cookie';
+./src/features/user/pages/Profile.jsx:3:import API from '../../../services/api';
+./src/features/user/pages/Profile.jsx:4:import { User, Mail, Phone, Calendar, LogOut, ShieldCheck, MapPin, Edit3, Settings, CreditCard, Camera, Star, Award, ShieldAlert, Send, Loader2, FileCheck, UserCheck, Globe, DollarSign, Moon, Sun, Clock } from 'lucide-react';
+./src/features/user/pages/Profile.jsx:5:import { useNavigate } from 'react-router-dom';
+./src/features/user/pages/Profile.jsx:6:import { useTranslation } from 'react-i18next';
+./src/features/user/pages/Profile.jsx:7:import { toast } from 'react-hot-toast';
+./src/features/user/pages/Profile.jsx:8:import { CurrencyContext } from '../../../context/CurrencyContext';
+./src/features/user/pages/Profile.jsx:9:import CustomDropdown from '../../../components/ui/CustomDropdown';
+./src/features/user/pages/Profile.jsx:314:                                <input type="password" required value={passwordData.currentPassword} onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })} className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-orange-500 outline-none transition" />
+./src/features/user/pages/Profile.jsx:318:                                <input type="password" required value={passwordData.newPassword} onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })} className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-orange-500 outline-none transition" />
+./src/features/user/pages/Profile.jsx:322:                                <input type="password" required value={passwordData.confirmPassword} onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })} className="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-orange-500 outline-none transition" />
+./src/features/user/pages/Profile.jsx:588:                            <LogOut size={20} /> Log out from TravelBNB
+./src/features/user/pages/Profile.jsx:624:                                <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-orange-400 to-amber-600"></div>
+./src/features/user/pages/Profile.jsx:628:                                        <div className="w-full h-full bg-gradient-to-br from-orange-600 to-amber-800 text-white rounded-full flex items-center justify-center font-bold text-5xl shadow-inner overflow-hidden relative">
+./src/features/user/pages/MyBookings.jsx:1:import { useEffect, useState } from "react";
+./src/features/user/pages/MyBookings.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/user/pages/MyBookings.jsx:3:import Cookies from "js-cookie";
+./src/features/user/pages/MyBookings.jsx:4:import API from "../../../services/api";
+./src/features/user/pages/MyBookings.jsx:5:import { format } from "date-fns";
+./src/features/user/pages/MyBookings.jsx:6:import { 
+./src/features/user/pages/MyBookings.jsx:20:} from "lucide-react";
+./src/features/user/pages/MyBookings.jsx:21:import { useTranslation } from "react-i18next";
+./src/features/user/pages/MyBookings.jsx:22:import { toast } from "react-hot-toast";
+./src/features/user/pages/MyBookings.jsx:239:                                    <div className="h-[2px] flex-1 bg-gradient-to-r from-orange-500/20 via-orange-500/10 to-transparent"></div>
+./src/features/user/pages/MyBookings.jsx:258:                                    <div className="h-[2px] flex-1 bg-gradient-to-r from-gray-200 dark:from-gray-800 to-transparent"></div>
+./src/features/user/pages/MyBookings.jsx:294:            <div className="h-72 relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+./src/features/user/pages/MyBookings.jsx:352:                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+./src/features/user/pages/HostDashboard.jsx:1:import React, { useState, useEffect } from "react";
+./src/features/user/pages/HostDashboard.jsx:2:import { Link, useNavigate } from "react-router-dom";
+./src/features/user/pages/HostDashboard.jsx:3:import Cookies from "js-cookie";
+./src/features/user/pages/HostDashboard.jsx:4:import API from "../../../services/api";
+./src/features/user/pages/HostDashboard.jsx:5:import HomeCard from "../../listings/components/ListingCard";
+./src/features/user/pages/HostDashboard.jsx:6:import { toast } from "react-hot-toast";
+./src/features/user/pages/HostDashboard.jsx:7:import { PlusCircle, Loader2, LayoutDashboard, Home as HomeIcon, CalendarCheck, CalendarDays, Star, Trash2, AlertTriangle, MapPin, Eye, Users } from "lucide-react";
+./src/features/user/pages/HostDashboard.jsx:8:import { useTranslation } from "react-i18next";
+./src/features/user/pages/HostDashboard.jsx:9:import BookingDetailsModal from "../../host/components/BookingDetailsModal";
+./src/features/user/pages/HostDashboard.jsx:232:                                    <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-6 rounded-3xl shadow-lg shadow-orange-500/20 transform hover:-translate-y-1 transition-all">
+./src/features/user/pages/Messages.jsx:1:import React, { useState, useEffect, Component } from "react";
+./src/features/user/pages/Messages.jsx:2:import Cookies from "js-cookie";
+./src/features/user/pages/Messages.jsx:3:import { useNavigate, useLocation, useParams, useSearchParams } from "react-router-dom";
+./src/features/user/pages/Messages.jsx:4:import API from "../../../services/api";
+./src/features/user/pages/Messages.jsx:5:import ConversationList from "../components/ConversationList";
+./src/features/user/pages/Messages.jsx:6:import ChatWindow from "../components/ChatWindow";
+./src/features/user/pages/Messages.jsx:29:    // Get userId from URL params if available, otherwise fallback to logged-in user's cookie
+./src/features/user/pages/Messages.jsx:166:                    className="px-6 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl text-sm font-semibold hover:from-orange-600 hover:to-amber-600 transition-all shadow-md"
+./src/features/user/pages/BecomeHost.jsx:1:import React from "react";
+./src/features/user/pages/BecomeHost.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/user/pages/BecomeHost.jsx:3:import { Home, Users, Globe, ArrowRight, Sparkles, ShieldCheck, Heart, Zap } from "lucide-react";
+./src/features/user/pages/BecomeHost.jsx:4:import { motion } from "framer-motion";
+./src/features/user/pages/BecomeHost.jsx:16:            accent: "from-orange-500 to-amber-500",
+./src/features/user/pages/BecomeHost.jsx:25:            accent: "from-orange-600 to-red-600",
+./src/features/user/pages/BecomeHost.jsx:34:            accent: "from-amber-400 to-orange-500",
+./src/features/user/pages/BecomeHost.jsx:79:                        Become a <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">Host</span>
+./src/features/user/pages/BecomeHost.jsx:82:                        Explore the different ways you can share your space and experiences with travelers from across the globe.
+./src/features/user/pages/BecomeHost.jsx:105:                                <div className="w-16 h-16 bg-gray-50 dark:bg-gray-800 rounded-2xl flex items-center justify-center mb-8 border border-gray-100 dark:border-gray-700 group-hover:bg-gradient-to-br group-hover:from-orange-500 group-hover:to-orange-600 group-hover:text-white transition-all duration-500 shadow-sm overflow-hidden relative">
+./src/features/user/pages/BecomeHost.jsx:170:                    from { opacity: 0; transform: translateY(-10px); }
+./src/features/user/pages/BecomeAHost.jsx:1:import { useState } from "react";
+./src/features/user/pages/BecomeAHost.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/user/pages/BecomeAHost.jsx:3:import {
+./src/features/user/pages/BecomeAHost.jsx:7:} from "lucide-react";
+./src/features/user/pages/BecomeAHost.jsx:21:            "Earn from your spare room or property",
+./src/features/user/pages/BecomeAHost.jsx:27:        gradient: "from-orange-50 to-amber-50",
+./src/features/user/pages/BecomeAHost.jsx:49:        gradient: "from-teal-50 to-cyan-50",
+./src/features/user/pages/BecomeAHost.jsx:70:        gradient: "from-violet-50 to-purple-50",
+./src/features/travel/components/AvatarCluster.jsx:1:import React from 'react';
+./src/features/travel/components/AvatarCluster.jsx:2:import { motion } from 'framer-motion';
+./src/features/travel/components/AvatarCluster.jsx:3:import nomad1 from '../../../assets/images/community/nomad1.jpg';
+./src/features/travel/components/AvatarCluster.jsx:4:import nomad2 from '../../../assets/images/community/nomad2.jpg';
+./src/features/travel/components/AvatarCluster.jsx:5:import nomad3 from '../../../assets/images/community/nomad3.jpg';
+./src/features/travel/components/AvatarCluster.jsx:6:import nomad4 from '../../../assets/images/community/nomad4.jpg';
+./src/features/travel/components/AvatarCluster.jsx:7:import nomad5 from '../../../assets/images/community/nomad5.jpg';
+./src/features/travel/components/AvatarCluster.jsx:8:import nomad6 from '../../../assets/images/community/nomad6.jpg';
+./src/features/travel/components/BuddySearchBar.jsx:1:import React, { useState } from 'react';
+./src/features/travel/components/BuddySearchBar.jsx:2:import { useNavigate, useSearchParams } from 'react-router-dom';
+./src/features/travel/components/BuddySearchBar.jsx:3:import { motion, AnimatePresence } from 'framer-motion';
+./src/features/travel/components/BuddySearchBar.jsx:4:import { MapPin, Search, Sparkles, X, ChevronDown } from 'lucide-react';
+./src/features/travel/components/BuddySearchBar.jsx:119:                    className="w-full md:w-auto bg-gradient-to-r from-orange-500 to-orange-600 hover:to-orange-700 text-white px-12 py-5 rounded-full text-sm font-black uppercase tracking-widest transition-all shadow-xl shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-[1.05] active:scale-95 flex items-center justify-center gap-3"
+./src/features/travel/components/TravelBuddyHero.jsx:1:import React from 'react';
+./src/features/travel/components/TravelBuddyHero.jsx:2:import { motion } from 'framer-motion';
+./src/features/travel/components/TravelBuddyHero.jsx:3:import AvatarCluster from './AvatarCluster';
+./src/features/travel/components/TravelBuddyHero.jsx:4:import BuddySearchBar from './BuddySearchBar';
+./src/features/travel/components/TravelBuddyHero.jsx:9:        <section className="relative pt-32 pb-40 px-6 overflow-hidden bg-gradient-to-br from-[#fff7ed] via-white to-[#ffe4cc] dark:from-gray-950 dark:via-gray-900 dark:to-orange-950/20">
+./src/features/travel/components/TravelBuddyHero.jsx:35:                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-500 tracking-tight italic">
+./src/features/travel/pages/ItineraryEditorPage.jsx:1:import React, { useState } from 'react';
+./src/features/travel/pages/ItineraryEditorPage.jsx:2:import { useLocation, useNavigate } from 'react-router-dom';
+./src/features/travel/pages/ItineraryEditorPage.jsx:3:import { DndContext, PointerSensor, useDraggable, useDroppable, useSensor, useSensors } from '@dnd-kit/core';
+./src/features/travel/pages/ItineraryEditorPage.jsx:4:import { arrayMove } from '@dnd-kit/sortable';
+./src/features/travel/pages/ItineraryEditorPage.jsx:5:import { toast } from 'react-hot-toast'; // Assuming react-hot-toast is available
+./src/features/travel/pages/ItineraryEditorPage.jsx:6:import ItineraryEditor from '../../../components/ItineraryEditor';
+./src/features/travel/pages/ItineraryEditorPage.jsx:7:import PlaceDetailModal from '../../../components/PlaceDetailModal';
+./src/features/travel/pages/ItineraryEditorPage.jsx:8:import { Star, CheckCircle } from 'lucide-react';
+./src/features/travel/pages/ItineraryEditorPage.jsx:131:        // Remove an item from the itinerary
+./src/features/travel/pages/ItineraryEditorPage.jsx:132:        if (over.id === 'REMOVE_ZONE' && active.data.current?.fromDay) {
+./src/features/travel/pages/ItineraryEditorPage.jsx:133:            const { fromDay, fromIndex } = active.data.current;
+./src/features/travel/pages/ItineraryEditorPage.jsx:138:                    [fromDay]: prev.plan[fromDay].filter((_, index) => index !== fromIndex)
+./src/features/travel/pages/ItineraryEditorPage.jsx:141:            if (toast && toast.success) toast.success(`Removed from itinerary`);
+./src/features/travel/pages/ItineraryEditorPage.jsx:145:        if (active.data.current?.fromDay && typeof over.id === 'string' && over.id !== 'REMOVE_ZONE') {
+./src/features/travel/pages/ItineraryEditorPage.jsx:146:            const { fromDay, fromIndex } = active.data.current;
+./src/features/travel/pages/ItineraryEditorPage.jsx:148:            const targetDay = isOverItem ? over.data.current.fromDay : over.id;
+./src/features/travel/pages/ItineraryEditorPage.jsx:151:                if (!prev?.plan?.[fromDay] || !prev?.plan?.[targetDay]) return prev;
+./src/features/travel/pages/ItineraryEditorPage.jsx:153:                const sourceEvents = [...prev.plan[fromDay]];
+./src/features/travel/pages/ItineraryEditorPage.jsx:154:                const [movedEvent] = sourceEvents.splice(fromIndex, 1);
+./src/features/travel/pages/ItineraryEditorPage.jsx:158:                if (fromDay === targetDay) {
+./src/features/travel/pages/ItineraryEditorPage.jsx:159:                    const targetIndex = isOverItem ? over.data.current.fromIndex : sourceEvents.length;
+./src/features/travel/pages/ItineraryEditorPage.jsx:164:                            [fromDay]: arrayMove(prev.plan[fromDay], fromIndex, targetIndex)
+./src/features/travel/pages/ItineraryEditorPage.jsx:170:                const targetIndex = isOverItem ? over.data.current.fromIndex : targetEvents.length;
+./src/features/travel/pages/ItineraryEditorPage.jsx:177:                        [fromDay]: sourceEvents,
+./src/features/travel/pages/ItineraryEditorPage.jsx:185:        // Add an item to the itinerary from ranked list
+./src/features/travel/pages/ItineraryEditorPage.jsx:189:            const targetDay = isOverItem ? over.data.current.fromDay : over.id;
+./src/features/travel/pages/ItineraryEditorPage.jsx:191:            // Build new event object from the dropped place
+./src/features/travel/pages/ItineraryEditorPage.jsx:218:                        const targetIndex = isOverItem ? over.data.current.fromIndex : targetEvents.length;
+./src/features/travel/pages/EditTravelBuddy.jsx:1:import { useState, useEffect, useRef } from "react";
+./src/features/travel/pages/EditTravelBuddy.jsx:2:import { useNavigate, useParams } from "react-router-dom";
+./src/features/travel/pages/EditTravelBuddy.jsx:3:import Cookies from "js-cookie";
+./src/features/travel/pages/EditTravelBuddy.jsx:4:import API from "../../../services/api";
+./src/features/travel/pages/EditTravelBuddy.jsx:5:import {
+./src/features/travel/pages/EditTravelBuddy.jsx:9:} from "lucide-react";
+./src/features/travel/pages/EditTravelBuddy.jsx:10:import { motion, AnimatePresence } from "framer-motion";
+./src/features/travel/pages/EditTravelBuddy.jsx:11:import { toast } from "react-hot-toast";
+./src/features/travel/pages/EditTravelBuddy.jsx:98:        const files = Array.from(e.target.files);
+./src/features/travel/pages/EditTravelBuddy.jsx:117:            toast.error("Please fill in all required fields (Destination, Dates)");
+./src/features/travel/pages/AiPlanner.jsx:1:import React, { useState } from 'react';
+./src/features/travel/pages/AiPlanner.jsx:2:import API from '../../../services/api';
+./src/features/travel/pages/AiPlanner.jsx:3:import { arrayMove } from '@dnd-kit/sortable';
+./src/features/travel/pages/AiPlanner.jsx:4:import {
+./src/features/travel/pages/AiPlanner.jsx:27:} from 'lucide-react';
+./src/features/travel/pages/AiPlanner.jsx:28:import { motion, AnimatePresence } from 'framer-motion';
+./src/features/travel/pages/AiPlanner.jsx:29:import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+./src/features/travel/pages/AiPlanner.jsx:30:import toast from 'react-hot-toast';
+./src/features/travel/pages/AiPlanner.jsx:31:import { useNavigate } from 'react-router-dom';
+./src/features/travel/pages/AiPlanner.jsx:32:import ItineraryEditor from '../../../components/ItineraryEditor';
+./src/features/travel/pages/AiPlanner.jsx:33:import GoogleMapPanel from '../../../components/GoogleMapPanel';
+./src/features/travel/pages/AiPlanner.jsx:34:import PlaceDetailModal from '../../../components/PlaceDetailModal';
+./src/features/travel/pages/AiPlanner.jsx:245:        if (!over || !active?.data?.current?.fromDay) return;
+./src/features/travel/pages/AiPlanner.jsx:247:        const { fromDay, fromIndex } = active.data.current;
+./src/features/travel/pages/AiPlanner.jsx:249:        const targetDay = isOverItem ? over.data.current.fromDay : over.id;
+./src/features/travel/pages/AiPlanner.jsx:254:            if (!prev?.plan?.[fromDay] || !prev?.plan?.[targetDay]) return prev;
+./src/features/travel/pages/AiPlanner.jsx:256:            const sourceEvents = [...prev.plan[fromDay]];
+./src/features/travel/pages/AiPlanner.jsx:257:            const [movedEvent] = sourceEvents.splice(fromIndex, 1);
+./src/features/travel/pages/AiPlanner.jsx:261:            if (fromDay === targetDay) {
+./src/features/travel/pages/AiPlanner.jsx:262:                const targetIndex = isOverItem ? over.data.current.fromIndex : sourceEvents.length;
+./src/features/travel/pages/AiPlanner.jsx:267:                        [fromDay]: arrayMove(prev.plan[fromDay], fromIndex, targetIndex)
+./src/features/travel/pages/AiPlanner.jsx:273:            const targetIndex = isOverItem ? over.data.current.fromIndex : targetEvents.length;
+./src/features/travel/pages/AiPlanner.jsx:280:                    [fromDay]: sourceEvents,
+./src/features/travel/pages/AiPlanner.jsx:881:          from { opacity: 0; transform: translateY(20px); }
+./src/features/travel/pages/Trips.jsx:1:import { useState, useEffect } from "react";
+./src/features/travel/pages/Trips.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/travel/pages/Trips.jsx:3:import Cookies from "js-cookie";
+./src/features/travel/pages/Trips.jsx:4:import API from "../../../services/api";
+./src/features/travel/pages/Trips.jsx:5:import {
+./src/features/travel/pages/Trips.jsx:8:} from "lucide-react";
+./src/features/travel/pages/Trips.jsx:21:            <div className="h-56 bg-gradient-to-br from-orange-400 to-amber-600 relative overflow-hidden">
+./src/features/travel/pages/Trips.jsx:29:                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+./src/features/travel/pages/TravelBuddy.jsx:1:import { useState, useEffect, useCallback } from "react";
+./src/features/travel/pages/TravelBuddy.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/travel/pages/TravelBuddy.jsx:3:import Cookies from "js-cookie";
+./src/features/travel/pages/TravelBuddy.jsx:4:import API from "../../../services/api";
+./src/features/travel/pages/TravelBuddy.jsx:5:import {
+./src/features/travel/pages/TravelBuddy.jsx:10:} from "lucide-react";
+./src/features/travel/pages/TravelBuddy.jsx:13:import TravelBuddyHero from "../components/TravelBuddyHero";
+./src/features/travel/pages/TravelBuddy.jsx:53:                    <div className="w-full h-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center">
+./src/features/travel/pages/TravelBuddy.jsx:172:            // Clean empty strings from params
+./src/features/travel/pages/TripDetails.jsx:1:import { useState, useEffect } from "react";
+./src/features/travel/pages/TripDetails.jsx:2:import { useParams, useNavigate } from "react-router-dom";
+./src/features/travel/pages/TripDetails.jsx:3:import Cookies from "js-cookie";
+./src/features/travel/pages/TripDetails.jsx:4:import API from "../../../services/api";
+./src/features/travel/pages/TripDetails.jsx:5:import TripOverview from "../../../components/TripOverview";
+./src/features/travel/pages/TripDetails.jsx:6:import TripMembers from "../../../components/TripMembers";
+./src/features/travel/pages/TripDetails.jsx:7:import TripChat from "../../../components/TripChat";
+./src/features/travel/pages/TripDetails.jsx:8:import TripExpenses from "../../../components/TripExpenses";
+./src/features/travel/pages/TripDetails.jsx:9:import { ArrowLeft, Loader2, Plane, Home, Users, MessageSquare, CreditCard, LayoutDashboard } from "lucide-react";
+./src/features/travel/pages/BuddySearch.jsx:1:import { useState, useEffect } from "react";
+./src/features/travel/pages/BuddySearch.jsx:2:import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
+./src/features/travel/pages/BuddySearch.jsx:3:import { motion, AnimatePresence } from "framer-motion";
+./src/features/travel/pages/BuddySearch.jsx:4:import API from "../../../services/api";
+./src/features/travel/pages/BuddySearch.jsx:5:import { handleProtectedRoute } from "../../../utils/auth";
+./src/features/travel/pages/BuddySearch.jsx:6:import toast from "react-hot-toast";
+./src/features/travel/pages/BuddySearch.jsx:7:import { 
+./src/features/travel/pages/BuddySearch.jsx:11:} from "lucide-react";
+./src/features/travel/pages/BuddySearch.jsx:12:import BuddySearchBar from "../components/BuddySearchBar";
+./src/features/travel/pages/BuddySearch.jsx:56:                    <div className="w-full h-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center">
+./src/features/travel/pages/BuddySearch.jsx:182:                    // Endpoint matches user requirement or best guess
+./src/features/travel/pages/CreateTravelBuddy.jsx:1:import { useState, useRef } from "react";
+./src/features/travel/pages/CreateTravelBuddy.jsx:2:import { useNavigate } from "react-router-dom";
+./src/features/travel/pages/CreateTravelBuddy.jsx:3:import Cookies from "js-cookie";
+./src/features/travel/pages/CreateTravelBuddy.jsx:4:import API from "../../../services/api";
+./src/features/travel/pages/CreateTravelBuddy.jsx:5:import { useHost } from "../../../context/HostContext";
+./src/features/travel/pages/CreateTravelBuddy.jsx:6:import { 
+./src/features/travel/pages/CreateTravelBuddy.jsx:10:} from "lucide-react";
+./src/features/travel/pages/CreateTravelBuddy.jsx:11:import CreationLayout from "../../../components/layout/CreationLayout";
+./src/features/travel/pages/CreateTravelBuddy.jsx:12:import { toast } from "react-hot-toast";
+./src/features/travel/pages/CreateTravelBuddy.jsx:61:        const files = Array.from(e.target.files);
+./src/features/travel/pages/CreateTravelBuddy.jsx:75:            toast.error("Please fill in all required fields (Destination, Dates)");
+./src/features/travel/pages/CreateTravelBuddy.jsx:104:                // Prevent axios from interfering with multipart boundaries
+./src/utils/auth.js:1:import Cookies from "js-cookie";
+./src/index.css:1:@import "tailwindcss";
+./src/index.css:32:  from { opacity: 0; transform: translateY(10px); }
+./src/shared/stores/useHostOnboardingStore.js:1:import { create } from 'zustand';
+./src/shared/stores/useHostOnboardingStore.js:2:import { persist, createJSONStorage } from 'zustand/middleware';
+./src/shared/stores/useSearchStore.js:1:import { create } from 'zustand';
+./src/components/TripChat.jsx:1:import { useState, useEffect, useRef } from "react";
+./src/components/TripChat.jsx:2:import API from "../services/api";
+./src/components/TripChat.jsx:3:import { Send, Loader2, Smile, Paperclip, X, CornerUpLeft, MessageSquare, Image as ImageIcon, FileText, Check, CheckCheck } from "lucide-react";
+./src/components/TripChat.jsx:4:import EmojiPicker from "./EmojiPicker";
+./src/components/TripChat.jsx:5:import { motion, AnimatePresence } from "framer-motion";
+./src/components/TripChat.jsx:86:                            ? "bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-br-none"
+./src/components/ui/Dropdown.jsx:1:import React from "react";
+./src/components/ui/Dropdown.jsx:2:import { useClickOutside } from "../../hooks/useClickOutside";
+./src/components/ui/Dropdown.jsx:7:import { X } from "lucide-react";
+./src/components/ui/PremiumInput.jsx:1:import React from 'react';
+./src/components/ui/PremiumInput.jsx:2:import { motion } from 'framer-motion';
+./src/components/ui/CustomDropdown.jsx:1:import React, { useState, useRef, useEffect } from "react";
+./src/components/ui/CustomDropdown.jsx:2:import { ChevronDown, Check } from "lucide-react";
+./src/components/ui/CustomDropdown.jsx:3:import { useClickOutside } from "../../hooks/useClickOutside";
+./src/components/ui/SectionDivider.jsx:1:import React from 'react';
+./src/components/TripOverview.jsx:1:import { MapPin, Calendar, Home, Star, DollarSign } from "lucide-react";
+./src/components/TripOverview.jsx:30:            <div className="h-56 rounded-2xl overflow-hidden bg-gradient-to-br from-orange-400 to-amber-500 relative">
+./src/components/TripOverview.jsx:38:                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-5">
+./src/components/PlaceDetailModal.jsx:1:import React, { useEffect, useMemo, useState } from 'react';
+./src/components/PlaceDetailModal.jsx:2:import { createPortal } from 'react-dom';
+./src/components/PlaceDetailModal.jsx:3:import { motion, AnimatePresence } from 'framer-motion';
+./src/components/TravelChatbot.jsx:1:import React, { useState, useEffect, useRef } from 'react';
+./src/components/TravelChatbot.jsx:2:import API from '../services/api';
+./src/components/TravelChatbot.jsx:3:import { MessageCircle, X, Send, Trash2, Bot, User, Loader2 } from 'lucide-react';
+./src/components/TravelChatbot.jsx:69:                    <div className="bg-gradient-to-r from-orange-600 to-amber-600 p-4 text-white flex justify-between items-center">
+./src/components/ShareModal.jsx:1:import { useState, useEffect, useRef } from "react";
+./src/components/ShareModal.jsx:2:import { X, Copy, Check, Link2 } from "lucide-react";
+./src/components/layout/Footer.jsx:1:import React from "react";
+./src/components/layout/Footer.jsx:2:import { Link } from "react-router-dom";
+./src/components/layout/Footer.jsx:3:import { 
+./src/components/layout/Footer.jsx:13:} from "lucide-react";
+./src/components/layout/CreationLayout.jsx:1:import React from "react";
+./src/components/layout/CreationLayout.jsx:2:import { useNavigate } from "react-router-dom";
+./src/components/layout/CreationLayout.jsx:3:import { motion } from "framer-motion";
+./src/components/layout/CreationLayout.jsx:4:import { ArrowLeft } from "lucide-react";
+./src/components/layout/MainLayout.jsx:1:import React from "react";
+./src/components/layout/MainLayout.jsx:2:import { Outlet } from "react-router-dom";
+./src/components/layout/MainLayout.jsx:3:import Navbar from "../Navbar";
+./src/components/layout/MainLayout.jsx:4:import Footer from "./Footer";
+./src/components/LanguageSwitcher.jsx:1:import { useTranslation } from "react-i18next";
+./src/components/LanguageSwitcher.jsx:2:import { Globe } from "lucide-react";
+./src/components/LanguageSwitcher.jsx:3:import Cookies from "js-cookie";
+./src/components/PropertyTypeCard.jsx:1:import { cn } from "../utils/cn";
+./src/components/PropertyTypeCard.jsx:2:import { Map, Marker } from "@vis.gl/react-google-maps";
+./src/components/PropertyTypeCard.jsx:3:import GoogleMapsProvider from "./shared/GoogleMapsProvider";
+./src/components/CurrencySwitcher.jsx:1:import { useContext } from "react";
+./src/components/CurrencySwitcher.jsx:2:import { CurrencyContext } from "../context/CurrencyContext";
+./src/components/ItineraryEditor.jsx:1:import React, { useState } from 'react';
+./src/components/ItineraryEditor.jsx:2:import { useDroppable } from '@dnd-kit/core';
+./src/components/ItineraryEditor.jsx:3:import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+./src/components/ItineraryEditor.jsx:4:import { CSS } from '@dnd-kit/utilities';
+./src/components/ItineraryEditor.jsx:5:import { GripVertical, Trash2, ArrowUp, ArrowDown, MapPin, AlertTriangle, ShoppingBag, Star, X } from 'lucide-react';
+./src/components/ItineraryEditor.jsx:47:    data: { type: 'itinerary-item', fromDay: dayKey, fromIndex: idx, placeName: event.place_name, event }
+./src/components/shared/GoogleMapsProvider.jsx:1:import { APIProvider } from "@vis.gl/react-google-maps";
+./src/components/shared/GoogleMapsProvider.jsx:5: * Use this to wrap any component or page that requires Google Maps functionality.
+./src/components/shared/GoogleMapsProvider.jsx:12:    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+./src/components/shared/PlaceAutocomplete.jsx:1:import { useEffect, useRef, useState } from "react";
+./src/components/shared/PlaceAutocomplete.jsx:2:import { useMapsLibrary } from "@vis.gl/react-google-maps";
+./src/components/StatsModal.jsx:1:import { createPortal } from 'react-dom';
+./src/components/StatsModal.jsx:2:import { useEffect, useState } from 'react';
+./src/components/StatsModal.jsx:3:import API from '../services/api';
+./src/components/TripExpenses.jsx:1:import React, { useState, useEffect } from "react";
+./src/components/TripExpenses.jsx:2:import API from "../services/api";
+./src/components/TripExpenses.jsx:3:import { toast } from "react-hot-toast";
+./src/components/TripExpenses.jsx:4:import { Plus, IndianRupee, ArrowRight, Loader2, Receipt } from "lucide-react";
+./src/components/TripExpenses.jsx:24:            <span className="font-medium text-red-500 truncate max-w-[35%]">{s.from_name}</span>
+./src/components/TripExpenses.jsx:111:                        required
+./src/components/TripExpenses.jsx:124:                            required
+./src/components/GoogleMapPanel.jsx:1:import React, { useEffect, useRef, useState } from 'react';
+./src/components/GoogleMapPanel.jsx:49:    const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+./src/components/Navbar.jsx:1:import { useState, useEffect } from "react";
+./src/components/Navbar.jsx:2:import { useNavigate, Link, useLocation } from "react-router-dom";
+./src/components/Navbar.jsx:3:import { useHost } from "../context/HostContext";
+./src/components/Navbar.jsx:4:import Cookies from "js-cookie";
+./src/components/Navbar.jsx:5:import API from "../services/api";
+./src/components/Navbar.jsx:6:import { Home, Sparkles, ConciergeBell, Menu, Globe, MessageSquare, Heart, Briefcase, User, Settings, HelpCircle, LogOut, LayoutDashboard, Plane, Tent, Users } from "lucide-react";
+./src/components/Navbar.jsx:7:import { useTranslation } from "react-i18next";
+./src/components/Navbar.jsx:8:import VerificationBanner from "../features/auth/components/VerificationBanner";
+./src/components/Navbar.jsx:186:                                <div className="w-8 h-8 bg-gradient-to-br from-orange-600 to-amber-800 text-white rounded-full flex items-center justify-center font-bold text-sm shadow-sm overflow-hidden">
+./src/components/TripMembers.jsx:1:import React, { useState } from "react";
+./src/components/TripMembers.jsx:2:import API from "../services/api";
+./src/components/TripMembers.jsx:3:import { toast } from "react-hot-toast";
+./src/components/TripMembers.jsx:4:import { UserPlus, Trash2, Crown, Loader2 } from "lucide-react";
+./src/components/TripMembers.jsx:49:                <p className="font-bold text-gray-900 dark:text-white text-sm">Remove member from trip?</p>
+./src/components/ReviewCard.jsx:1:import { useState, useEffect } from "react";
+./src/components/ReviewCard.jsx:2:import { Star, Trash2 } from "lucide-react";
+./src/components/EmojiPicker.jsx:1:import React, { useEffect, useRef } from 'react';
+./src/components/EmojiPicker.jsx:2:import Picker from 'emoji-picker-react';
+./src/hooks/useClickOutside.js:1:import { useEffect, useRef } from "react";
+./src/main.jsx:1:import { StrictMode } from 'react'
+./src/main.jsx:2:import { createRoot } from 'react-dom/client'
+./src/main.jsx:3:import './index.css'
+./src/main.jsx:4:import App from './app/App.jsx'
+./src/main.jsx:5:import './i18n.js'
+./src/main.jsx:6:import { CurrencyProvider } from './context/CurrencyContext.jsx'
+./src/main.jsx:7:import { HostProvider } from './context/HostContext.jsx'
+./src/main.jsx:8:import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+./src/assets/images/index.js:1:import apartment1 from "./apartments/apartment1.jpg";
+./src/assets/images/index.js:2:import villa1 from "./villas/villa1.jpg";
+./src/assets/images/index.js:3:import treehouse1 from "./treehouses/treehouse1.jpg";
+./src/assets/images/index.js:4:import cabin1 from "./cabins/cabin1.jpg";
+./src/assets/images/index.js:5:import beachhouse1 from "./beachhouses/beachhouse1.jpg";
+./src/assets/images/index.js:7:import goa from "./destinations/goa.jpg";
+./src/assets/images/index.js:8:import manali from "./destinations/manali.jpg";
+./src/assets/images/index.js:9:import jaipur from "./destinations/jaipur.jpg";
+./src/assets/images/index.js:10:import kerala from "./destinations/kerala.jpg";
+./src/assets/images/index.js:11:import mumbai from "./destinations/mumbai.jpg";
+./src/assets/images/index.js:12:import delhi from "./destinations/delhi.jpg";
+./src/assets/images/index.js:13:import udaipur from "./destinations/udaipur.jpg";
+./src/assets/images/index.js:14:import shimla from "./destinations/shimla.jpg";
+./src/assets/images/index.js:16:import beaches from "./explore/beaches.jpg";
+./src/assets/images/index.js:17:import mountains from "./explore/mountains.jpg";
+./src/assets/images/index.js:18:import heritage from "./explore/heritage.jpg";
+./src/assets/images/index.js:19:import cities from "./explore/cities.jpg";
+./src/pages/PaymentPage.jsx:1:import React, { useState, useEffect } from 'react';
+./src/pages/PaymentPage.jsx:2:import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
+./src/pages/PaymentPage.jsx:3:import { Loader2, CreditCard, Landmark, ArrowRight, ShieldCheck, CheckCircle2, Lock, Tag, Clock, Calendar, Users, MapPin, ChevronRight } from 'lucide-react';
+./src/pages/PaymentPage.jsx:4:import API from '../services/api';
+./src/pages/PaymentPage.jsx:5:import { toast } from 'react-hot-toast';
+./src/pages/PaymentPage.jsx:6:import { motion, AnimatePresence } from 'framer-motion';
+./src/pages/PaymentPage.jsx:7:import Cookies from 'js-cookie';
+./src/pages/PaymentPage.jsx:82:        // If we have state passed from navigation, we can use it immediately or skip some fetches
+./src/pages/TravelBuddyDetail.jsx:1:import React, { useState, useEffect, useMemo } from "react";
+./src/pages/TravelBuddyDetail.jsx:2:import { useNavigate, useLocation, useParams } from "react-router-dom";
+./src/pages/TravelBuddyDetail.jsx:3:import { motion, AnimatePresence } from "framer-motion";
+./src/pages/TravelBuddyDetail.jsx:4:import API from "../services/api";
+./src/pages/TravelBuddyDetail.jsx:5:import { 
+./src/pages/TravelBuddyDetail.jsx:11:} from "lucide-react";
+./src/pages/TravelBuddyDetail.jsx:12:import toast from "react-hot-toast";
+./src/pages/TravelBuddyDetail.jsx:13:import Cookies from "js-cookie";
+./src/pages/TravelBuddyDetail.jsx:117:            <div className="w-full h-full bg-gradient-to-br from-[#1a1a2e] to-[#2d3a5c] rounded-2xl flex items-center justify-center text-2xl font-black text-white italic">
+./src/pages/TravelBuddyDetail.jsx:263:                        const messageText = `Hi! I'm interested in joining your trip to ${trip.destination} from ${formatDate(trip.start_date)} to ${formatDate(trip.end_date)}. Looks like an amazing adventure! 🌍`;
+./src/pages/TravelBuddyDetail.jsx:332:      <div className="absolute top-0 left-0 right-0 z-50 p-8 flex justify-between items-center bg-gradient-to-b from-black/60 to-transparent">
+./src/pages/TravelBuddyDetail.jsx:343:          {useLocation().state?.fromDashboard && (
+./src/pages/TravelBuddyDetail.jsx:360:      <div className="absolute inset-x-0 bottom-0 z-20 p-8 md:p-16 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+./src/pages/TravelBuddyDetail.jsx:433:        // If we already had stale data from location.state, keep showing it silently
+./src/pages/TravelBuddyDetail.jsx:440:  }, [id]);  // Removed `data` from deps — we want this to fire ONCE on mount, not loop
+./src/i18n.js:1:import i18n from 'i18next';
+./src/i18n.js:2:import { initReactI18next } from 'react-i18next';
+./src/i18n.js:3:import LanguageDetector from 'i18next-browser-languagedetector';
+./src/i18n.js:5:import en from './locales/en/translation.json';
+./src/i18n.js:6:import hi from './locales/hi/translation.json';
+./src/i18n.js:7:import mr from './locales/mr/translation.json';
+./src/i18n.js:8:import bn from './locales/bn/translation.json';
+./src/i18n.js:9:import ta from './locales/ta/translation.json';
+./src/i18n.js:10:import ml from './locales/ml/translation.json';
+./src/i18n.js:11:import kn from './locales/kn/translation.json';
+./src/i18n.js:12:import pa from './locales/pa/translation.json';
+./src/i18n.js:13:import gu from './locales/gu/translation.json';
+./src/services/maps.js:1:import API from "./api";
+./src/services/maps.js:5: * Hides the Google Maps API key from the frontend.
+./src/services/maps.js:22: * Hides the Google Maps API key from the frontend.
+./src/services/crashpads.js:1:import API from "./api";
+./src/services/api.js:1:import axios from "axios";
+./src/services/api.js:2:import Cookies from "js-cookie";
+./src/services/api.js:3:import toast from "react-hot-toast";
+./src/services/api.js:6:    baseURL: import.meta.env.VITE_API_BASE_URL || 
