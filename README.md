@@ -1,10 +1,11 @@
-# TravelBNB — Backend API
 
-FastAPI backend for TravelBNB, an AI-powered travel booking and planning platform. Handles authentication, bookings, listings, messaging, admin operations, and proxies ML requests to the AI service.
+# TravelBNB — Frontend
+
+React + Vite frontend for TravelBNB, an AI-powered travel booking and planning platform. Handles property browsing, bookings, host dashboards, messaging, admin panels, and AI itinerary generation.
 
 This is one of three services that make up TravelBNB:
-- **Frontend** — [travel-bnb-frontend](https://github.com/Tushaar00007/travel-bnb-frontend) (React + Vite)
-- **Backend** (this repo) — FastAPI + MongoDB
+- **Frontend** (this repo) — React + Vite
+- **Backend** — [travelbnb-backend](https://github.com/Tushaar00007/travelbnb-backend) (FastAPI + MongoDB)
 - **ML Service** — [ai-travel-planner](https://github.com/Tushaar00007/ai-travel-planner) (FastAPI + Python ML)
 
 ---
@@ -13,8 +14,8 @@ This is one of three services that make up TravelBNB:
 
 | Service | URL |
 |---------|-----|
-| Backend API (Render) | https://travelbnb-backend.onrender.com |
-| Frontend | https://travel-bnb-frontend.vercel.app |
+| Frontend (Vercel) | https://travel-bnb-frontend.vercel.app |
+| Backend API | https://travelbnb-backend.onrender.com |
 | ML Service | https://ai-travel-planner-txji.onrender.com |
 
 ---
@@ -22,32 +23,35 @@ This is one of three services that make up TravelBNB:
 ## Project Structure
 
 ```
-travelbnb-backend/
-├── app/
-│   ├── main.py                 # FastAPI app, CORS, router registration
-│   ├── core/
-│   │   └── config.py           # Settings, ALLOWED_ORIGINS, DB config
-│   ├── routers/
-│   │   ├── auth.py             # Register, login, user CRUD
-│   │   ├── bookings.py         # Booking creation and approval
-│   │   ├── crashpads.py        # Crashpad CRUD
-│   │   ├── ml.py               # ML service proxy
-│   │   ├── itinerary.py        # Save/fetch itineraries, PDF export
-│   │   ├── admin.py            # Admin stats and user management
-│   │   └── messages.py         # Host-guest messaging
-│   ├── services/
-│   │   └── ml_service.py       # Proxy client for ML service
-│   ├── models/                 # Pydantic models
-│   ├── db/                     # MongoDB client
-│   └── utils/
-│       └── auth.py             # JWT encoding/decoding
-├── migrations/                 # One-off DB fix scripts
-│   ├── fix_role.py
-│   ├── migrate_images.py
-│   ├── fix_coords.py
-│   └── make_superadmin.py
-├── requirements.txt
-└── .env                        # MONGO_URI, JWT_SECRET, CLOUDINARY, etc.
+travelbnb-frontend/
+└── src/
+    ├── features/
+    │   ├── admin/              # Admin dashboard (users, listings, bookings)
+    │   │   └── pages/
+    │   │       ├── CreateAdmin.jsx
+    │   │       ├── UsersTable.jsx
+    │   │       ├── ListingsTable.jsx
+    │   │       └── BookingsTable.jsx
+    │   ├── auth/               # Login, signup, OTP, Google OAuth
+    │   ├── crashpads/          # Crashpad listings
+    │   │   └── pages/
+    │   │       ├── Crashpads.jsx
+    │   │       └── CreateCrashpad.jsx
+    │   ├── host/               # Host dashboard (7 tabs)
+    │   │   └── pages/
+    │   │       └── EditListingPage.jsx
+    │   ├── listings/           # Property browsing and detail
+    │   ├── travel/
+    │   │   └── pages/
+    │   │       └── AiPlanner.jsx   # AI itinerary generator
+    │   └── user/
+    │       └── components/
+    │           └── ChatWindow.jsx  # Host-guest messaging
+    ├── components/             # Shared UI components
+    ├── services/
+    │   └── api.js              # Axios instance with JWT interceptor
+    ├── App.jsx
+    └── main.jsx
 ```
 
 ---
@@ -56,241 +60,122 @@ travelbnb-backend/
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | FastAPI (Python 3.11) |
-| Database | MongoDB (`travel_app` database) |
-| Authentication | JWT (Bearer tokens) + Google OAuth |
-| Image Storage | Cloudinary |
-| ML Integration | HTTP proxy to Python ML service |
-| CORS | `CORSMiddleware` with env-configurable origins |
-| Deployment | Render |
+| Framework | React 18 + Vite |
+| Styling | Tailwind CSS |
+| Icons | lucide-react |
+| HTTP Client | Axios (shared instance in `src/services/api.js`) |
+| State | React Context + hooks |
+| Routing | React Router v6 |
+| Image Handling | Cloudinary URLs |
+| Auth | JWT (Bearer tokens in localStorage) |
+| Deployment | Vercel |
 
 ---
 
 ## Environment Setup
 
 ```bash
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+npm install
 ```
 
-Create `.env` file (see variables below), then:
+Create `.env` file:
+```env
+VITE_API_BASE_URL=https://travelbnb-backend.onrender.com/api
+```
 
 ```bash
-uvicorn app.main:app --reload --port 8000
+npm run dev
 ```
 
-### Required Environment Variables
+The app runs on `http://localhost:5173` by default.
 
+For local development against a local backend:
 ```env
-# Database
-MONGO_URI=mongodb://localhost:27017
-DB_NAME=travel_app
-
-# Auth
-JWT_SECRET=your-secret-here
-JWT_ALGORITHM=HS256
-JWT_EXPIRE_MINUTES=1440
-
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
-
-# Google OAuth
-GOOGLE_CLIENT_ID=...
-GOOGLE_CLIENT_SECRET=...
-GOOGLE_CALLBACK_URL=http://localhost:8000/api/auth/google/callback
-
-# ML Service
-ML_BASE_URL=http://localhost:9000
-
-# CORS (comma-separated, no spaces)
-ALLOWED_ORIGINS=http://localhost:5173,https://travel-bnb-frontend.vercel.app
-
-# Debug
-DEBUG=true
+VITE_API_BASE_URL=http://localhost:8000/api
 ```
 
 ---
 
-## API Endpoints
+## API Client
 
-All routes are prefixed with `/api`.
+All API calls go through the shared axios instance in `src/services/api.js`:
 
-### Auth — `/api/auth/*`
+```javascript
+import API from '@/services/api';
 
-| Method | Endpoint | Description | Body |
-|--------|----------|-------------|------|
-| `POST` | `/api/auth/register` | Register new user | `{ fullName, email, password, role }` |
-| `POST` | `/api/auth/login` | Login with email and password | `{ email, password }` |
-| `GET` | `/api/auth/me` | Get current user profile | — |
-| `GET` | `/api/auth/user/{user_id}` | Get user by ID | — |
-| `PUT` | `/api/auth/user/{user_id}` | Update user profile | `{ fullName?, phone?, bio? }` |
+// GET request
+const { data } = await API.get('/crashpads/');
 
-**Roles:** `user` | `host` | `admin` | `super_admin`
-
----
-
-### Bookings — `/api/bookings/*`
-
-| Method | Endpoint | Description | Body |
-|--------|----------|-------------|------|
-| `POST` | `/api/bookings/` | Create a new booking | `BookingRequest` |
-| `GET` | `/api/bookings/user/all` | Get all bookings for current user | — |
-| `PATCH` | `/api/bookings/{booking_id}/approve` | Host approves booking | — |
-
-**BookingRequest:**
-```json
-{
-  "propertyId": "...",
-  "hostId": "...",
-  "checkIn": "2026-05-01",
-  "checkOut": "2026-05-05",
-  "guests": 2,
-  "totalPrice": 12000
-}
+// POST with JWT auto-attached
+const { data } = await API.post('/bookings/', bookingPayload);
 ```
 
----
-
-### Crashpads — `/api/crashpads/*`
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/crashpads/` | List all crashpads |
-| `POST` | `/api/crashpads/` | Create a new crashpad listing |
+The axios instance automatically:
+1. Reads `VITE_API_BASE_URL` from env (falls back to `/api` in production)
+2. Attaches `Authorization: Bearer <token>` from localStorage
+3. On `401` → clears auth state and redirects to login
 
 ---
 
-### Admin — `/api/admin/*`
+## Key Features
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/admin/stats` | Dashboard stats (users, listings, bookings, revenue) |
-| `GET` | `/api/admin/users` | List all users |
-| `GET` | `/api/admin/listings` | List all property listings |
-| `GET` | `/api/admin/bookings` | List all bookings |
-| `GET` | `/api/admin/admins` | List admin accounts |
-| `POST` | `/api/admin/create` | Create new admin account |
-| `DELETE` | `/api/admin/admins/{admin_id}` | Remove admin account |
+### Property Listings
+Browse crashpads with filters for location, price, and property type. Images served from Cloudinary via the `getImageUrl` helper.
 
-Requires `admin` or `super_admin` role.
+### Booking Flow
+User selects dates on property detail → sends booking request (as chat message to host) → host approves via Messages tab → user completes payment on Payment page → booking appears in My Bookings.
 
----
+Booking metadata (dates, guest count) is extracted from message text via regex.
 
-### Messaging — `/api/messages/*`
+### Host Dashboard
+Seven tabs for hosts to manage their properties:
+1. Overview — stats and recent bookings
+2. Listings — manage property listings
+3. Calendar — booking availability
+4. Earnings — revenue and payouts
+5. Reviews — guest reviews
+6. Messages — guest conversations, booking approvals
+7. Notifications — alerts and requests
 
-| Method | Endpoint | Description | Body |
-|--------|----------|-------------|------|
-| `GET` | `/api/messages/{currentUserId}/{otherId}` | Fetch conversation | — |
-| `POST` | `/api/messages/send` | Send a message | `{ senderId, receiverId, text }` |
+### Admin Panel
+Dashboard with stats (users, listings, bookings, revenue) and CRUD tables. Requires `admin` or `super_admin` role.
 
-Booking metadata (dates, guest count) is embedded in message text and extracted via regex on the frontend.
+### AI Travel Planner
+User fills preferences (destination, budget, days, travelers, interests) → frontend calls `/api/ml/generate` → backend proxies to ML service → returns day-wise itinerary with hotels → user can save and download as PDF.
 
----
-
-### ML Proxy — `/api/ml/*` and `/api/itinerary/*`
-
-| Method | Endpoint | Description | Body |
-|--------|----------|-------------|------|
-| `POST` | `/api/ml/generate` | Generate travel itinerary | `ItineraryRequest` |
-| `POST` | `/api/ml/chat` | Chat with travel assistant | `{ message, context }` |
-| `POST` | `/api/ml/download_pdf` | Download itinerary as PDF | `{ itineraryId }` |
-| `POST` | `/api/itinerary/save` | Save generated itinerary | `ItineraryData` |
-| `GET` | `/api/itinerary/pdf/{itinerary_id}` | Fetch saved PDF | — |
-
-**ItineraryRequest:**
-```json
-{
-  "destination": "Goa",
-  "budget": 25000,
-  "days": 4,
-  "travelers": 2,
-  "preferences": ["beach", "nightlife", "food"],
-  "travelMode": "flight"
-}
-```
-
-These endpoints proxy to the ML service at `ML_BASE_URL`. The frontend never calls the ML service directly.
+### Messaging
+Real-time host-guest chat with booking approve/decline actions, read receipts, and payment triggers embedded in messages.
 
 ---
 
-## Authentication
+## Role-Based Access
 
-All protected endpoints require:
-```
-Authorization: Bearer <accessToken>
-```
-
-Tokens are issued by `/api/auth/login` and expire after `JWT_EXPIRE_MINUTES` (default 1440 = 24 hours). The frontend stores tokens in localStorage and attaches them via an axios interceptor.
-
----
-
-## CORS Configuration
-
-Configured in `app/main.py` via `CORSMiddleware`. Origins are read from the `ALLOWED_ORIGINS` environment variable (comma-separated):
-
-```python
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-```
-
-For Vercel preview deployments, consider switching to `allow_origin_regex` to match preview URLs dynamically.
+| Role | Capabilities |
+|------|-------------|
+| `user` | Browse, book, chat, generate itineraries |
+| `host` | User capabilities + listings management, booking approval, earnings |
+| `admin` | Manage users, listings, bookings, view analytics |
+| `super_admin` | Admin capabilities + create/delete other admins |
 
 ---
 
-## Database Schema
+## Deployment (Vercel)
 
-MongoDB database: `travel_app`
+1. Connect this repo to Vercel
+2. Vercel auto-detects Vite — no build config needed
+3. Add environment variable in Settings → Environment Variables:
+   `VITE_API_BASE_URL=https://travelbnb-backend.onrender.com/api`
+   Apply to Production, Preview, and Development scopes.
+4. Deploy — Vercel redeploys automatically on push to `main`
 
-Key collections:
-- `users` — user accounts, roles, profiles
-- `properties` and `homes` — property listings (both collections queried with `$or` due to legacy data)
-- `bookings` — booking records
-- `messages` — host-guest conversations
-- `itineraries` — saved AI-generated trip plans
-
-Mixed camelCase and snake_case field names exist across collections; queries use `$or` to cover all variants.
-
----
-
-## Deployment (Render)
-
-1. New Web Service → connect this repo
-2. Build command: `pip install -r requirements.txt`
-3. Start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-4. Add all environment variables from `.env`
-5. Set `ALLOWED_ORIGINS` to include production frontend URL
-6. Set `ML_BASE_URL` to the deployed ML service URL
-
-Free tier note: Render free tier sleeps after 15 min of inactivity. First request after sleep takes 30–60 seconds.
-
----
-
-## Migrations
-
-One-off DB scripts in `migrations/`:
-
-- `fix_role.py` — corrects role field values
-- `migrate_images.py` — moves base64 images from MongoDB to Cloudinary
-- `fix_coords.py` — fills missing geocoordinates
-- `make_superadmin.py` — promotes a user to super_admin
-- `fix_password.py` — resets password hashes
-
-Run with: `python migrations/script_name.py`
+**Important:** changing env vars alone does not rebuild. Trigger a manual redeploy after updating env vars.
 
 ---
 
 ## Key Design Decisions
 
-- **ML service is proxied** — the frontend never calls the ML service directly. All ML requests go through `/api/ml/*` which forwards to the ML service. Keeps CORS config simple and allows the backend to add auth, caching, and rate limiting.
-- **Router registration is explicit** — every router must be registered in `main.py` via `app.include_router()` or endpoints silently 404.
-- **Field name normalization via `$or`** — mixed camelCase/snake_case across collections requires queries that match both.
-- **JWT stored in localStorage** — accepted trade-off for simplicity; consider httpOnly cookies for production hardening.
-- **CORS origins via env var** — `ALLOWED_ORIGINS` is comma-separated in `.env` to avoid hardcoded lists.
+- **Shared axios instance** — all API calls go through `src/services/api.js` so JWT attachment, base URL, and error handling are centralized.
+- **Cloudinary for images** — migrated from base64-in-MongoDB. `getImageUrl` helper handles both legacy and current URL formats.
+- **Inline styles over Tailwind for component-specific tweaks** — Tailwind for layout, inline styles for precise adjustments.
+- **No component library** — all UI components are custom-built or use lucide-react for icons only.
+- **Messages store booking metadata as text** — regex extraction on the frontend rather than structured fields in the DB.
