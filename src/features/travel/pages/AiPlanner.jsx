@@ -190,7 +190,7 @@ function AiPlanner() {
                 const serverMsg = response.data?.message || response.data?.error || response.data?.detail;
                 setError(serverMsg
                     ? `Generation failed: ${serverMsg}`
-                    : "Failed to generate plan — the ML model may not be running on port 9000."
+                    : "Failed to generate plan — travel planner service unavailable."
                 );
             }
         } catch (err) {
@@ -199,7 +199,7 @@ function AiPlanner() {
             if (detail) {
                 setError(`Server error: ${detail}`);
             } else if (!err.response) {
-                setError("Cannot reach the backend (port 8000). Make sure both servers are running.");
+                setError("Cannot reach the backend service. Ensure the servers are operational.");
             } else {
                 setError("An error occurred while generating your plan. Check browser console for details.");
             }

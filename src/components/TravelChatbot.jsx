@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import { MessageCircle, X, Send, Trash2, Bot, User, Loader2 } from 'lucide-react';
 
 const TravelChatbot = () => {
@@ -30,7 +30,7 @@ const TravelChatbot = () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:8000/api/ml/chat', {
+            const response = await API.post('/ml/chat', {
                 message: userMsg.text
             });
 
@@ -39,7 +39,7 @@ const TravelChatbot = () => {
             }
         } catch (error) {
             console.error("Chatbot Error:", error);
-            setChatHistory(prev => [...prev, { role: 'ai', text: "Sorry, I'm having trouble connecting to my brain. Please make sure the backend is running." }]);
+            setChatHistory(prev => [...prev, { role: 'ai', text: "Sorry, I'm having trouble connecting to my brain. Please try again later." }]);
         } finally {
             setIsLoading(false);
         }

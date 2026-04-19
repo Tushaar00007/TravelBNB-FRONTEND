@@ -175,8 +175,9 @@ function EditListingPage() {
     if (url.startsWith('http://') || url.startsWith('https://')) return url;
     if (url.startsWith('data:')) return url;
 
-    // Relative path
-    const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
+    // Relative path helper derived from VITE_API_BASE_URL
+    const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
+    const baseUrl = apiBase.replace(/\/api$/, '');
     const cleanPath = url.startsWith('/') ? url : `/uploads/${url}`;
     const finalPath = cleanPath.startsWith('/uploads/') ? cleanPath : `/uploads${cleanPath}`;
     return `${baseUrl}${finalPath.replace('//', '/')}`;

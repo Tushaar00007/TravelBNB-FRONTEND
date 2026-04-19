@@ -3,7 +3,8 @@ import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 
 const API = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api",
+    baseURL: import.meta.env.VITE_API_BASE_URL || 
+             (window.location.hostname === 'localhost' ? "http://localhost:8000/api" : "/api"),
 });
 
 API.interceptors.request.use((config) => {

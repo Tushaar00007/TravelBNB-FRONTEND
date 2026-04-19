@@ -51,11 +51,10 @@ function HomeCard({ home: listing }) {
       return raw;
     }
 
-    // 3. If relative path (local uploads) - Check if it looks like a file name
-    // It shouldn't contain spaces and should have an extension
     const isRelative = !raw.includes(' ') && (raw.includes('.') || raw.startsWith('/'));
     if (isRelative) {
-      const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
+      const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
+      const baseUrl = apiBase.replace(/\/api$/, '');
       const cleanPath = raw.startsWith('/') ? raw : `/uploads/${raw}`;
       // Prevent double /uploads if it's already there
       const finalPath = cleanPath.startsWith('/uploads/') ? cleanPath : `/uploads${cleanPath}`;
